@@ -18,7 +18,7 @@ class _HistoryPageState extends State<HistoryPage> {
           child: Column(
             children: [
               Image(
-                image: AssetImage('lib/assets/socratize-logo.png'),
+                image: AssetImage('assets/images/socratize-logo.png'),
                 width: MediaQuery.of(context).size.width * 0.3,
                 height: MediaQuery.of(context).size.width * 0.3,
               ),
