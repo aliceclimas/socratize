@@ -59,7 +59,7 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-  - lib/assets/socratize-logo.png
+  - assets/images/socratize-logo.png
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
@@ -76,32 +76,32 @@ flutter:
   fonts:
     - family: Poppins
       fonts:
-        - asset: lib/fonts/Poppins-Thin.ttf
-        - asset: lib/fonts/Poppins-ThinItalic.ttf
+        - asset: assets/fonts/Poppins-Thin.ttf
+        - asset: assets/fonts/Poppins-ThinItalic.ttf
           style: italic
-        - asset: lib/fonts/Poppins-ExtraLight.ttf
-        - asset: lib/fonts/Poppins-ExtraLightItalic.ttf
+        - asset: assets/fonts/Poppins-ExtraLight.ttf
+        - asset: assets/fonts/Poppins-ExtraLightItalic.ttf
           style: italic
-        - asset: lib/fonts/Poppins-Light.ttf
-        - asset: lib/fonts/Poppins-LightItalic.ttf
+        - asset: assets/fonts/Poppins-Light.ttf
+        - asset: assets/fonts/Poppins-LightItalic.ttf
           style: italic
-        - asset: lib/fonts/Poppins-Regular.ttf
-        - asset: lib/fonts/Poppins-Italic.ttf
+        - asset: assets/fonts/Poppins-Regular.ttf
+        - asset: assets/fonts/Poppins-Italic.ttf
           style: italic
-        - asset: lib/fonts/Poppins-Medium.ttf
-        - asset: lib/fonts/Poppins-MediumItalic.ttf
+        - asset: assets/fonts/Poppins-Medium.ttf
+        - asset: assets/fonts/Poppins-MediumItalic.ttf
           style: italic
-        - asset: lib/fonts/Poppins-SemiBold.ttf
-        - asset: lib/fonts/Poppins-SemiBoldItalic.ttf
+        - asset: assets/fonts/Poppins-SemiBold.ttf
+        - asset: assets/fonts/Poppins-SemiBoldItalic.ttf
           style: italic
-        - asset: lib/fonts/Poppins-Bold.ttf
-        - asset: lib/fonts/Poppins-BoldItalic.ttf
+        - asset: assets/fonts/Poppins-Bold.ttf
+        - asset: assets/fonts/Poppins-BoldItalic.ttf
           style: italic
-        - asset: lib/fonts/Poppins-ExtraBold.ttf
-        - asset: lib/fonts/Poppins-ExtraBoldItalic.ttf
+        - asset: assets/fonts/Poppins-ExtraBold.ttf
+        - asset: assets/fonts/Poppins-ExtraBoldItalic.ttf
           style: italic
-        - asset: lib/fonts/Poppins-Black.ttf
-        - asset: lib/fonts/Poppins-BlackItalic.ttf
+        - asset: assets/fonts/Poppins-Black.ttf
+        - asset: assets/fonts/Poppins-BlackItalic.ttf
           style: italic
 
   # For details regarding fonts from package dependencies,
