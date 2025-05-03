@@ -9,6 +9,34 @@ class HistoryPage extends StatefulWidget {
 }
 
 class _HistoryPageState extends State<HistoryPage> {
+
+  // Lista com os pensamentos do paciente
+   final List<Map<String, String>> pensamentos = [
+    {
+      "tipo": "PERSONALIZAÇÃO",
+      "frase": "A culpa é sempre minha, mesmo quando não depende de mim."
+    },
+    {
+      "tipo": "CATASTROFIZAÇÃO",
+      "frase": "Se isso der errado, minha vida acaba."
+    },
+    {
+      "tipo": "FILTRO MENTAL",
+      "frase": "Meu chefe elogiou, mas só consigo pensar naquele erro."
+    },
+    {
+      "tipo": "LEITURA DA MENTE",
+      "frase": "Tenho certeza de que ele me acha inútil."
+    },
+    {
+      "tipo": "RACIOCÍNIO EMOCIONAL",
+      "frase": "Me sinto um fracasso, então devo ser mesmo."
+    },
+    {
+      "tipo": "USO DE DEVERIA",
+      "frase": "Eu deveria ser mais produtivo o tempo todo."
+    },
+  ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -87,19 +115,15 @@ class _HistoryPageState extends State<HistoryPage> {
               SizedBox(height: 30),
               Expanded(
                 flex: 2,
-                child: ListView(
-                  children: [
-                    InsightCard(),
-                    InsightCard(),
-                    InsightCard(),
-                    InsightCard(),
-                    InsightCard(),
-                    InsightCard(),
-                    InsightCard(),
-                    InsightCard(),
-                    InsightCard(),
-                    InsightCard(),
-                  ],
+                child: ListView.builder(
+                  itemCount: pensamentos.length,
+                  itemBuilder: (context, index){
+                    final pensamento = pensamentos[index];
+                    return InsightCard(
+                      tipo: pensamento['tipo']!, 
+                      frase: pensamento['frase']!,
+                    );
+                  },
                 ),
               ),
             ],
