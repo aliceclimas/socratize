@@ -24,10 +24,11 @@ class InsightCard extends StatelessWidget {
     final texto = explicacoes[tipo.toUpperCase()] ?? 'Explicação não encontrada.';
     QuickAlert.show(
       context: context,
-      type: QuickAlertType.info,
+      type: QuickAlertType.custom,
       title: tipo,
       text: texto,
       confirmBtnText: 'Fechar',
+      customAsset: 'assets/images/socratize-logo.png',
     );
   }
 
