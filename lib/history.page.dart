@@ -37,7 +37,7 @@ class _HistoryPageState extends State<HistoryPage> {
                   Flexible(
                     flex: 2,
                     child: DropdownButton(
-                      hint: Text("Pensamento Disfucnional"),
+                      hint: Text("Pensamento Disfuncional"),
                       items: [
                         DropdownMenuItem(
                           value: "Personalização",
