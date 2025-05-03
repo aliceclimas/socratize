@@ -2,29 +2,38 @@ import 'package:flutter/material.dart';
 import 'package:quickalert/quickalert.dart';
 
 class InsightCard extends StatelessWidget {
-
   final String tipo;
   final String frase;
 
-  InsightCard({required this.tipo, required this.frase});
+  const InsightCard({super.key, required this.tipo, required this.frase});
 
   static const Map<String, String> explicacoes = {
-    "PERSONALIZAÇÃO": " Assumir responsabilidade por tudo que acontece, mesmo quando não é culpa sua.",
-    "FILTRO MENTAL": " Focar apenas nos aspectos negativos de uma situação e ignorar os positivos.",
-    "GENERALIZAÃO EXCESSIVA": " Tirar conclusões amplas a partir de um único evento negativo, acreditando que 'sempre' será assim.",
-    "CATASTROFIZAÇÃO": " Imaginar que o pior cenário possível vai ocorrer, exagerando as consequências de um evento.",
-    "PENSAMENTO DICÓTOMO": "(Tudo ou nada) Ver as situações de forma extrema, sem considerar que há pontos intermediários (tudo é perfeito ou um desastre total).",
-    "LEITURA DA MENTE": " Pressumir saber o que os outros estão pensando sem ter provas concretas.",
-    "RACIOCÍNIO EMOCIONAL": "Considerar que, se você sente algo interessante, essa emoção reflete a verdade absoluta da situação.",
-    "DESQUALIFICAÇÃO DO POSITIVO": "Descartar ou minimizar suas conquistas e os feedbacks positivos, focando somente nos erros.",
-    "USO DE DEVERIA": "Impor regras rígicas sobre como as coisas 'devem' ser, levando à frustação quando a realizada não se encaixa nesses padrões.",
+    "PERSONALIZAÇÃO":
+        " Assumir responsabilidade por tudo que acontece, mesmo quando não é culpa sua.",
+    "FILTRO MENTAL":
+        " Focar apenas nos aspectos negativos de uma situação e ignorar os positivos.",
+    "GENERALIZAÃO EXCESSIVA":
+        " Tirar conclusões amplas a partir de um único evento negativo, acreditando que 'sempre' será assim.",
+    "CATASTROFIZAÇÃO":
+        " Imaginar que o pior cenário possível vai ocorrer, exagerando as consequências de um evento.",
+    "PENSAMENTO DICÓTOMO":
+        "(Tudo ou nada) Ver as situações de forma extrema, sem considerar que há pontos intermediários (tudo é perfeito ou um desastre total).",
+    "LEITURA DA MENTE":
+        " Pressumir saber o que os outros estão pensando sem ter provas concretas.",
+    "RACIOCÍNIO EMOCIONAL":
+        "Considerar que, se você sente algo interessante, essa emoção reflete a verdade absoluta da situação.",
+    "DESQUALIFICAÇÃO DO POSITIVO":
+        "Descartar ou minimizar suas conquistas e os feedbacks positivos, focando somente nos erros.",
+    "USO DE DEVERIA":
+        "Impor regras rígicas sobre como as coisas 'devem' ser, levando à frustação quando a realizada não se encaixa nesses padrões.",
   };
 
   void mostrarExplicacao(BuildContext context) {
-    final texto = explicacoes[tipo.toUpperCase()] ?? 'Explicação não encontrada.';
+    final texto =
+        explicacoes[tipo.toUpperCase()] ?? 'Explicação não encontrada.';
     QuickAlert.show(
       context: context,
-      type: QuickAlertType.custom,
+      type: QuickAlertType.info,
       title: tipo,
       text: texto,
       confirmBtnText: 'Fechar',
@@ -41,16 +50,10 @@ class InsightCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
-          
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Expanded(
-                  child: Text(
-                    frase,
-                    style: TextStyle(fontSize: 16),
-                  ),
-                ),
+                Expanded(child: Text(frase, style: TextStyle(fontSize: 16))),
                 TextButton(
                   onPressed: () {}, // ação do botão "CHAT"
                   style: ButtonStyle(
@@ -90,5 +93,4 @@ class InsightCard extends StatelessWidget {
       ),
     );
   }
-  
 }
