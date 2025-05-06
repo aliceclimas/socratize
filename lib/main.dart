@@ -12,6 +12,7 @@ class SocratizeApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Socratize',
       theme: socratizeTheme,
       home: LoginPage(), // Substitua por sua página inicial
