@@ -1,0 +1,14 @@
+2025/05/03-15:40:53.544 1f54 Creating DB C:\Users\Alice\AppData\Local\Temp\flutter_tools.c8022b67\flutter_tools_chrome_device.b8a91e1f\Default\IndexedDB\https_fatec-team-socratize.atlassian.net_0.indexeddb.leveldb since it was missing.
+2025/05/03-15:40:53.552 1f54 Reusing MANIFEST C:\Users\Alice\AppData\Local\Temp\flutter_tools.c8022b67\flutter_tools_chrome_device.b8a91e1f\Default\IndexedDB\https_fatec-team-socratize.atlassian.net_0.indexeddb.leveldb/MANIFEST-000001
+2025/05/03-15:44:57.168 994 Level-0 table #5: started
+2025/05/03-15:44:57.211 994 Level-0 table #5: 2306713 bytes OK
+2025/05/03-15:44:57.214 994 Delete type=0 #3
+2025/05/03-15:46:04.707 994 Level-0 table #7: started
+2025/05/03-15:46:04.743 994 Level-0 table #7: 2825006 bytes OK
+2025/05/03-15:46:04.746 994 Delete type=0 #4
+2025/05/03-15:46:06.226 994 Compacting 1@1 + 1@2 files
+2025/05/03-15:46:06.242 994 Generated table #8@1: 981 keys, 105322 bytes
+2025/05/03-15:46:06.242 994 Compacted 1@1 + 1@2 files => 105322 bytes
+2025/05/03-15:46:06.244 994 compacted to: files[ 0 0 1 0 0 0 0 ]
+2025/05/03-15:46:06.245 994 Delete type=2 #5
+2025/05/03-15:46:06.245 994 Delete type=2 #7

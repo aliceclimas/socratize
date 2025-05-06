@@ -1,0 +1,2 @@
+C:/Users/Alice/Documents/Socratize/android/app/.cxx/Debug/2ge5qy2x/armeabi-v7a/CMakeFiles/edit_cache.dir
+C:/Users/Alice/Documents/Socratize/android/app/.cxx/Debug/2ge5qy2x/armeabi-v7a/CMakeFiles/rebuild_cache.dir
