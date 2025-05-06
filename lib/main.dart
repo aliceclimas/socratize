@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:socratize/login.page.dart';
+import 'package:socratize/components/menu.component.dart';
+import 'package:socratize/history.page.dart';
 import 'package:socratize/theme.dart';
 
 void main() {
@@ -15,7 +16,11 @@ class SocratizeApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Socratize',
       theme: socratizeTheme,
-      home: LoginPage(), // Substitua por sua página inicial
+      home: Scaffold(
+        appBar: AppBar(title: const Text("Página Inicial")),
+        drawer: const Menu(),
+        body: const HistoryPage(),
+      ),
     );
   }
 }
