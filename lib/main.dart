@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:socratize/history.page.dart';
+import 'package:socratize/login.page.dart';
 import 'package:socratize/theme.dart';
 
 void main() {
@@ -14,7 +14,7 @@ class SocratizeApp extends StatelessWidget {
     return MaterialApp(
       title: 'Socratize',
       theme: socratizeTheme,
-      home: HistoryPage(), // Substitua por sua página inicial
+      home: LoginPage(), // Substitua por sua página inicial
     );
   }
 }
