@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:socratize/components/card.component.dart';
+import 'package:socratize/components/menu.component.dart';
 
 class HistoryPage extends StatefulWidget {
   const HistoryPage({super.key});
