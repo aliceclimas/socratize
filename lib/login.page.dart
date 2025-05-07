@@ -14,37 +14,63 @@ class LoginPage extends StatelessWidget {
               width: MediaQuery.of(context).size.width * 0.5,
               height: MediaQuery.of(context).size.width * 0.5,
             ),
-            Text("Você tem certeza... ou só nunca questionou?"),
             Text(
               "Bem-vindo(a)",
               style: Theme.of(context).textTheme.headlineLarge,
             ),
+            Text(
+              "Vamos pensar juntos sobre o que está te incomodando?",
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: 20),
+            ),
             SizedBox(height: 50),
             SizedBox(
-              width: MediaQuery.of(context).size.width * 0.8,
+              width: MediaQuery.of(context).size.width * 0.7,
               child: Column(
                 children: [
                   TextField(
                     decoration: InputDecoration(
-                      icon: Icon(Icons.mail),
-                      border: OutlineInputBorder(),
+                      hintText: "fulano@provedor.com",
+                      prefixIcon: Icon(Icons.mail),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(15),
+                      ),
                     ),
                   ),
+                  SizedBox(height: 10),
                   TextField(
+                    obscureText: true,
                     decoration: InputDecoration(
-                      icon: Icon(Icons.password),
-                      border: OutlineInputBorder(),
+                      hintText: "senhasegura",
+                      prefixIcon: Icon(Icons.password),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(15),
+                      ),
                     ),
                   ),
+                  SizedBox(height: 20),
                   SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.3,
+                    width: MediaQuery.of(context).size.width * 0.4,
                     child: ElevatedButton(
                       onPressed: () => {},
-                      child: Row(
-                        children: [
-                          Icon(Icons.arrow_right_outlined),
-                          Text("LOGAR"),
-                        ],
+                      style: ButtonStyle(
+                        backgroundColor: WidgetStateProperty.all(Colors.blue),
+                        padding: WidgetStateProperty.all(
+                          EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                        ),
+                        shape: WidgetStateProperty.all(
+                          RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                        ),
+                      ),
+                      child: Text(
+                        "ENTRAR",
+                        style: TextStyle(
+                          fontWeight: FontWeight.w700,
+                          color: Colors.white,
+                          fontSize: 20,
+                        ),
                       ),
                     ),
                   ),

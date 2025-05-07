@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:socratize/components/menu.component.dart';
-import 'package:socratize/history.page.dart';
+import 'package:socratize/login.page.dart';
 import 'package:socratize/theme.dart';
 
 void main() {
@@ -19,7 +19,7 @@ class SocratizeApp extends StatelessWidget {
       home: Scaffold(
         appBar: AppBar(title: const Text("Página Inicial")),
         drawer: const Menu(),
-        body: const HistoryPage(),
+        body: const LoginPage(),
       ),
     );
   }
