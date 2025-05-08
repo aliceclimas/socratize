@@ -25,7 +25,11 @@ class SocratizeApp extends StatelessWidget {
         "/history": (context) => HistoryPage(),
         "/chat": (context) => ChatPage(),
         "/read-qr-code": (context) => ReadQRCodePage(),
+<<<<<<< HEAD
         "/generate-qr-code": (context) => GenQRCodePage(),
+=======
+        "/gen-qr-code": (context) => GenQRCodePage(),
+>>>>>>> dev
       },
     );
   }

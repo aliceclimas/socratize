@@ -53,7 +53,9 @@ class LoginPage extends StatelessWidget {
                     width: MediaQuery.of(context).size.width * 0.4,
                     child: ElevatedButton(
                       onPressed:
-                          () => {Navigator.of(context).pushNamed('/history')},
+                          () => {
+                            Navigator.of(context).pushNamed('/gen-qr-code'),
+                          },
                       style: ButtonStyle(
                         backgroundColor: WidgetStateProperty.all(Colors.blue),
                         padding: WidgetStateProperty.all(
@@ -76,8 +78,11 @@ class LoginPage extends StatelessWidget {
                     ),
                   ),
                   TextButton(
-                    onPressed: () => {},
-                    child: Text("Como conseguir acesso?"),
+                    onPressed:
+                        () => {
+                          Navigator.of(context).pushNamed('/read-qr-code'),
+                        },
+                    child: Text("É seu primeiro acesso?"),
                   ),
                 ],
               ),
