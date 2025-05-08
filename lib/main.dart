@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:socratize/chat.page.dart';
 import 'package:socratize/gen_qr_code.page.dart';
 import 'package:socratize/history.page.dart';
+import 'package:socratize/list_qr_code.page.dart';
 import 'package:socratize/login.page.dart';
 import 'package:socratize/read_qr_code.page.dart';
 import 'package:socratize/theme.dart';
@@ -25,11 +26,8 @@ class SocratizeApp extends StatelessWidget {
         "/history": (context) => HistoryPage(),
         "/chat": (context) => ChatPage(),
         "/read-qr-code": (context) => ReadQRCodePage(),
-<<<<<<< HEAD
-        "/generate-qr-code": (context) => GenQRCodePage(),
-=======
         "/gen-qr-code": (context) => GenQRCodePage(),
->>>>>>> dev
+        "/list-qr-codes": (context) => ListQRCodes(),
       },
     );
   }
