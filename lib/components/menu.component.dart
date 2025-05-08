@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:socratize/history.page.dart';
 
 class Menu extends StatelessWidget {
-  const Menu({Key? key}) : super(key: key);
+  const Menu({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -11,9 +10,7 @@ class Menu extends StatelessWidget {
         child: ListView(
           children: <Widget>[
             UserAccountsDrawerHeader(
-              decoration: BoxDecoration(
-                color: Colors.blue[700],
-              ),
+              decoration: BoxDecoration(color: Colors.blue[700]),
               accountName: Text("Paula"),
               accountEmail: Text("paula.silva@email.com"),
               currentAccountPicture: CircleAvatar(
@@ -25,51 +22,27 @@ class Menu extends StatelessWidget {
             ListTile(
               leading: const Icon(Icons.psychology_alt_outlined),
               title: const Text("Perguntas"),
-              onTap: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => const HistoryPage(),
-                ));
-              },
+              onTap: () => Navigator.of(context).pushReplacementNamed('/chat'),
             ),
             ListTile(
               leading: const Icon(Icons.autorenew),
               title: const Text("Histórico de pensamentos"),
-              onTap: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => const HistoryPage(),
-                ));
-              },
+              onTap:
+                  () => Navigator.of(context).pushReplacementNamed('/history'),
             ),
             ListTile(
               leading: const Icon(Icons.call),
               title: const Text("Contactar psicólogo"),
-              onTap: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => const HistoryPage(),
-                ));
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.account_circle_outlined),
-              title: const Text("Perfil"),
-              onTap: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => const HistoryPage(),
-                ));
-              },
+              onTap: () {},
             ),
             ListTile(
               leading: const Icon(Icons.exit_to_app_outlined),
               title: const Text("Sair"),
-              onTap: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => const HistoryPage(),
-                ));
-              },
+              onTap: () => Navigator.of(context).popAndPushNamed('/login'),
             ),
           ],
         ),
-      )  
+      ),
     );
   }
 }
