@@ -37,7 +37,7 @@ class _ChatPageState extends State<ChatPage> {
         leading: IconButton(
             icon: Icon(Icons.menu),
             color: Colors.blue,
-            onPressed: () => Navigator.pushReplacementNamed(context, '/colocar menu aqui')),
+            onPressed: () => Navigator.pushReplacementNamed(context, '/colocar menu aqui')), // COLOCAR NAVEGACAO DO MENU
         centerTitle: true,
         title: Image(
           image: AssetImage('assets/images/socratize-logo.png'),
@@ -50,18 +50,18 @@ class _ChatPageState extends State<ChatPage> {
           Flexible(
             child: ListView(
               children: [
-                ...messages.map((message) {
-                  return BubbleSpecialOne(
-                    text: message['text'],
-                    isSender: message['isSender'], 
-                    color: message['isSender'] ? Color(0xff7CBEFF) : Color(0xffFFCF24),
-                    textStyle: TextStyle(
-                      fontSize: 10,
-                      color: Color(0xff36454F),
-                      fontWeight: FontWeight.w500,
-                    ),
-                  );
-                }).toList(),
+                  ...messages.map((message) {
+                    return BubbleSpecialOne(
+                      text: message['text'],
+                      isSender: message['isSender'], 
+                      color: message['isSender'] ? Color(0xff7CBEFF) : Color(0xffFFCF24),
+                      textStyle: TextStyle(
+                        fontSize: 10,
+                        color: Color(0xff36454F),
+                        fontWeight: FontWeight.w500,
+                      ),
+                    );
+                  }).toList(),
                 ...perguntas.map((pergunta) {
                   return GestureDetector(
                     onTap: () {
