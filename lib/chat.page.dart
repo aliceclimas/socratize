@@ -37,7 +37,7 @@ class _ChatPageState extends State<ChatPage> {
         leading: IconButton(
             icon: Icon(Icons.menu),
             color: Colors.blue,
-            onPressed: () => Navigator.pushReplacementNamed(context, '/colocar menu aqui')), // COLOCAR NAVEGACAO DO MENU
+            onPressed: () => Navigator.pushReplacementNamed(context, '/colocar menu aqui')), // COLOCAR NAVEGACAO DO MENU AQUI
         centerTitle: true,
         title: Image(
           image: AssetImage('assets/images/socratize-logo.png'),
