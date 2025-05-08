@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:socratize/components/menu.component.dart';
-import 'package:socratize/login.page.dart';
+import 'package:socratize/createqrcode.page.dart';
+import 'package:socratize/readqrcode.page.dart';
 import 'package:socratize/theme.dart';
 
 void main() {
@@ -17,9 +18,9 @@ class SocratizeApp extends StatelessWidget {
       title: 'Socratize',
       theme: socratizeTheme,
       home: Scaffold(
-        appBar: AppBar(title: const Text("Página Inicial")),
+        appBar: AppBar(),
         drawer: const Menu(),
-        body: const LoginPage(),
+        body: const CreateqrcodePage(),
       ),
     );
   }
