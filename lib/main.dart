@@ -18,7 +18,7 @@ class SocratizeApp extends StatelessWidget {
       title: 'Socratize',
       theme: socratizeTheme,
       home: Scaffold(
-        appBar: AppBar(title: const Text("Página Inicial")),
+        appBar: AppBar(),
         drawer: const Menu(),
         body: const CreateqrcodePage(),
       ),
