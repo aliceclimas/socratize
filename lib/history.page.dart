@@ -54,7 +54,7 @@ class _HistoryPageState extends State<HistoryPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
-      drawer: const Menu(),
+      drawer: Menu(),
       body: Padding(
         padding: const EdgeInsets.all(10),
         child: Center(

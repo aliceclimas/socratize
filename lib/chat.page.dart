@@ -47,7 +47,7 @@ class _ChatPageState extends State<ChatPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: const Menu(),
+      drawer: Menu(),
       appBar: AppBar(
         backgroundColor: Color(0xffFFFCF2),
         centerTitle: true,

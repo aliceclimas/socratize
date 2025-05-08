@@ -18,14 +18,8 @@ class _GenQRCodePageState extends State<GenQRCodePage> {
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
-        drawer: const Menu(),
-        appBar: AppBar(
-          leading: const Icon(Icons.close),
-          title: const Text('Gerar Qr Code', textAlign: TextAlign.center),
-          centerTitle: true,
-          foregroundColor: Colors.blue,
-          elevation: 0,
-        ),
+        drawer: Menu(isPaciente: false),
+        appBar: AppBar(),
         backgroundColor: const Color(0xfffff9e3),
         body: SafeArea(
           child: SingleChildScrollView(
