@@ -66,9 +66,9 @@ List<Widget> menuPaciente(BuildContext context) {
 }
 
 class Menu extends StatelessWidget {
-  var isPaciente;
+  final bool isPaciente;
 
-  Menu({super.key, this.isPaciente = true});
+  const Menu({super.key, this.isPaciente = true});
 
   @override
   Widget build(BuildContext context) {
