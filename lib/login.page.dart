@@ -52,7 +52,8 @@ class LoginPage extends StatelessWidget {
                   SizedBox(
                     width: MediaQuery.of(context).size.width * 0.4,
                     child: ElevatedButton(
-                      onPressed: () => {},
+                      onPressed:
+                          () => {Navigator.of(context).pushNamed('/history')},
                       style: ButtonStyle(
                         backgroundColor: WidgetStateProperty.all(Colors.blue),
                         padding: WidgetStateProperty.all(

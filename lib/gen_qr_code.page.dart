@@ -1,14 +1,15 @@
-import 'package:flutter/material.dart';
 import 'package:barcode_widget/barcode_widget.dart';
+import 'package:flutter/material.dart';
+import 'package:socratize/components/menu.component.dart';
 
-class CreateqrcodePage extends StatefulWidget {
-  const CreateqrcodePage({super.key});
+class GenQRCodePage extends StatefulWidget {
+  const GenQRCodePage({super.key});
 
   @override
-  State<CreateqrcodePage> createState() => _CreateqrcodePageState();
+  State<GenQRCodePage> createState() => _GenQRCodePageState();
 }
 
-class _CreateqrcodePageState extends State<CreateqrcodePage> {
+class _GenQRCodePageState extends State<GenQRCodePage> {
   bool showQrCode = false;
   bool passwordVisible = false;
 
@@ -17,6 +18,7 @@ class _CreateqrcodePageState extends State<CreateqrcodePage> {
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
+        drawer: const Menu(),
         appBar: AppBar(
           leading: const Icon(Icons.close),
           title: const Text('Gerar Qr Code', textAlign: TextAlign.center),
@@ -50,16 +52,14 @@ class _CreateqrcodePageState extends State<CreateqrcodePage> {
                     ),
                     enabledBorder: OutlineInputBorder(
                       borderSide: BorderSide(
-                        color:
-                            Color(0xFFF6C102),
+                        color: Color(0xFFF6C102),
                         width: 1.0,
                       ),
                       borderRadius: BorderRadius.circular(8.0),
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderSide: BorderSide(
-                        color:
-                            Color(0xff1977d2),
+                        color: Color(0xff1977d2),
                         width: 1.0,
                       ),
                       borderRadius: BorderRadius.circular(8.0),
@@ -73,8 +73,7 @@ class _CreateqrcodePageState extends State<CreateqrcodePage> {
                       borderRadius: BorderRadius.circular(8.0),
                     ),
                     filled: true,
-                    fillColor:
-                        Colors.white,
+                    fillColor: Colors.white,
                     contentPadding: EdgeInsets.symmetric(
                       horizontal: 12.0,
                       vertical: 16.0,
@@ -87,7 +86,8 @@ class _CreateqrcodePageState extends State<CreateqrcodePage> {
                     letterSpacing: 0.0,
                   ),
                   cursorColor: Colors.black,
-                ),const SizedBox(height: 20),
+                ),
+                const SizedBox(height: 20),
                 TextField(
                   obscureText: true,
                   decoration: InputDecoration(
@@ -101,16 +101,14 @@ class _CreateqrcodePageState extends State<CreateqrcodePage> {
                     ),
                     enabledBorder: OutlineInputBorder(
                       borderSide: BorderSide(
-                        color:
-                            Color(0xFFF6C102),
+                        color: Color(0xFFF6C102),
                         width: 1.0,
                       ),
                       borderRadius: BorderRadius.circular(8.0),
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderSide: BorderSide(
-                        color:
-                            Color(0xff1977d2),
+                        color: Color(0xff1977d2),
                         width: 1.0,
                       ),
                       borderRadius: BorderRadius.circular(8.0),
@@ -124,8 +122,7 @@ class _CreateqrcodePageState extends State<CreateqrcodePage> {
                       borderRadius: BorderRadius.circular(8.0),
                     ),
                     filled: true,
-                    fillColor:
-                        Colors.white,
+                    fillColor: Colors.white,
                     contentPadding: EdgeInsets.symmetric(
                       horizontal: 12.0,
                       vertical: 16.0,
@@ -153,16 +150,16 @@ class _CreateqrcodePageState extends State<CreateqrcodePage> {
                     ),
                     enabledBorder: OutlineInputBorder(
                       borderSide: BorderSide(
-                        color:
-                            Color(0xFFF6C102),
+                        color: Color(0xFFF6C102),
                         width: 1.0,
                       ),
                       borderRadius: BorderRadius.circular(8.0),
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderSide: BorderSide(
-                        color:
-                            Color(0xff1977d2), // substituto do FlutterFlowTheme.iconeAzul
+                        color: Color(
+                          0xff1977d2,
+                        ), // substituto do FlutterFlowTheme.iconeAzul
                         width: 1.0,
                       ),
                       borderRadius: BorderRadius.circular(8.0),
@@ -176,8 +173,7 @@ class _CreateqrcodePageState extends State<CreateqrcodePage> {
                       borderRadius: BorderRadius.circular(8.0),
                     ),
                     filled: true,
-                    fillColor:
-                        Colors.white,
+                    fillColor: Colors.white,
                     contentPadding: EdgeInsets.symmetric(
                       horizontal: 12.0,
                       vertical: 16.0,

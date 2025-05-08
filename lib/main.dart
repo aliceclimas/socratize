@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:socratize/components/menu.component.dart';
-import 'package:socratize/createqrcode.page.dart';
-import 'package:socratize/readqrcode.page.dart';
+import 'package:socratize/chat.page.dart';
+import 'package:socratize/gen_qr_code.page.dart';
+import 'package:socratize/history.page.dart';
+import 'package:socratize/login.page.dart';
+import 'package:socratize/read_qr_code.page.dart';
 import 'package:socratize/theme.dart';
 
 void main() {
@@ -17,11 +19,14 @@ class SocratizeApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Socratize',
       theme: socratizeTheme,
-      home: Scaffold(
-        appBar: AppBar(),
-        drawer: const Menu(),
-        body: const CreateqrcodePage(),
-      ),
+      home: Scaffold(body: const LoginPage()),
+      routes: {
+        "/login": (context) => LoginPage(),
+        "/history": (context) => HistoryPage(),
+        "/chat": (context) => ChatPage(),
+        "/read-qr-code": (context) => ReadQRCodePage(),
+        "/generate-qr-code": (context) => GenQRCodePage(),
+      },
     );
   }
 }

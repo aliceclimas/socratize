@@ -1,28 +1,31 @@
 import 'package:flutter/material.dart';
+import 'package:socratize/components/menu.component.dart';
 
-class ReadqrcodePage extends StatefulWidget {
-  const ReadqrcodePage({super.key});
+class ReadQRCodePage extends StatefulWidget {
+  const ReadQRCodePage({super.key});
 
   @override
-  State<ReadqrcodePage> createState() => _ReadqrcodePageState();
+  State<ReadQRCodePage> createState() => _ReadQRCodePageState();
 }
 
-class _ReadqrcodePageState extends State<ReadqrcodePage> {
+class _ReadQRCodePageState extends State<ReadQRCodePage> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
+        appBar: AppBar(),
+        drawer: const Menu(),
         backgroundColor: Color(0xfffff9e3),
         body: Column(
           mainAxisSize: MainAxisSize.max,
           children: [
-            Container(
+            SizedBox(
               width: double.infinity,
               height: 420,
               child: Column(
                 children: [
-                  Container(
+                  SizedBox(
                     height: 400,
                     child: Image.asset(
                       'assets/images/socratize-logo-nome.png',
