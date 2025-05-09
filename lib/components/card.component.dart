@@ -37,7 +37,6 @@ class InsightCard extends StatelessWidget {
       title: tipo,
       text: texto,
       confirmBtnText: 'Fechar',
-      customAsset: 'assets/images/socratize-logo.png',
     );
   }
 

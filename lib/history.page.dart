@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:socratize/components/card.component.dart';
+import 'package:socratize/components/menu.component.dart';
 
 class HistoryPage extends StatefulWidget {
   const HistoryPage({super.key});
@@ -52,13 +53,15 @@ class _HistoryPageState extends State<HistoryPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(),
+      drawer: const Menu(),
       body: Padding(
         padding: const EdgeInsets.all(10),
         child: Center(
           child: Column(
             children: [
               Image(
-                image: AssetImage('assets/images/socratize-logo.png'),
+                image: AssetImage('assets/images/socratize-logo-nome.png'),
                 width: MediaQuery.of(context).size.width * 0.3,
                 height: MediaQuery.of(context).size.width * 0.3,
               ),
