@@ -34,7 +34,6 @@ class _GenQRCodePageState extends State<GenQRCodePage> {
                 ),
                 const SizedBox(height: 20),
                 TextField(
-                  obscureText: true,
                   decoration: InputDecoration(
                     isDense: true,
                     labelText: 'Digite o nome',
@@ -83,7 +82,6 @@ class _GenQRCodePageState extends State<GenQRCodePage> {
                 ),
                 const SizedBox(height: 20),
                 TextField(
-                  obscureText: true,
                   decoration: InputDecoration(
                     isDense: true,
                     labelText: 'Digite o e-mail',
