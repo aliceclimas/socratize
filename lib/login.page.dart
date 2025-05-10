@@ -54,7 +54,9 @@ class LoginPage extends StatelessWidget {
                     child: ElevatedButton(
                       onPressed:
                           () => {
-                            Navigator.of(context).pushNamed('/gen-qr-code'),
+                            Navigator.of(
+                              context,
+                            ).pushReplacementNamed('/list-qr-codes'),
                           },
                       style: ButtonStyle(
                         backgroundColor: WidgetStateProperty.all(Colors.blue),

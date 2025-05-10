@@ -64,6 +64,8 @@ flutter:
   assets:
     - assets/images/socratize-logo.png
     - assets/images/socratize-logo-nome.png
+    - assets/images/paula.jpg
+    - assets/images/brain.png
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
