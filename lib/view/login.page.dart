@@ -4,7 +4,22 @@ import 'package:flutter/material.dart';
 class LoginPage extends StatelessWidget {
   LoginPage({super.key});
 
-  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+
+  Future login(BuildContext context) async {
+    String email = emailController.text;
+    String password = passwordController.text;
+
+    try {
+      await _auth.signInWithEmailAndPassword(email: email, password: password);
+      if (context.mounted) Navigator.of(context).pushNamed('/read-qr-code');
+    } catch (error) {
+      print(error);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,6 +47,7 @@ class LoginPage extends StatelessWidget {
               child: Column(
                 children: [
                   TextField(
+                    controller: emailController,
                     decoration: InputDecoration(
                       hintText: "fulano@provedor.com",
                       prefixIcon: Icon(Icons.mail),
@@ -42,6 +58,7 @@ class LoginPage extends StatelessWidget {
                   ),
                   SizedBox(height: 10),
                   TextField(
+                    controller: passwordController,
                     obscureText: true,
                     decoration: InputDecoration(
                       hintText: "senhasegura",
@@ -56,7 +73,7 @@ class LoginPage extends StatelessWidget {
                     width: MediaQuery.of(context).size.width * 0.4,
                     child: ElevatedButton(
                       onPressed:
-                          () async =>  await _firebaseAuth.createUserWithEmailAndPassword(email: 'deivid@gmail.com', password: '123456'),
+                          () async => await login(context),
                       style: ButtonStyle(
                         backgroundColor: WidgetStateProperty.all(Colors.blue),
                         padding: WidgetStateProperty.all(
