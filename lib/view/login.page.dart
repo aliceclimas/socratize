@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:socratize/model/user.model.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -40,22 +41,41 @@ class _LoginPageState extends State<LoginPage> {
       String email = emailController.text;
       String password = passwordController.text;
 
+      // autentica o usuário
       await auth.signInWithEmailAndPassword(email: email, password: password);
 
+      // lógica para verificar se é terapeuta ou paciente
       String? id = auth.currentUser?.uid;
+      DocumentSnapshot<Map<String, dynamic>> userDoc =
+          await firestore.collection('users').doc(id).get();
+      UserModel user = UserModel.fromDocument(userDoc);
 
-      var user = await firestore.collection('users').doc(id).get();
-      var userRole = user.data()?['role'];
-
-      if (userRole == 'patient') {
-        // faz isso
-      } else if (userRole == 'therapist') {
-        // faz aquilo
+      // navegação dinâmica
+      if (context.mounted) {
+        if (user.role == 'patient') {
+          if (user.active!) {
+            Navigator.of(context).pushNamed('/history');
+          } else {
+            Navigator.of(context).pushNamed('/read-qr-code');
+          }
+        } else if (user.role == 'therapist') {
+          Navigator.of(context).pushNamed('/list-qr-codes');
+        }
       }
-
-      if (context.mounted) Navigator.of(context).pushNamed('/read-qr-code');
     } on FirebaseAuthException catch (error) {
-      print(error.code);
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(error.message!),
+            action: SnackBarAction(
+              label: 'Action',
+              onPressed: () {
+                // Code to execute.
+              },
+            ),
+          ),
+        );
+      }
     }
   }
 
@@ -120,7 +140,7 @@ class _LoginPageState extends State<LoginPage> {
                       style: ButtonStyle(
                         backgroundColor: WidgetStateProperty<Color?>.fromMap(
                           <WidgetStatesConstraint, Color?>{
-                            ~WidgetState.disabled: Colors.black,
+                            ~WidgetState.disabled: Colors.blue,
                           },
                         ),
                         padding: WidgetStateProperty.all(
