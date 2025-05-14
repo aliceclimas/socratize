@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:socratize/model/user.model.dart';
@@ -11,26 +12,26 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  final emailController = TextEditingController();
-  final passwordController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
 
   bool isEmailFilled = false;
   bool isPasswordFilled = false;
 
-  void onEmailFieldChange(String text) {
-    if (text.isNotEmpty) {
-      setState(() => isEmailFilled = true);
-    } else {
-      setState(() => isEmailFilled = false);
-    }
+  void onEmailFieldChange(String email) {
+    (EmailValidator.validate(email)) ? setState(() => isEmailFilled = true) : setState(() => isEmailFilled = true);
   }
 
-  void onPasswordFieldChange(String text) {
-    if (text.isNotEmpty) {
+  void onPasswordFieldChange(String password) {
       setState(() => isPasswordFilled = true);
-    } else {
-      setState(() => isPasswordFilled = false);
-    }
+
+      if (password.length < 8) setState(() => isPasswordFilled = false);
+      if (!RegExp(r'[A-Z]').hasMatch(password)) setState(() => isPasswordFilled = false);
+      if (!RegExp(r'[a-z]').hasMatch(password)) setState(() => isPasswordFilled = false);
+      if (!RegExp(r'[0-9]').hasMatch(password)) setState(() => isPasswordFilled = false);
+      if (!RegExp(r'[\W_]').hasMatch(password)) setState(() => isPasswordFilled = false);
+      if (RegExp(r'\s').hasMatch(password)) setState(() => isPasswordFilled = false);
+      if (password.length > 100) setState(() => isPasswordFilled = false);
   }
 
   final FirebaseAuth auth = FirebaseAuth.instance;
@@ -40,6 +41,7 @@ class _LoginPageState extends State<LoginPage> {
     try {
       String email = emailController.text;
       String password = passwordController.text;
+      // falta validar se o e-mail é válido e se a senha é forte
 
       // autentica o usuário
       await auth.signInWithEmailAndPassword(email: email, password: password);
