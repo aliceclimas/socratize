@@ -39,15 +39,19 @@ class _SocratizeAppState extends State<SocratizeApp> {
   final GlobalKey _loadingKey = GlobalKey();
 
   Future<String> initialRouteHandler() async {
-    String? uid = FirebaseAuth.instance.currentUser?.uid;
-
-    if (uid == null) return "/login";
-
     try {
-      var user = await FirebaseFirestore.instance.collection('users').doc(uid).get();
-      var userRole = user.data()!['role'];
+      String? uid = FirebaseAuth.instance.currentUser?.uid;
 
-      switch (userRole) {
+      if (uid == null) return "/login";
+
+      String? role =
+          (await FirebaseFirestore.instance
+          .collection('users')
+          .doc(uid)
+          .get())
+          .data()!['role'];
+
+      switch (role) {
         case 'patient':
           return '/history';
         case 'therapist':
