@@ -1,24 +1,22 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class UserModel {
-  final String name;
+  final String? id; // id pode ser nulo se ele ainda não foi salvo no bd
+  final String fullname;
   final String email;
   final String role;
-  final bool? active; // é opcional pois paciente tem, mas terapeuta não
+  final bool active;
 
-  UserModel(
-    this.name,
-    this.email,
-    this.role,
-    this.active
+  UserModel({required this.fullname, required this.email, required this.role, this.id, this.active = false});
+
+  static UserModel fromDocument(
+    DocumentSnapshot<Map<String, dynamic>> document,
+  ) {
+    return UserModel(
+      fullname: document.data()?['name'],
+      email: document.data()?['email'],
+      role: document.data()?['role'],
+      active: document.data()?['active'],
     );
-
-    static UserModel fromDocument(DocumentSnapshot<Map<String, dynamic>> document) {
-      return UserModel(
-        document.data()?['name'],
-        document.data()?['email'],
-        document.data()?['role'],
-        document.data()?['active'],
-      );
-    }
+  }
 }
