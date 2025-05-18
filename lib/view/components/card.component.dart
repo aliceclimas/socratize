@@ -54,7 +54,10 @@ class InsightCard extends StatelessWidget {
               children: [
                 Expanded(child: Text(frase, style: TextStyle(fontSize: 16))),
                 TextButton(
-                  onPressed: () {}, // ação do botão "CHAT"
+                  onPressed:
+                      () => Navigator.of(
+                        context,
+                      ).pushNamed('/chat'), // ação do botão "CHAT"
                   style: ButtonStyle(
                     backgroundColor: WidgetStateProperty.all(Color(0xffFFE894)),
                   ),

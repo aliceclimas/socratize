@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:socratize/components/card.component.dart';
-import 'package:socratize/components/menu.component.dart';
+import 'package:socratize/view/components/card.component.dart';
+import 'package:socratize/view/components/menu.component.dart';
 
 class HistoryPage extends StatefulWidget {
   const HistoryPage({super.key});
@@ -53,6 +53,8 @@ class _HistoryPageState extends State<HistoryPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(),
+      drawer: Menu(),
       body: Padding(
         padding: const EdgeInsets.all(10),
         child: Center(
