@@ -18,7 +18,7 @@ void main() async {
       projectId: firebaseConfig['projectId']!,
       storageBucket: firebaseConfig['storageBucket']!,
       messagingSenderId: firebaseConfig['messagingSenderId']!,
-      appId: firebaseConfig['appId']!
+      appId: firebaseConfig['appId']!,
       ));
   runApp(SocratizeApp());
 }
@@ -44,3 +44,4 @@ class SocratizeApp extends StatelessWidget {
     );
   }
 }
+

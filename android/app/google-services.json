@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "976778725377",
+    "project_id": "socratize-daa4c",
+    "storage_bucket": "socratize-daa4c.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:976778725377:android:59b4895589e0bacc0a5800",
+        "android_client_info": {
+          "package_name": "com.example.socratize"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCEP5Px06D75mAPlguWmPcQLdfTLcWAmY4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
