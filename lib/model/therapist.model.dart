@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:socratize/model/user.model.dart';
 
 class TherapistModel extends UserModel {
@@ -6,15 +5,14 @@ class TherapistModel extends UserModel {
 
   TherapistModel({required super.fullname, required super.email, required super.role, required this.patientsId, super.id, super.active});
 
-  static TherapistModel fromDocument(
-    DocumentSnapshot<Map<String, dynamic>> document,
-  ) {
+  factory TherapistModel.fromMap(Map<String, dynamic> dictionary) {
     return TherapistModel(
-      fullname: document.data()?['name'],
-      email: document.data()?['email'],
-      role: document.data()?['role'],
-      patientsId: document.data()?['patientsId'],
-      active: document.data()?['active'],
+      id: dictionary['id'],
+      fullname: dictionary['name'],
+      email: dictionary['email'],
+      role: dictionary['role'],
+      patientsId: List<String>.from(dictionary['patientsId'] ?? []),
+      active: dictionary['active'],
     );
   }
 }
