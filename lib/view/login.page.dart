@@ -16,21 +16,17 @@ class _LoginPageState extends State<LoginPage> {
 
   Future<void> login(BuildContext context) async {
     try {
-      String email = emailController.text;
-      String password = passwordController.text;
-      // falta validar se o e-mail é válido e se a senha é forte
-
       // autentica o usuário
       await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: email,
-        password: password,
+        email: emailController.text,
+        password: passwordController.text,
       );
 
       // lógica para verificar se é terapeuta ou paciente
       String? id = FirebaseAuth.instance.currentUser?.uid;
-      var userDoc = (await FirebaseFirestore.instance.collection('users').doc(id).get());
+      var userDoc = await FirebaseFirestore.instance.collection('users').doc(id).get();
 
-      UserModel userModel = UserModel.fromDocument(userDoc);
+      UserModel userModel = UserModel.fromMap(userDoc.data()!);
 
       if (!context.mounted) throw Exception('Erro interno');
 
