@@ -4,12 +4,12 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:socratize/firebase.options.dart';
 import 'package:socratize/theme.dart';
-import 'package:socratize/view/chat.page.dart';
-import 'package:socratize/view/gen_qr_code.page.dart';
-import 'package:socratize/view/history.page.dart';
-import 'package:socratize/view/list_qr_code.page.dart';
-import 'package:socratize/view/login.page.dart';
-import 'package:socratize/view/read_qr_code.page.dart';
+import 'package:socratize/view/patient/chat.page.dart';
+import 'package:socratize/view/patient/history.page.dart';
+import 'package:socratize/view/patient/login.page.dart';
+import 'package:socratize/view/patient/read_qr_code.page.dart';
+import 'package:socratize/view/therapist/gen_qr_code.page.dart';
+import 'package:socratize/view/therapist/list_qr_code.page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -68,7 +68,6 @@ class _SocratizeAppState extends State<SocratizeApp> {
   @override
   void initState() {
     super.initState();
-
     _initialRouteFuture = initialRouteHandler();
   }
 
