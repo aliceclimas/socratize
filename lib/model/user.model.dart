@@ -1,5 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-
 class UserModel {
   final String? id; // id pode ser nulo se ele ainda não foi salvo no bd
   final String fullname;
@@ -9,14 +7,13 @@ class UserModel {
 
   UserModel({required this.fullname, required this.email, required this.role, this.id, this.active = false});
 
-  static UserModel fromDocument(
-    DocumentSnapshot<Map<String, dynamic>> document,
-  ) {
+  factory UserModel.fromMap (Map<String, dynamic> dictionary) {
     return UserModel(
-      fullname: document.data()?['name'],
-      email: document.data()?['email'],
-      role: document.data()?['role'],
-      active: document.data()?['active'],
+      id: dictionary['id'],
+      fullname: dictionary['name'],
+      email: dictionary['email'],
+      role: dictionary['role'],
+      active: dictionary['active'],
     );
   }
 }
