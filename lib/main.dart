@@ -1,6 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:socratize/firebase.options.dart';
+import 'package:socratize/firebase_options.dart';
 import 'package:socratize/theme.dart';
 import 'package:socratize/view/chat.page.dart';
 import 'package:socratize/view/gen_qr_code.page.dart';
@@ -11,15 +11,7 @@ import 'package:socratize/view/read_qr_code.page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-    options: FirebaseOptions(
-      apiKey: firebaseConfig['apiKey']!,
-      authDomain: firebaseConfig['authDomain']!,
-      projectId: firebaseConfig['projectId']!,
-      storageBucket: firebaseConfig['storageBucket']!,
-      messagingSenderId: firebaseConfig['messagingSenderId']!,
-      appId: firebaseConfig['appId']!,
-      ));
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(SocratizeApp());
 }
 
@@ -44,4 +36,3 @@ class SocratizeApp extends StatelessWidget {
     );
   }
 }
-

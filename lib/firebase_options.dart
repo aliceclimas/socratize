@@ -25,9 +25,15 @@ class DefaultFirebaseOptions {
       case TargetPlatform.iOS:
         return ios;
       case TargetPlatform.macOS:
-        return macos;
+        throw UnsupportedError(
+          'DefaultFirebaseOptions have not been configured for macos - '
+          'you can reconfigure this by running the FlutterFire CLI again.',
+        );
       case TargetPlatform.windows:
-        return windows;
+        throw UnsupportedError(
+          'DefaultFirebaseOptions have not been configured for windows - '
+          'you can reconfigure this by running the FlutterFire CLI again.',
+        );
       case TargetPlatform.linux:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for linux - '
@@ -58,30 +64,11 @@ class DefaultFirebaseOptions {
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyCBM9ggHtWmUluEjLXExyl_wjNof8L2_Jc',
-    appId: '1:954086004352:ios:694dae078d3dcf90aa3865',
-    messagingSenderId: '954086004352',
-    projectId: 'socratize-8f91a',
-    storageBucket: 'socratize-8f91a.firebasestorage.app',
-    iosBundleId: 'com.example.socratize',
-  );
-
-  static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyCBM9ggHtWmUluEjLXExyl_wjNof8L2_Jc',
-    appId: '1:954086004352:ios:694dae078d3dcf90aa3865',
-    messagingSenderId: '954086004352',
-    projectId: 'socratize-8f91a',
-    storageBucket: 'socratize-8f91a.firebasestorage.app',
-    iosBundleId: 'com.example.socratize',
-  );
-
-  static const FirebaseOptions windows = FirebaseOptions(
-    apiKey: 'AIzaSyCUBCqjBbo9_OkarWRIAYNDaVcWR3N4x28',
-    appId: '1:976778725377:web:5e64fabb496f69320a5800',
+    apiKey: 'AIzaSyB-JsjROqO32Jxjh5A5_I0WbXlr_hWuWNE',
+    appId: '1:976778725377:ios:789e3088214e03210a5800',
     messagingSenderId: '976778725377',
     projectId: 'socratize-daa4c',
-    authDomain: 'socratize-daa4c.firebaseapp.com',
     storageBucket: 'socratize-daa4c.firebasestorage.app',
+    iosBundleId: 'com.example.socratize',
   );
-
 }
