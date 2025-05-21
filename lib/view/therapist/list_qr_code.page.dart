@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:socratize/model/therapist.model.dart';
+import 'package:socratize/model/user.model.dart';
 import 'package:socratize/view/components/therapist.menu.component.dart';
 
 class ListQRCodes extends StatefulWidget {
@@ -13,19 +14,29 @@ class ListQRCodes extends StatefulWidget {
 
 class _ListQRCodesState extends State<ListQRCodes> {
   // Lista com os pensamentos do paciente
-  late final Future<List<String>> _getPatients;
+  late final Future<List<UserModel>> _getPatients;
 
-  Future<List<String>> getPatients() async {
+  Future<List<UserModel>> getPatients() async {
+    List<UserModel> usersData = [];
+
     String? uid = FirebaseAuth.instance.currentUser?.uid;
-    print(uid);
     var therapistDoc =
         (await FirebaseFirestore.instance.collection('users').doc(uid).get());
-    print('oi');
     TherapistModel therapistModel = TherapistModel.fromMap(
       therapistDoc.data()!,
     );
-    print('oi');
-    return therapistModel.patientsId;
+
+    for (var patientID in therapistModel.patientsId) {
+      var userDoc =
+          await FirebaseFirestore.instance
+              .collection('users')
+              .doc(patientID)
+              .get();
+      var user = UserModel.fromMap(userDoc.data()!);
+      usersData.add(user);
+    }
+
+    return usersData;
   }
 
   @override
@@ -36,19 +47,32 @@ class _ListQRCodesState extends State<ListQRCodes> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<List<String>>(
+    return FutureBuilder<List<UserModel>>(
       future: _getPatients,
       builder: (context, snapshot) {
         if (!snapshot.hasData) return Text("Carregando");
 
-        List<String> patients = snapshot.data!;
+        List<UserModel> patients = snapshot.data!;
         return Scaffold(
           appBar: AppBar(),
           drawer: TherapistMenu(),
           body: ListView.builder(
             itemCount: snapshot.data!.length,
-            itemBuilder:
-                (context, index) => Card(),
+            itemBuilder: (context, index) {
+              var patient = patients[index];
+              return Card(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(patient.fullname),
+                      IconButton(onPressed: () {}, icon: Icon(Icons.close)),
+                    ],
+                  ),
+                ),
+              );
+            },
           ),
         );
       },
