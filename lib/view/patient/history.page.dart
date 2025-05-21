@@ -144,9 +144,18 @@ class _HistoryPageState extends State<HistoryPage> {
                   itemCount: pensamentos.length,
                   itemBuilder: (context, index) {
                     final pensamento = pensamentos[index];
-                    return InsightCard(
-                      tipo: pensamento['tipo']!,
-                      frase: pensamento['frase']!,
+                    return Dismissible(
+                      key: Key(pensamento['id'] ?? index.toString()),
+                      direction: DismissDirection.startToEnd,
+                      onDismissed: (direction) {
+                        setState(() {
+                          pensamentos.removeAt(index);
+                      });
+                      ScaffoldMessenger.of(context,).showSnackBar(SnackBar(content: Text('${pensamento['frase']} deletado'),));},
+                      child: InsightCard(
+                        tipo: pensamento['tipo']!,
+                        frase: pensamento['frase']!,
+                      ),
                     );
                   },
                 ),
