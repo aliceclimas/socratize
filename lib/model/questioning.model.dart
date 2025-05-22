@@ -9,7 +9,7 @@ class Questioning {
   DateTime data;
   List<String> answers;
 
-  Questioning(this.id, this.idPacient, this.titulo, this.pensamento, this.idDisfuncaoCognitiva, this.data, this.answers);
+  Questioning({required this.id, required this.idPacient, required this.titulo, required this.pensamento, required this.idDisfuncaoCognitiva, required this.data, required this.answers});
 
   factory Questioning.fromMap(Map <String, dynamic> map){
     return Questioning(
