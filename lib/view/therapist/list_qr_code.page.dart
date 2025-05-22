@@ -67,7 +67,7 @@ class _ListQRCodesState extends State<ListQRCodes> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(patient.fullname),
-                      IconButton(onPressed: () {}, icon: Icon(Icons.close)),
+                      IconButton(onPressed: () {}, icon: (patient.active) ? Icon(Icons.lock_open) : Icon(Icons.lock)),
                     ],
                   ),
                 ),
