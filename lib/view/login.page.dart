@@ -26,7 +26,7 @@ class _LoginPageState extends State<LoginPage> {
       String? id = FirebaseAuth.instance.currentUser?.uid;
       var userDoc = await FirebaseFirestore.instance.collection('users').doc(id).get();
 
-      UserModel userModel = UserModel.fromMap(userDoc.data()!);
+      UserModel userModel = UserModel.fromMap(userDoc.id, userDoc.data()!);
 
       if (!context.mounted) throw Exception('Erro interno');
 

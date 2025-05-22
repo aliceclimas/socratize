@@ -7,9 +7,9 @@ class UserModel {
 
   UserModel({required this.fullname, required this.email, required this.role, this.id, this.active = false});
 
-  factory UserModel.fromMap (Map<String, dynamic> dictionary) {
+  factory UserModel.fromMap (String id, Map<String, dynamic> dictionary) {
     return UserModel(
-      id: dictionary['id'],
+      id: id,
       fullname: dictionary['name'],
       email: dictionary['email'],
       role: dictionary['role'],

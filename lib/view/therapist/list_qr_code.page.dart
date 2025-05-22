@@ -32,7 +32,7 @@ class _ListQRCodesState extends State<ListQRCodes> {
               .collection('users')
               .doc(patientID)
               .get();
-      var user = UserModel.fromMap(userDoc.data()!);
+      var user = UserModel.fromMap(userDoc.id, userDoc.data()!);
       usersData.add(user);
     }
 
@@ -67,7 +67,15 @@ class _ListQRCodesState extends State<ListQRCodes> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(patient.fullname),
-                      IconButton(onPressed: () {}, icon: (patient.active) ? Icon(Icons.lock_open) : Icon(Icons.lock)),
+                      IconButton(
+                        icon:
+                            (patient.active)
+                                ? Icon(Icons.lock_open)
+                                : Icon(Icons.lock),
+                        onPressed: () {
+                          print(patient.id);
+                        },
+                      ),
                     ],
                   ),
                 ),
