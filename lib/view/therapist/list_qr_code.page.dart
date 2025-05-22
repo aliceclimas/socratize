@@ -72,8 +72,13 @@ class _ListQRCodesState extends State<ListQRCodes> {
                             (patient.active)
                                 ? Icon(Icons.lock_open)
                                 : Icon(Icons.lock),
-                        onPressed: () {
-                          print(patient.id);
+                        onPressed: () async {
+                          await FirebaseFirestore.instance.collection('users').doc(patient.id).update({"active": !patient.active});
+
+                          setState(() {
+                            patients[index].active = !patient.active;
+                          });
+
                         },
                       ),
                     ],
