@@ -85,15 +85,18 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
       body: Center(
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             ElevatedButton(
-              child:
-                onPressed: () {
-                  NotService()
-
-
+              onPressed: () {
+                NotService().showNotification(
+                  title: "Notificação Teste",
+                  body: "Funcionou!",
+                );
               },
+              child: const Text("Enviar Notificação"),
             ),
+            const SizedBox(height: 20),
             Image(
               image: AssetImage('assets/images/socratize-logo-nome.png'),
               width: MediaQuery.of(context).size.width * 0.5,
