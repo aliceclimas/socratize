@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:socratize/model/user.model.dart';
+import 'package:socratize/not_service.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -63,6 +64,14 @@ class _LoginPageState extends State<LoginPage> {
       body: Center(
         child: Column(
           children: [
+            ElevatedButton(
+              child:
+                onPressed: () {
+                  NotService()
+
+
+              },
+            ),
             Image(
               image: AssetImage('assets/images/socratize-logo-nome.png'),
               width: MediaQuery.of(context).size.width * 0.5,
