@@ -2,12 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-<<<<<<< HEAD
-import 'package:socratize/firebase_options.dart';
-=======
 import 'package:socratize/firebase.options.dart';
 import 'package:socratize/not_service.dart';
->>>>>>> alice
 import 'package:socratize/theme.dart';
 import 'package:socratize/view/login.page.dart';
 import 'package:socratize/view/patient/chat.page.dart';
@@ -18,9 +14,6 @@ import 'package:socratize/view/therapist/list_qr_code.page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-<<<<<<< HEAD
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-=======
 
   //init notifications
   NotService().initNotifications();
@@ -34,7 +27,6 @@ void main() async {
       appId: firebaseConfig['appId']!,
     ),
   );
->>>>>>> alice
   runApp(SocratizeApp());
 }
 
