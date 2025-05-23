@@ -49,44 +49,47 @@ class _ListQRCodesState extends State<ListQRCodes> {
   Widget build(BuildContext context) {
     return FutureBuilder<List<UserModel>>(
       future: _getPatients,
-      builder: (context, snapshot) {
-        if (!snapshot.hasData) return Text("Carregando");
-
-        List<UserModel> patients = snapshot.data!;
+      builder: (context, patients) {
         return Scaffold(
           appBar: AppBar(),
           drawer: TherapistMenu(),
-          body: ListView.builder(
-            itemCount: snapshot.data!.length,
-            itemBuilder: (context, index) {
-              var patient = patients[index];
-              return Card(
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(patient.fullname),
-                      IconButton(
-                        icon:
-                            (patient.active)
-                                ? Icon(Icons.lock_open)
-                                : Icon(Icons.lock),
-                        onPressed: () async {
-                          await FirebaseFirestore.instance.collection('users').doc(patient.id).update({"active": !patient.active});
+          body:
+              (!patients.hasData)
+                  ? Center(child: CircularProgressIndicator())
+                  : ListView.builder(
+                    itemCount: patients.data!.length,
+                    itemBuilder: (context, index) {
+                      UserModel patient = patients.data![index];
+                      return Card(
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(patient.fullname),
+                              IconButton(
+                                icon:
+                                    (patient.active)
+                                        ? Icon(Icons.lock_open)
+                                        : Icon(Icons.lock),
+                                onPressed: () async {
+                                  await FirebaseFirestore.instance
+                                      .collection('users')
+                                      .doc(patient.id)
+                                      .update({"active": !patient.active});
 
-                          setState(() {
-                            patients[index].active = !patient.active;
-                          });
-
-                        },
-                      ),
-                    ],
+                                  setState(() {
+                                    patients.data![index].active =
+                                        !patient.active;
+                                  });
+                                },
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    },
                   ),
-                ),
-              );
-            },
-          ),
         );
       },
     );
