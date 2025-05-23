@@ -62,7 +62,8 @@ class _PatientMenuState extends State<PatientMenu> {
             title: Text('Excluir conta', style: TextStyle(color: Colors.red)),
             onTap: () async {
               String uid = FirebaseAuth.instance.currentUser!.uid;
-              await FirebaseFirestore.instance.collection('users').doc(uid).delete();
+              await FirebaseFirestore.instance.collection('users').doc(uid).update({"status": "deleted"});
+              if (context.mounted) Navigator.of(context).pushReplacementNamed('/login');
               await FirebaseAuth.instance.signOut();
             },
           ),

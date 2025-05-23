@@ -27,7 +27,8 @@ class _LoginPageState extends State<LoginPage> {
       var userDoc = await FirebaseFirestore.instance.collection('users').doc(id).get();
 
       UserModel userModel = UserModel.fromMap(userDoc.id, userDoc.data()!);
-
+      if (userModel.status == 'deleted') throw FirebaseAuthException(code: 'O usuário está deletado.', message: 'O usuário está deletado.');
+      if (userModel.status == 'deactivated') throw FirebaseAuthException(code: 'O usuário está desativado.', message: 'O usuário está desativado.');
       if (!context.mounted) throw Exception('Erro interno');
 
       String route = "/login";
