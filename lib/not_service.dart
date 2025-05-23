@@ -1,9 +1,10 @@
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 class NotService {
+
   final notificationsPlugin = FlutterLocalNotificationsPlugin();
 
-  bool _isInitialized = false;
+  final bool _isInitialized = true;
 
   bool get isInitialized => _isInitialized;
 
@@ -20,7 +21,7 @@ class NotService {
     await notificationsPlugin.initialize(initSettings);
   }
 
-  // NOTIFICATIONS DETAIL SETUP
+
   NotificationDetails notificationDetails() {
     return const NotificationDetails(
       android: AndroidNotificationDetails(
@@ -33,7 +34,7 @@ class NotService {
     );
   }
 
-  // MOSTRAR NOTIFICAÇÃO
+
   Future<void> showNotification({
     int id = 0,
     String? title,
