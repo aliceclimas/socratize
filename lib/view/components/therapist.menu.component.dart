@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class TherapistMenu extends StatefulWidget {
@@ -37,14 +38,13 @@ class _TherapistMenuState extends State<TherapistMenu> {
             ListTile(
               leading: const Icon(Icons.exit_to_app_outlined),
               title: const Text("Sair"),
-              onTap: () => Navigator.of(context).popAndPushNamed('/login'),
+              onTap: () {
+                Navigator.of(context).popAndPushNamed('/login');
+                FirebaseAuth.instance.signOut();
+              }
             )]
         ),
       ),
     );
   }
-}
-
-List<Map<String, dynamic>> patientMenuItems(BuildContext context) {
-  return [];
 }

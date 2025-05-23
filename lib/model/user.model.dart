@@ -3,17 +3,17 @@ class UserModel {
   final String fullname;
   final String email;
   final String role;
-  final bool active;
+  String status;
 
-  UserModel({required this.fullname, required this.email, required this.role, this.id, this.active = false});
+  UserModel({required this.fullname, required this.email, required this.role, this.id, this.status = 'deactivated'});
 
-  factory UserModel.fromMap (Map<String, dynamic> dictionary) {
+  factory UserModel.fromMap (String id, Map<String, dynamic> dictionary) {
     return UserModel(
-      id: dictionary['id'],
+      id: id,
       fullname: dictionary['name'],
       email: dictionary['email'],
       role: dictionary['role'],
-      active: dictionary['active'],
+      status: dictionary['status'],
     );
   }
 }
