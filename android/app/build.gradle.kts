@@ -30,12 +30,9 @@ android {
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName
-<<<<<<< Updated upstream
         minSdkVersion(23)
-=======
         // Enable multidex for desugaring support
         multiDexEnabled = true
->>>>>>> Stashed changes
     }
 
     buildTypes {
