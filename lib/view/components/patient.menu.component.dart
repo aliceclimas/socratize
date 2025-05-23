@@ -49,7 +49,11 @@ class _PatientMenuState extends State<PatientMenu> {
               ListTile(
                 leading: const Icon(Icons.exit_to_app_outlined),
                 title: const Text("Sair"),
-                onTap: () => Navigator.of(context).popAndPushNamed('/login'),
+                onTap: () {
+                 Navigator.of(context).popAndPushNamed('/login');
+                 FirebaseAuth.instance.signOut();
+                }
+
               ),
             ],
           ),
