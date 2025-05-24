@@ -1,6 +1,6 @@
 import 'package:barcode_widget/barcode_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:socratize/view/components/menu.component.dart';
+import 'package:socratize/view/components/therapist.menu.component.dart';
 
 class GenQRCodePage extends StatefulWidget {
   const GenQRCodePage({super.key});
@@ -18,7 +18,7 @@ class _GenQRCodePageState extends State<GenQRCodePage> {
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
-        drawer: Menu(isPaciente: false),
+        drawer: TherapistMenu(),
         appBar: AppBar(),
         backgroundColor: const Color(0xfffff9e3),
         body: SafeArea(
