@@ -1,6 +1,17 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
+
+Future<void> _launch(Uri url) async {
+
+    try {
+      await launchUrl(url);
+    } on Exception {
+      print("Não foi possível abrir o WhatsApp");
+    }
+  }
+
 
 class PatientMenu extends StatefulWidget {
   const PatientMenu({super.key});
@@ -44,26 +55,32 @@ class _PatientMenuState extends State<PatientMenu> {
               ListTile(
                 leading: const Icon(Icons.call),
                 title: const Text("Contatar psicólogo"),
-                onTap: () {},
+
+                onTap: () => _launch(
+                      Uri.parse('https://api.whatsapp.com/send?phone=5517991282220&text=Ol%C3%A1%20Terapeuta!'),
+                ),
               ),
               ListTile(
                 leading: const Icon(Icons.exit_to_app_outlined),
                 title: const Text("Sair"),
                 onTap: () {
-                 Navigator.of(context).popAndPushNamed('/login');
-                 FirebaseAuth.instance.signOut();
-                }
-
+                  Navigator.of(context).popAndPushNamed('/login');
+                  FirebaseAuth.instance.signOut();
+                },
               ),
             ],
           ),
           ListTile(
-            leading: Icon(Icons.delete_forever, color: Colors.red,),
+            leading: Icon(Icons.delete_forever, color: Colors.red),
             title: Text('Excluir conta', style: TextStyle(color: Colors.red)),
             onTap: () async {
               String uid = FirebaseAuth.instance.currentUser!.uid;
-              await FirebaseFirestore.instance.collection('users').doc(uid).update({"status": "deleted"});
-              if (context.mounted) Navigator.of(context).pushReplacementNamed('/login');
+              await FirebaseFirestore.instance
+                  .collection('users')
+                  .doc(uid)
+                  .update({"status": "deleted"});
+              if (context.mounted)
+                Navigator.of(context).pushReplacementNamed('/login');
               await FirebaseAuth.instance.signOut();
             },
           ),
