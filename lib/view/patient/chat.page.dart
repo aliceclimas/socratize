@@ -1,6 +1,6 @@
 import 'package:chat_bubbles/chat_bubbles.dart';
 import 'package:flutter/material.dart';
-import 'package:socratize/components/menu.component.dart';
+import 'package:socratize/view/components/patient.menu.component.dart';
 
 class ChatPage extends StatefulWidget {
   const ChatPage({super.key});
@@ -47,7 +47,7 @@ class _ChatPageState extends State<ChatPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: Menu(),
+      drawer: PatientMenu(),
       appBar: AppBar(
         backgroundColor: Color(0xffFFFCF2),
         centerTitle: true,

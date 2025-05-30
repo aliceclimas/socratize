@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:socratize/components/card.component.dart';
-import 'package:socratize/components/menu.component.dart';
+import 'package:socratize/view/components/card.component.dart';
+import 'package:socratize/view/components/patient.menu.component.dart';
 
 class HistoryPage extends StatefulWidget {
   const HistoryPage({super.key});
@@ -11,40 +11,49 @@ class HistoryPage extends StatefulWidget {
 
 class _HistoryPageState extends State<HistoryPage> {
   // Lista com os pensamentos do paciente
-  final List<Map<String, String>> pensamentos = [
+  final List<Map<String, dynamic>> pensamentos = [
     {
+      "id": 1,
       "tipo": "PERSONALIZAÇÃO",
       "frase": "A culpa é sempre minha, mesmo quando não depende de mim.",
     },
     {
+      "id": 2,
       "tipo": "CATASTROFIZAÇÃO",
       "frase": "Se isso der errado, minha vida acaba.",
     },
     {
+      "id": 3,
       "tipo": "FILTRO MENTAL",
       "frase": "Meu chefe elogiou, mas só consigo pensar naquele erro.",
     },
     {
+      "id": 4,
       "tipo": "LEITURA DA MENTE",
       "frase": "Tenho certeza de que ele me acha inútil.",
     },
     {
+      "id": 5,
       "tipo": "RACIOCÍNIO EMOCIONAL",
       "frase": "Me sinto um fracasso, então devo ser mesmo.",
     },
     {
+      "id": 6,
       "tipo": "USO DE DEVERIA",
       "frase": "Eu deveria ser mais produtivo o tempo todo.",
     },
     {
+      "id": 7,
       "tipo": "USO DE DEVERIA",
       "frase": "Eu deveria ser mais produtivo o tempo todo.",
     },
     {
+      "id": 8,
       "tipo": "USO DE DEVERIA",
       "frase": "Eu deveria ser mais produtivo o tempo todo.",
     },
     {
+      "id": 9,
       "tipo": "USO DE DEVERIA",
       "frase": "Eu deveria ser mais produtivo o tempo todo.",
     },
@@ -54,7 +63,7 @@ class _HistoryPageState extends State<HistoryPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
-      drawer: Menu(),
+      drawer: PatientMenu(),
       body: Padding(
         padding: const EdgeInsets.all(10),
         child: Center(
@@ -144,9 +153,23 @@ class _HistoryPageState extends State<HistoryPage> {
                   itemCount: pensamentos.length,
                   itemBuilder: (context, index) {
                     final pensamento = pensamentos[index];
-                    return InsightCard(
-                      tipo: pensamento['tipo']!,
-                      frase: pensamento['frase']!,
+                    return Dismissible(
+                      key: Key(pensamento['id'].toString()),
+                      direction: DismissDirection.startToEnd,
+                      onDismissed: (direction) {
+                        setState(() {
+                          pensamentos.removeAt(index);
+                        });
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('${pensamento['frase']} deletado'),
+                          ),
+                        );
+                      },
+                      child: InsightCard(
+                        tipo: pensamento['tipo']!,
+                        frase: pensamento['frase']!,
+                      ),
                     );
                   },
                 ),
