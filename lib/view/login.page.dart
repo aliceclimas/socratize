@@ -110,6 +110,7 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                       SizedBox(height: 20),
                       TextButton(
+                        Alignment.centerRight,
                         style: TextButton.styleFrom(foregroundColor: Colors.blue),
                         onPressed:
                           () => {},
