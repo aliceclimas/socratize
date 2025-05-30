@@ -2,6 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:socratize/model/user.model.dart';
+import 'package:socratize/authentication_service.dart';
+
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -105,6 +107,13 @@ class _LoginPageState extends State<LoginPage> {
                             borderRadius: BorderRadius.circular(15),
                           ),
                         ),
+                      ),
+                      SizedBox(height: 20),
+                      TextButton(
+                        style: TextButton.styleFrom(foregroundColor: Colors.blue),
+                        onPressed:
+                          () => {},
+                        child: Text("Esqueci minha senha"),   
                       ),
                       SizedBox(height: 20),
                       SizedBox(
