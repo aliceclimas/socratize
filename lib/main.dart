@@ -2,6 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_gemini/flutter_gemini.dart';
 import 'package:socratize/firebase_options.dart';
 import 'package:socratize/theme.dart';
 import 'package:socratize/view/login.page.dart';
@@ -13,6 +15,8 @@ import 'package:socratize/view/therapist/list_qr_code.page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await dotenv.load(fileName: ".env");
+  Gemini.init(apiKey: dotenv.get('API_KEY'));
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(SocratizeApp());
 }

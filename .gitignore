@@ -48,3 +48,4 @@ app.*.map.json
 **/socratize
 **/socratize_app
 **/firebase.options.dart
+.env
