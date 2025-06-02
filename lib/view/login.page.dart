@@ -108,18 +108,27 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                         ),
                       ),
-                      SizedBox(height: 20),
-                      TextButton(
-                        Alignment.centerRight,
-                        style: TextButton.styleFrom(foregroundColor: Colors.blue),
-                        onPressed:
-                          () => {},
-                        child: Text("Esqueci minha senha"),   
+                      SizedBox(height: 10),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          TextButton(
+                            onPressed:
+                            () => {
+                              Navigator.of(context).pushNamed('/forgot-password'),
+                            },
+                            child: Text(
+                              "Esqueci a senha",
+                              style: TextStyle(
+                                color: Colors.blue,
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                       SizedBox(height: 20),
                       SizedBox(
                         width: MediaQuery.of(context).size.width * 0.4,
-
                         child: ElevatedButton(
                           onPressed: () async => await login(context),
                           style: ButtonStyle(
@@ -143,6 +152,7 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                         ),
                       ),
+                      SizedBox(height: 10),
                       TextButton(
                         onPressed:
                             () => {
