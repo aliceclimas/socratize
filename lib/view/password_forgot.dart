@@ -34,7 +34,7 @@ class _PasswordForgetScreenState extends State<PasswordForgetScreen> {
                     style: TextStyle(
                       fontSize: 32,
                       fontWeight: FontWeight.bold,
-                      color: Colors.blueAccent,
+                      color: Colors.black,
                     ),
                     textAlign: TextAlign.center,
                   ),
