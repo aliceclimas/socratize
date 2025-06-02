@@ -21,7 +21,7 @@ class _TherapistMenuState extends State<TherapistMenu> {
               accountEmail: Text("paula.silva@email.com"),
               currentAccountPicture: CircleAvatar(
                 radius: 30.0,
-                backgroundImage: NetworkImage("assets/images/paula.jpg"),
+                backgroundImage: AssetImage("assets/images/paula.jpg"),
                 backgroundColor: Colors.transparent,
               ),
             ),

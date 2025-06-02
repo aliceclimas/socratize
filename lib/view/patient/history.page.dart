@@ -10,52 +10,37 @@ class HistoryPage extends StatefulWidget {
 }
 
 class _HistoryPageState extends State<HistoryPage> {
-  // Lista com os pensamentos do paciente
-  final List<Map<String, dynamic>> pensamentos = [
+  // Lista de 'Questionamentos'
+  final List<Map<String, dynamic>> questionamentos = [
     {
       "id": 1,
-      "tipo": "PERSONALIZAÇÃO",
-      "frase": "A culpa é sempre minha, mesmo quando não depende de mim.",
+      "idDisfuncaoCognitiva": "personalizacao",
+      "pensamento": "A culpa é sempre minha, mesmo quando não depende de mim.",
     },
     {
       "id": 2,
-      "tipo": "CATASTROFIZAÇÃO",
-      "frase": "Se isso der errado, minha vida acaba.",
+      "idDisfuncaoCognitiva": "catastrofizacao",
+      "pensamento": "Se isso der errado, minha vida acaba.",
     },
     {
       "id": 3,
-      "tipo": "FILTRO MENTAL",
-      "frase": "Meu chefe elogiou, mas só consigo pensar naquele erro.",
+      "idDisfuncaoCognitiva": "filtro-mental",
+      "pensamento": "Meu chefe elogiou, mas só consigo pensar naquele erro.",
     },
     {
       "id": 4,
-      "tipo": "LEITURA DA MENTE",
-      "frase": "Tenho certeza de que ele me acha inútil.",
+      "idDisfuncaoCognitiva": "leitura-mental",
+      "pensamento": "Tenho certeza de que ele me acha inútil.",
     },
     {
       "id": 5,
-      "tipo": "RACIOCÍNIO EMOCIONAL",
-      "frase": "Me sinto um fracasso, então devo ser mesmo.",
+      "idDisfuncaoCognitiva": "raciocinio-emocional",
+      "pensamento": "Me sinto um fracasso, então devo ser mesmo.",
     },
     {
       "id": 6,
-      "tipo": "USO DE DEVERIA",
-      "frase": "Eu deveria ser mais produtivo o tempo todo.",
-    },
-    {
-      "id": 7,
-      "tipo": "USO DE DEVERIA",
-      "frase": "Eu deveria ser mais produtivo o tempo todo.",
-    },
-    {
-      "id": 8,
-      "tipo": "USO DE DEVERIA",
-      "frase": "Eu deveria ser mais produtivo o tempo todo.",
-    },
-    {
-      "id": 9,
-      "tipo": "USO DE DEVERIA",
-      "frase": "Eu deveria ser mais produtivo o tempo todo.",
+      "idDisfuncaoCognitiva": "uso-de-deveria",
+      "pensamento": "Eu deveria ser mais produtivo o tempo todo.",
     },
   ];
 
@@ -150,25 +135,25 @@ class _HistoryPageState extends State<HistoryPage> {
               Expanded(
                 flex: 2,
                 child: ListView.builder(
-                  itemCount: pensamentos.length,
+                  itemCount: questionamentos.length,
                   itemBuilder: (context, index) {
-                    final pensamento = pensamentos[index];
+                    final questionamento = questionamentos[index];
                     return Dismissible(
-                      key: Key(pensamento['id'].toString()),
+                      key: Key(questionamento['id'].toString()),
                       direction: DismissDirection.startToEnd,
                       onDismissed: (direction) {
                         setState(() {
-                          pensamentos.removeAt(index);
+                          questionamentos.removeAt(index);
                         });
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
-                            content: Text('${pensamento['frase']} deletado'),
+                            content: Text('${questionamento['pensamento']} deletado'),
                           ),
                         );
                       },
                       child: InsightCard(
-                        tipo: pensamento['tipo']!,
-                        frase: pensamento['frase']!,
+                        name: questionamento['pensamento']!,
+                        cognitiveDisfunctionName: questionamento['idDisfuncaoCognitiva']!,
                       ),
                     );
                   },

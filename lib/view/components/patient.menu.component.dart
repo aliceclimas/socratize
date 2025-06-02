@@ -5,9 +5,9 @@ import 'package:url_launcher/url_launcher.dart';
 
 Future<void> _launch(Uri url) async {
 
-    if (await canLaunchUrl(url)) {
+    try {
       await launchUrl(url);
-    } else {
+    } on Exception {
       print("Não foi possível abrir o WhatsApp");
     }
   }
@@ -55,7 +55,7 @@ class _PatientMenuState extends State<PatientMenu> {
               ListTile(
                 leading: const Icon(Icons.call),
                 title: const Text("Contatar psicólogo"),
-                
+
                 onTap: () => _launch(
                       Uri.parse('https://api.whatsapp.com/send?phone=5517991282220&text=Ol%C3%A1%20Terapeuta!'),
                 ),
