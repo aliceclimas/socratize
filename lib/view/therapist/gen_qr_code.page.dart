@@ -1,6 +1,13 @@
 import 'package:barcode_widget/barcode_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:socratize/view/components/therapist.menu.component.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:socratize/firebase_options.dart';
+import 'package:socratize/model/user.model.dart';
+import 'package:socratize/model/patient.model.dart';
+import 'package:socratize/model/therapist.model.dart';
 
 class GenQRCodePage extends StatefulWidget {
   const GenQRCodePage({super.key});
@@ -12,6 +19,42 @@ class GenQRCodePage extends StatefulWidget {
 class _GenQRCodePageState extends State<GenQRCodePage> {
   bool showQrCode = false;
   bool passwordVisible = false;
+  String? pacienteId;
+
+  final txtName = TextEditingController();
+  final txtEmail = TextEditingController();
+  final txtPassword = TextEditingController();
+
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+
+  Future<void> criarPaciente() async {
+    
+  final currentUser = FirebaseAuth.instance.currentUser;
+
+  if (currentUser == null) {
+    print('Usuário não está logado.');
+    return;
+  }
+
+  final idDoTerapeuta = currentUser.uid;
+
+  final paciente = PatientModel(
+    fullname: txtName.text,
+    email: txtEmail.text,
+    role: 'patient',
+    idTherapist: idDoTerapeuta,
+    status: 'deleted',
+  );
+
+  final docRef = await FirebaseFirestore.instance
+      .collection('users')
+      .add(paciente.toMap());
+
+  setState(() {
+    pacienteId = docRef.id;
+    showQrCode = true;
+  });
+}
 
   @override
   Widget build(BuildContext context) {
@@ -34,6 +77,7 @@ class _GenQRCodePageState extends State<GenQRCodePage> {
                 ),
                 const SizedBox(height: 20),
                 TextField(
+                  controller: txtName,
                   decoration: InputDecoration(
                     isDense: true,
                     labelText: 'Digite o nome',
@@ -82,6 +126,7 @@ class _GenQRCodePageState extends State<GenQRCodePage> {
                 ),
                 const SizedBox(height: 20),
                 TextField(
+                  controller: txtEmail,
                   decoration: InputDecoration(
                     isDense: true,
                     labelText: 'Digite o e-mail',
@@ -130,6 +175,7 @@ class _GenQRCodePageState extends State<GenQRCodePage> {
                 ),
                 const SizedBox(height: 20),
                 TextField(
+                  controller: txtPassword,
                   obscureText: true,
                   decoration: InputDecoration(
                     isDense: true,
@@ -151,7 +197,7 @@ class _GenQRCodePageState extends State<GenQRCodePage> {
                       borderSide: BorderSide(
                         color: Color(
                           0xff1977d2,
-                        ), // substituto do FlutterFlowTheme.iconeAzul
+                        ),
                         width: 1.0,
                       ),
                       borderRadius: BorderRadius.circular(8.0),
@@ -185,9 +231,9 @@ class _GenQRCodePageState extends State<GenQRCodePage> {
                   cursorColor: Colors.black,
                 ),
                 const SizedBox(height: 20),
-                if (showQrCode)
+                if (showQrCode && pacienteId != null)
                   BarcodeWidget(
-                    data: 'https://github.com/aliceclimas/socratize/tree/main',
+                    data: pacienteId!,
                     barcode: Barcode.qrCode(),
                     width: 200,
                     height: 200,
@@ -205,11 +251,7 @@ class _GenQRCodePageState extends State<GenQRCodePage> {
                 ),
                 const SizedBox(height: 16),
                 ElevatedButton(
-                  onPressed: () {
-                    setState(() {
-                      showQrCode = true;
-                    });
-                  },
+                  onPressed: criarPaciente,
                   style: ElevatedButton.styleFrom(
                     padding: const EdgeInsets.symmetric(
                       horizontal: 32,
