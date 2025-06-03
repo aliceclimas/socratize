@@ -51,7 +51,13 @@ class _ListQRCodesState extends State<ListQRCodes> {
       future: _getPatients,
       builder: (context, patients) {
         return Scaffold(
-          appBar: AppBar(),
+          appBar: AppBar(
+            title: Image(
+          image: AssetImage('assets/images/socratize-logo.png'),
+          width: MediaQuery.of(context).size.width * 0.1,
+          height: MediaQuery.of(context).size.width * 0.1,
+        ),
+          ),
           drawer: TherapistMenu(),
           body:
               (!patients.hasData)

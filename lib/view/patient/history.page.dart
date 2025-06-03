@@ -47,18 +47,19 @@ class _HistoryPageState extends State<HistoryPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        title: Image(
+          image: AssetImage('assets/images/socratize-logo.png'),
+          width: MediaQuery.of(context).size.width * 0.1,
+          height: MediaQuery.of(context).size.width * 0.1,
+        ),
+      ),
       drawer: PatientMenu(),
       body: Padding(
         padding: const EdgeInsets.all(10),
         child: Center(
           child: Column(
             children: [
-              Image(
-                image: AssetImage('assets/images/socratize-logo-nome.png'),
-                width: MediaQuery.of(context).size.width * 0.3,
-                height: MediaQuery.of(context).size.width * 0.3,
-              ),
               Text(
                 "Histórico de Pensamentos",
                 style: Theme.of(context).textTheme.headlineLarge,
