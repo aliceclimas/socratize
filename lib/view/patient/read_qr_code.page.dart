@@ -1,4 +1,9 @@
+import 'dart:convert';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:mobile_scanner/mobile_scanner.dart';
 
 class ReadQRCodePage extends StatefulWidget {
   const ReadQRCodePage({super.key});
@@ -18,23 +23,6 @@ class _ReadQRCodePageState extends State<ReadQRCodePage> {
         body: Column(
           mainAxisSize: MainAxisSize.max,
           children: [
-            SizedBox(
-              width: double.infinity,
-              height: 420,
-              child: Column(
-                children: [
-                  SizedBox(
-                    height: 400,
-                    child: Image.asset(
-                      'assets/images/socratize-logo-nome.png',
-                      width: 500,
-                      height: 200,
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                ],
-              ),
-            ),
             Expanded(
               child: Align(
                 alignment: Alignment.center,
@@ -44,9 +32,9 @@ class _ReadQRCodePageState extends State<ReadQRCodePage> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      const Column(
+                      Column(
                         children: [
-                          Text(
+                          const Text(
                             'Seja Bem Vindo',
                             textAlign: TextAlign.center,
                             style: TextStyle(
@@ -54,34 +42,55 @@ class _ReadQRCodePageState extends State<ReadQRCodePage> {
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          SizedBox(height: 16),
-                          Text(
+                          const SizedBox(height: 16),
+                          const Text(
                             'Clique no botão para abrir a câmera e ler seu QR Code!',
                             textAlign: TextAlign.center,
                             style: TextStyle(fontSize: 16),
                           ),
-                        ],
-                      ),
-                      SizedBox(
-                        width: double.infinity,
-                        height: 60,
-                        child: ElevatedButton(
-                          onPressed:
-                              () => Navigator.of(
-                                context,
-                              ).pushReplacementNamed('/history'),
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.blue,
-                            foregroundColor: Colors.white,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12),
+                          SizedBox(
+                            width: 300,
+                            height: 300,
+                            child: MobileScanner(
+                              onDetect: (BarcodeCapture result) async {
+                                final String? rawValue =
+                                    result.barcodes.first.rawValue;
+                                if (rawValue != null) {
+                                  final Map<String, dynamic> userData =
+                                      jsonDecode(
+                                        rawValue,
+                                      ); // paciente@gmail.com
+                                  final querySnapshot =
+                                      await FirebaseFirestore.instance
+                                          .collection('users')
+                                          .where(
+                                            'email',
+                                            isEqualTo: userData['email'],
+                                          )
+                                          .limit(1)
+                                          .get();
+
+                                  if (querySnapshot.docs.isNotEmpty) {
+                                    await querySnapshot.docs.first.reference
+                                        .update({"status": 'active'});
+
+                                    await FirebaseAuth.instance
+                                        .signInWithEmailAndPassword(
+                                          email: userData['email'],
+                                          password: userData['password'],
+                                        );
+
+                                    if (!context.mounted) throw Exception('Erro interno');
+
+                                    Navigator.of(
+                                      context,
+                                    ).pushReplacementNamed('/history');
+                                  }
+                                }
+                              },
                             ),
                           ),
-                          child: const Text(
-                            'Ler QR Code',
-                            style: TextStyle(fontSize: 18),
-                          ),
-                        ),
+                        ],
                       ),
                     ],
                   ),

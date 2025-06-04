@@ -45,6 +45,7 @@ dependencies:
   url_launcher: ^6.1.6
   flutter_gemini: ^3.0.0
   flutter_dotenv: ^5.2.1
+  mobile_scanner: ^7.0.1
 
 dev_dependencies:
   flutter_test:
