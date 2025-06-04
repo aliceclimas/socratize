@@ -2,6 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:socratize/model/user.model.dart';
+import 'package:socratize/authentication_service.dart';
+
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -106,10 +108,27 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                         ),
                       ),
+                      SizedBox(height: 10),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          TextButton(
+                            onPressed:
+                            () => {
+                              Navigator.of(context).pushNamed('/forgot-password'),
+                            },
+                            child: Text(
+                              "Esqueci a senha",
+                              style: TextStyle(
+                                color: Colors.blue,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                       SizedBox(height: 20),
                       SizedBox(
                         width: MediaQuery.of(context).size.width * 0.4,
-
                         child: ElevatedButton(
                           onPressed: () async => await login(context),
                           style: ButtonStyle(
@@ -133,6 +152,7 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                         ),
                       ),
+                      SizedBox(height: 10),
                       TextButton(
                         onPressed:
                             () => {
