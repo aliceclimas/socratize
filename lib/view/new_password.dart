@@ -1,6 +1,5 @@
 
 import 'package:flutter/material.dart';
-import 'package:socratize/view/login.page.dart';
 
 
 class NewPasswordScreen extends StatefulWidget {
@@ -72,7 +71,7 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
                   ),
                   SizedBox(height: 24),
                   ElevatedButton(
-                    
+                    onPressed: null,
                     style: ElevatedButton.styleFrom(
                       textStyle: TextStyle(fontSize: 16, color: Colors.white),
                       backgroundColor: Colors.blueAccent,
@@ -80,9 +79,9 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8),
                       ),
-                      
+
                     ),
-                  
+
                     child: Text("Alterar senha",
                         style: TextStyle(
                         color: Colors.white,
