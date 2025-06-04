@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:socratize/firebase_options.dart';
 import 'package:socratize/theme.dart';
 import 'package:socratize/view/login.page.dart';
+import 'package:socratize/view/password_forgot.dart';
 import 'package:socratize/view/patient/chat.page.dart';
 import 'package:socratize/view/patient/history.page.dart';
 import 'package:socratize/view/patient/read_qr_code.page.dart';
@@ -88,6 +89,7 @@ class _SocratizeAppState extends State<SocratizeApp> {
             "/read-qr-code": (context) => ReadQRCodePage(),
             "/gen-qr-code": (context) => GenQRCodePage(),
             "/list-qr-codes": (context) => ListQRCodes(),
+            "/forgot-password": (context) => PasswordForgetScreen(),
           },
         );
       },
