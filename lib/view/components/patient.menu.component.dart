@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
+
 
 class PatientMenu extends StatefulWidget {
   const PatientMenu({super.key});
@@ -44,7 +46,9 @@ class _PatientMenuState extends State<PatientMenu> {
               ListTile(
                 leading: const Icon(Icons.call),
                 title: const Text("Contatar psicólogo"),
-                onTap: () {},
+                onTap: () {
+                  FlutterOpenWhatsapp.sendSingleMessage("918179015345", "Hello");
+                },
               ),
               ListTile(
                 leading: const Icon(Icons.exit_to_app_outlined),

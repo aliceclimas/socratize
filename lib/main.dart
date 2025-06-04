@@ -13,7 +13,7 @@ import 'package:socratize/view/patient/read_qr_code.page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  await Firebase.initializeApp(options : DefaultFirebaseOptions.currentPlatform);
 
   await Firebase.initializeApp(
     options: FirebaseOptions(
