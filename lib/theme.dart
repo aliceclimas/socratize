@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 final ThemeData socratizeTheme = ThemeData(
   primaryColor: Color.fromARGB(255, 151, 159, 167),
   fontFamily: 'Poppins',
-  scaffoldBackgroundColor: Color(0xfffff9e3),
+  scaffoldBackgroundColor: Color.fromARGB(255, 253, 250, 238),
   textTheme: TextTheme(
     headlineLarge: TextStyle(fontWeight: FontWeight.w800, fontSize: 30),
   ),
