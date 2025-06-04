@@ -46,7 +46,7 @@ dependencies:
   provider: ^6.1.5
   flutter_timezone: ^4.1.1
   url_launcher: ^6.1.10
-  flutter_open_whatsapp: ^0.1.2
+ 
 
 dev_dependencies:
   flutter_test:

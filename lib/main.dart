@@ -11,6 +11,7 @@ import 'package:socratize/view/patient/history.page.dart';
 import 'package:socratize/view/patient/read_qr_code.page.dart';
 import 'package:socratize/view/therapist/gen_qr_code.page.dart';
 import 'package:socratize/view/therapist/list_qr_code.page.dart';
+import 'package:socratize/view/new_password.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -27,7 +28,7 @@ class SocratizeApp extends StatefulWidget {
 
 class _SocratizeAppState extends State<SocratizeApp> {
   late Future<String> _initialRouteFuture = initialRouteHandler();
-  final GlobalKey _appKey = GlobalKey();
+  final GlobalKey _appKey = GlobalKey(); 
   final GlobalKey _loadingKey = GlobalKey();
 
   Future<String> initialRouteHandler() async {
@@ -90,6 +91,7 @@ class _SocratizeAppState extends State<SocratizeApp> {
             "/gen-qr-code": (context) => GenQRCodePage(),
             "/list-qr-codes": (context) => ListQRCodes(),
             "/forgot-password": (context) => PasswordForgetScreen(),
+            "/new-password": (context) => NewPasswordScreen(),
           },
         );
       },
