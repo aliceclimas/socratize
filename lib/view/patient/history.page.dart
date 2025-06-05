@@ -1,4 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:socratize/model/questioning.model.dart';
 import 'package:socratize/view/components/card.component.dart';
 import 'package:socratize/view/components/patient.menu.component.dart';
 
@@ -10,6 +13,7 @@ class HistoryPage extends StatefulWidget {
 }
 
 class _HistoryPageState extends State<HistoryPage> {
+  /*
   // Lista de 'Questionamentos'
   final List<Map<String, dynamic>> questionamentos = [
     {
@@ -44,22 +48,51 @@ class _HistoryPageState extends State<HistoryPage> {
     },
   ];
 
+  */
+
+  late final Future<List<Questioning>> _getQuestionings;
+
+  Future<List<Questioning>> getQuestionings() async {
+    List<Questioning> listaQuestionamentos = [];
+
+    String? uid = FirebaseAuth.instance.currentUser?.uid;
+    if (uid == null) return [];
+
+    var querySnapshot =
+        await FirebaseFirestore.instance
+            .collection('questionamento')
+            .where('idPacient', isEqualTo: uid)
+            .get();
+
+    for (var doc in querySnapshot.docs) {
+      var questionamento = Questioning.fromMap({...doc.data(), 'id': doc.id});
+      listaQuestionamentos.add(questionamento);
+    }
+
+    return listaQuestionamentos;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _getQuestionings = getQuestionings();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Image(
-          image: AssetImage('assets/images/socratize-logo.png'),
-          width: MediaQuery.of(context).size.width * 0.1,
-          height: MediaQuery.of(context).size.width * 0.1,
-        ),
-      ),
+      appBar: AppBar(),
       drawer: PatientMenu(),
       body: Padding(
         padding: const EdgeInsets.all(10),
         child: Center(
           child: Column(
             children: [
+              Image(
+                image: AssetImage('assets/images/socratize-logo-nome.png'),
+                width: MediaQuery.of(context).size.width * 0.3,
+                height: MediaQuery.of(context).size.width * 0.3,
+              ),
               Text(
                 "Histórico de Pensamentos",
                 style: Theme.of(context).textTheme.headlineLarge,
@@ -120,42 +153,79 @@ class _HistoryPageState extends State<HistoryPage> {
                           () => showDatePicker(
                             context: context,
                             firstDate: DateTime(2010),
-                            initialDate: DateTime(
-                              DateTime.now().year,
-                              DateTime.now().month,
-                              DateTime.now().day,
-                            ),
+                            initialDate: DateTime.now(),
                             lastDate: DateTime(2030),
-                          ), // mostra o calendário
+                          ),
                       icon: Icon(Icons.calendar_today),
                     ),
                   ),
                 ],
               ),
               SizedBox(height: 30),
+
               Expanded(
                 flex: 2,
-                child: ListView.builder(
-                  itemCount: questionamentos.length,
-                  itemBuilder: (context, index) {
-                    final questionamento = questionamentos[index];
-                    return Dismissible(
-                      key: Key(questionamento['id'].toString()),
-                      direction: DismissDirection.startToEnd,
-                      onDismissed: (direction) {
-                        setState(() {
-                          questionamentos.removeAt(index);
-                        });
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text('${questionamento['pensamento']} deletado'),
+                child: FutureBuilder<List<Questioning>>(
+                  future: _getQuestionings,
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return Center(child: CircularProgressIndicator());
+                    }
+
+                    if (snapshot.hasError) {
+                      print('Erro ao carregar os dados: ${snapshot.error}');
+                      return Center(child: Text('Erro ao carregar dados.'));
+                    }
+
+                    final listaQuestionamentos = snapshot.data ?? [];
+
+                    if (listaQuestionamentos.isEmpty) {
+                      return Center(
+                        child: Text('Nenhum pensamento encontrado.'),
+                      );
+                    }
+
+                    return ListView.builder(
+                      itemCount: listaQuestionamentos.length,
+                      itemBuilder: (context, index) {
+                        final questionamento = listaQuestionamentos[index];
+
+                        return Dismissible(
+                          key: Key(questionamento.id),
+                          direction: DismissDirection.startToEnd,
+                          onDismissed: (direction) async {
+
+                            print('ID para deletar: ${questionamento.id}');
+
+                            try {
+                              await FirebaseFirestore.instance
+                                  .collection('questionamento')
+                                  .doc(questionamento.id)
+                                  .delete();
+                              print('Documento deletado!');
+                            } catch (e) {
+                              print('Erro ao deletar: $e');
+                            }
+
+                            /*setState(() {
+                              listaQuestionamentos.removeAt(index);
+                            });*/
+
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(
+                                  '${questionamento.pensamento} deletado',
+                                ),
+                              ),
+                            );
+                          },
+                          child: InsightCard(
+                            name: questionamento.pensamento,
+                            cognitiveDisfunctionName:
+                                questionamento.idDisfuncaoCognitiva,
                           ),
                         );
                       },
-                      child: InsightCard(
-                        name: questionamento['pensamento']!,
-                        cognitiveDisfunctionName: questionamento['idDisfuncaoCognitiva']!,
-                      ),
                     );
                   },
                 ),
