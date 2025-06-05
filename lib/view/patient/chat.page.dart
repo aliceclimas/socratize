@@ -1,6 +1,7 @@
 import 'package:chat_bubbles/chat_bubbles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gemini/flutter_gemini.dart';
+import 'package:socratize/model/questioning.builder.dart';
 import 'package:socratize/view/components/patient.menu.component.dart';
 
 class ChatPage extends StatefulWidget {
@@ -11,27 +12,55 @@ class ChatPage extends StatefulWidget {
 }
 
 class _ChatPageState extends State<ChatPage> {
+  QuestioningBuilder builder = QuestioningBuilder();
+  int currentIndex = 0;
+  bool activateInput = false;
+  TextEditingController inputController = TextEditingController();
 
-  List<Map<String, dynamic>> messages = [
-    {'text': 'O que você está pensando?', 'isSender': false},
+  List<Map<String, dynamic>> fixedMessagems = [
     {
-      'text':
-          'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent vel tellus sed nulla consectetur tempus.',
-      'isSender': true,
-    },
-    {'text': 'Vamos questionar esse pensamento juntos?', 'isSender': false},
-    {'text': 'OK', 'isSender': true},
-    {
-      'text': 'Selecione uma pergunta da categoria: Esclarecimento',
+      'text': 'Qual o seu pensamento?',
       'isSender': false,
+      'isClickable': false,
+      'value': null,
+      'isChoice': false,
+      'isQuestion': true,
+    },
+    {
+      'text': 'Escolha uma pergunta do tipo Esclarecimento',
+      'isSender': false,
+      'isClickable': true,
+      'value': 'Sim, eu quero adicionar um pensamento!',
+      'isChoice': true,
+      'isQuestion': false,
     },
   ];
 
-  List<String> perguntas = [
-    'Você pode dar um exemplo do que está falando?',
-    'Você pode explicar isso de outra forma?',
-    'O que você quer dizer exatamente com isso?',
-    'Qual é a principal ideia que você está tentando transmitir?',
+  List<Map<String, dynamic>> displayedMessages = [
+    {
+      'text': 'Você quer inserir o pensamento?',
+      'isSender': false,
+      'isClickable': false,
+      'value': null,
+      'isChoice': false,
+      'isQuestion': false,
+    },
+    {
+      'text': 'Clique nessa mensagem para SIM! ✅',
+      'isSender': false,
+      'isClickable': true,
+      'value': 'Sim, eu quero adicionar um pensamento!',
+      'isChoice': true,
+      'isQuestion': false,
+    },
+    {
+      'text': 'Clique nessa mensagem para NÃO! ❌',
+      'isSender': false,
+      'isClickable': true,
+      'value': 'Não, não quero adicionar um pensamento!',
+      'isChoice': true,
+      'isQuestion': false,
+    },
   ];
 
   @override
@@ -40,64 +69,88 @@ class _ChatPageState extends State<ChatPage> {
 
     final gemini = Gemini.instance;
 
-    gemini.prompt(parts: [
-  Part.text("""
-      TABELA DE DISFUNÇÕES COGNITIVAS:
-      1. Personalização
-      2. Filtro Mental
-      3. Generalização Excessiva
-      4. Catastrofização
-      5. Pensamento Dicotômico
-      6. Leitura da Mente
-      7. Raciocínio Emocional
-      8. Desqualificação do Positivo
-      9. Uso de "Deveria"
+    gemini
+        .prompt(
+          parts: [
+            Part.text("""
+          TABELA DE DISFUNÇÕES COGNITIVAS:
+          1. Personalização
+          2. Filtro Mental
+          3. Generalização Excessiva
+          4. Catastrofização
+          5. Pensamento Dicotômico
+          6. Leitura da Mente
+          7. Raciocínio Emocional
+          8. Desqualificação do Positivo
+          9. Uso de "Deveria"
 
-      INSTRUÇÕES:
-      - Analise o pensamento fornecido
-      - Retorne APENAS o nome da disfunção cognitiva mais adequada
-      - Use EXATAMENTE um dos nomes da tabela acima
-      - Não adicione explicações, números ou texto extra
-      - Resposta deve ser uma única linha
-      - Se não conseguir identificar, retorne "Não identificado"
-    """),
-  Part.text('Pensamento a analisar:'),
-  Part.text('pensmento teste')
-]).then((value) {
-  String resultado = value?.output?.trim() ?? 'sem classificação';
+          INSTRUÇÕES:
+          - Analise o pensamento fornecido
+          - Retorne APENAS o nome da disfunção cognitiva mais adequada
+          - Use EXATAMENTE um dos nomes da tabela acima
+          - Não adicione explicações, números ou texto extra
+          - Resposta deve ser uma única linha
+          - Se não conseguir identificar, retorne "Não identificado"
+        """),
+            Part.text('Pensamento a analisar:'),
+            Part.text('pensmento teste'),
+          ],
+        )
+        .then((value) {
+          String resultado = value?.output?.trim() ?? 'sem classificação';
 
-  // Lista das disfunções válidas para validação
-  List<String> disfuncoesValidas = [
-    'Personalização',
-    'Filtro Mental',
-    'Generalização Excessiva',
-    'Catastrofização',
-    'Pensamento Dicotômico',
-    'Leitura da Mente',
-    'Raciocínio Emocional',
-    'Desqualificação do Positivo',
-    'Uso de "Deveria"',
-    'Não identificado'
-  ];
+          // Lista das disfunções válidas para validação
+          List<String> disfuncoesValidas = [
+            'Personalização',
+            'Filtro Mental',
+            'Generalização Excessiva',
+            'Catastrofização',
+            'Pensamento Dicotômico',
+            'Leitura da Mente',
+            'Raciocínio Emocional',
+            'Desqualificação do Positivo',
+            'Uso de "Deveria"',
+            'Não identificado',
+          ];
 
-  // Validação e limpeza da resposta
-  if (!disfuncoesValidas.contains(resultado)) {
-    resultado = 'sem classificação';
+          // Validação e limpeza da resposta
+          if (!disfuncoesValidas.contains(resultado)) {
+            resultado = 'sem classificação';
+          }
+        })
+        .catchError((e) => print('exception $e'));
   }
 
-  print(resultado);
-}).catchError((e) => print('exception $e'));
-  }
-
-  void _addMessage(String message, bool isSender) {
+  void _addMessage(
+    String text,
+    bool isSender,
+    bool isClickable,
+    String? value,
+    bool isChoice,
+    bool isQuestion,
+  ) {
     setState(() {
-      messages.add({'text': message, 'isSender': isSender});
+      displayedMessages.add({
+        'text': text,
+        'isSender': isSender,
+        'isClickable': isClickable,
+        'value': value,
+        'isChoice': isChoice,
+        'isQuestion': isQuestion,
+      });
     });
+
+    displayedMessages.add(fixedMessagems[currentIndex]);
+
+    if (fixedMessagems[currentIndex]['isQuestion']) {
+      activateInput = true;
+    }
+    currentIndex++;
   }
 
-  void _removePerguntas() {
+  void _removeChoices() {
     setState(() {
-      perguntas.clear();
+      displayedMessages.removeWhere((message) => message['isChoice'] == true);
     });
   }
 
@@ -117,37 +170,37 @@ class _ChatPageState extends State<ChatPage> {
           Flexible(
             child: ListView(
               children: [
-                ...messages.map((message) {
-                  return BubbleSpecialOne(
-                    text: message['text'],
-                    isSender: message['isSender'],
-                    color:
-                        message['isSender']
-                            ? Color(0xff7CBEFF)
-                            : Color.fromARGB(255, 255, 216, 73),
-                    textStyle: TextStyle(
-                      fontSize: 16,
-                      color: Color(0xff36454F),
-                      fontWeight: FontWeight.w500,
-                    ),
-                  );
-                }),
-                ...perguntas.map((pergunta) {
+                ...displayedMessages.map((message) {
                   return GestureDetector(
                     onTap: () {
-                      _addMessage(pergunta, false);
-                      _removePerguntas();
+                      if (message['isClickable']) {
+                        if (message['isChoice']) {
+                          print('certo');
+                          _removeChoices();
+                          _addMessage(
+                            message['value'],
+                            true,
+                            false,
+                            null,
+                            false,
+                            false,
+                          );
+                        }
+                      }
                     },
                     child: Padding(
                       padding: const EdgeInsets.symmetric(vertical: 0.1),
                       child: BubbleSpecialOne(
-                        text: pergunta,
-                        isSender: false,
-                        color: Color.fromARGB(255, 255, 216, 73),
+                        text: message['text'],
+                        isSender: message['isSender'],
+                        color:
+                            message['isSender']
+                                ? Color(0xff7CBEFF)
+                                : Color(0xffFFCF24),
                         textStyle: TextStyle(
                           fontSize: 16,
                           color: Color(0xff36454F),
-                          fontWeight: FontWeight.w600,
+                          fontWeight: FontWeight.w500,
                         ),
                       ),
                     ),
@@ -162,6 +215,7 @@ class _ChatPageState extends State<ChatPage> {
               children: [
                 Expanded(
                   child: TextField(
+                    controller: inputController,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(30),
@@ -175,7 +229,14 @@ class _ChatPageState extends State<ChatPage> {
                 ),
                 IconButton(
                   icon: Icon(Icons.send),
-                  onPressed: null,
+                  onPressed: () {
+                    if (activateInput == false) {
+                      return;
+                    } else {
+                      _addMessage(inputController.text, true, false, null, false, false);
+                    }
+
+                  },
                   color: Colors.blue,
                 ),
               ],
