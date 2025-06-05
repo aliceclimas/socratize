@@ -2,6 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:socratize/model/user.model.dart';
+import 'package:socratize/authentication_service.dart';
+
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -66,10 +68,11 @@ class _LoginPageState extends State<LoginPage> {
             child: Column(
               children: [
                 Image(
-                  image: AssetImage('assets/images/socratize-logo-nome.png'),
-                  width: MediaQuery.of(context).size.width * 0.5,
-                  height: MediaQuery.of(context).size.width * 0.5,
+                  image: AssetImage('assets/images/socratize-logo.png'),
+                  width: MediaQuery.of(context).size.width * 0.3,
+                  height: MediaQuery.of(context).size.width * 0.3,
                 ),
+                SizedBox(height: 80),
                 Text(
                   "Bem-vindo(a)",
                   style: Theme.of(context).textTheme.headlineLarge,
@@ -87,29 +90,72 @@ class _LoginPageState extends State<LoginPage> {
                       TextField(
                         controller: emailController,
                         decoration: InputDecoration(
-                          hintText: "fulano@provedor.com",
+                          filled: true,
+                          fillColor: Colors.white,
+                          hintText: "exemplo@provedor.com",
                           prefixIcon: Icon(Icons.mail),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(15),
                           ),
-                        ),
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.blue, width: 1.0),
+                            borderRadius: BorderRadius.circular(15)
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(15),
+                            borderSide: BorderSide(
+                            color: Colors.yellow,
+                            width: 1.0,
+                      ),
+                      ),
+                      ),
                       ),
                       SizedBox(height: 10),
                       TextField(
                         controller: passwordController,
                         obscureText: true,
                         decoration: InputDecoration(
-                          hintText: "senhasegura",
+                          filled: true,
+                          fillColor: Colors.white,
+                          hintText: "Inserir senha",
                           prefixIcon: Icon(Icons.password),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(15),
                           ),
-                        ),
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.blue, width: 1.0),
+                            borderRadius: BorderRadius.circular(15)
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(15),
+                            borderSide: BorderSide(
+                            color: Colors.yellow,
+                            width: 1.0,
+                      ),
+                      ),
+                      ),
+                      ),
+                      SizedBox(height: 10),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          TextButton(
+                            onPressed:
+                            () => {
+                              Navigator.of(context).pushNamed('/forgot-password'),
+                            },
+                            child: Text(
+                              "Esqueci minha senha",
+                              style: TextStyle(
+                                color: Colors.blue,
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                       SizedBox(height: 20),
                       SizedBox(
                         width: MediaQuery.of(context).size.width * 0.4,
-
                         child: ElevatedButton(
                           onPressed: () async => await login(context),
                           style: ButtonStyle(
@@ -133,12 +179,14 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                         ),
                       ),
+                      SizedBox(height: 10),
                       TextButton(
                         onPressed:
                             () => {
                               Navigator.of(context).pushNamed('/read-qr-code'),
                             },
-                        child: Text("É seu primeiro acesso?"),
+                        child: Text("É seu primeiro acesso?", 
+                        style: TextStyle(color: Color.fromARGB(255, 90, 90, 90)),),
                       ),
                     ],
                   ),

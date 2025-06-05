@@ -32,11 +32,12 @@ class _GenQRCodePageState extends State<GenQRCodePage> {
                   height: 150,
                   fit: BoxFit.cover,
                 ),
-                const SizedBox(height: 20),
+                const SizedBox(height: 70),
                 TextField(
                   decoration: InputDecoration(
+                    
                     isDense: true,
-                    labelText: 'Digite o nome',
+                    labelText: 'Nome completo',
                     labelStyle: TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w500,
@@ -45,25 +46,25 @@ class _GenQRCodePageState extends State<GenQRCodePage> {
                     ),
                     enabledBorder: OutlineInputBorder(
                       borderSide: BorderSide(
-                        color: Color(0xFFF6C102),
+                        color: Colors.blue,
                         width: 1.0,
                       ),
-                      borderRadius: BorderRadius.circular(8.0),
+                      borderRadius: BorderRadius.circular(15),
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderSide: BorderSide(
                         color: Color(0xff1977d2),
                         width: 1.0,
                       ),
-                      borderRadius: BorderRadius.circular(8.0),
+                      borderRadius: BorderRadius.circular(15),
                     ),
                     errorBorder: OutlineInputBorder(
                       borderSide: BorderSide(color: Colors.red, width: 1.0),
-                      borderRadius: BorderRadius.circular(8.0),
+                      borderRadius: BorderRadius.circular(15),
                     ),
                     focusedErrorBorder: OutlineInputBorder(
                       borderSide: BorderSide(color: Colors.red, width: 1.0),
-                      borderRadius: BorderRadius.circular(8.0),
+                      borderRadius: BorderRadius.circular(15),
                     ),
                     filled: true,
                     fillColor: Colors.white,
@@ -84,7 +85,7 @@ class _GenQRCodePageState extends State<GenQRCodePage> {
                 TextField(
                   decoration: InputDecoration(
                     isDense: true,
-                    labelText: 'Digite o e-mail',
+                    labelText: 'Email',
                     labelStyle: TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w500,
@@ -93,25 +94,25 @@ class _GenQRCodePageState extends State<GenQRCodePage> {
                     ),
                     enabledBorder: OutlineInputBorder(
                       borderSide: BorderSide(
-                        color: Color(0xFFF6C102),
+                        color: Colors.blue,
                         width: 1.0,
                       ),
-                      borderRadius: BorderRadius.circular(8.0),
+                      borderRadius: BorderRadius.circular(15),
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderSide: BorderSide(
                         color: Color(0xff1977d2),
                         width: 1.0,
                       ),
-                      borderRadius: BorderRadius.circular(8.0),
+                      borderRadius: BorderRadius.circular(15),
                     ),
                     errorBorder: OutlineInputBorder(
                       borderSide: BorderSide(color: Colors.red, width: 1.0),
-                      borderRadius: BorderRadius.circular(8.0),
+                      borderRadius: BorderRadius.circular(15),
                     ),
                     focusedErrorBorder: OutlineInputBorder(
                       borderSide: BorderSide(color: Colors.red, width: 1.0),
-                      borderRadius: BorderRadius.circular(8.0),
+                      borderRadius: BorderRadius.circular(15),
                     ),
                     filled: true,
                     fillColor: Colors.white,
@@ -133,7 +134,7 @@ class _GenQRCodePageState extends State<GenQRCodePage> {
                   obscureText: true,
                   decoration: InputDecoration(
                     isDense: true,
-                    labelText: 'Digite a senha',
+                    labelText: 'Senha',
                     labelStyle: TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w500,
@@ -142,10 +143,10 @@ class _GenQRCodePageState extends State<GenQRCodePage> {
                     ),
                     enabledBorder: OutlineInputBorder(
                       borderSide: BorderSide(
-                        color: Color(0xFFF6C102),
+                        color: Colors.blue,
                         width: 1.0,
                       ),
-                      borderRadius: BorderRadius.circular(8.0),
+                      borderRadius: BorderRadius.circular(15),
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderSide: BorderSide(
@@ -154,15 +155,15 @@ class _GenQRCodePageState extends State<GenQRCodePage> {
                         ), // substituto do FlutterFlowTheme.iconeAzul
                         width: 1.0,
                       ),
-                      borderRadius: BorderRadius.circular(8.0),
+                      borderRadius: BorderRadius.circular(15),
                     ),
                     errorBorder: OutlineInputBorder(
                       borderSide: BorderSide(color: Colors.red, width: 1.0),
-                      borderRadius: BorderRadius.circular(8.0),
+                      borderRadius: BorderRadius.circular(15),
                     ),
                     focusedErrorBorder: OutlineInputBorder(
                       borderSide: BorderSide(color: Colors.red, width: 1.0),
-                      borderRadius: BorderRadius.circular(8.0),
+                      borderRadius: BorderRadius.circular(15),
                     ),
                     filled: true,
                     fillColor: Colors.white,
@@ -197,7 +198,7 @@ class _GenQRCodePageState extends State<GenQRCodePage> {
                   ),
                 const SizedBox(height: 20),
                 Text(
-                  'Clique no botão para gerar o Qr Code para seu paciente',
+                  'Clique no botão para gerar o QR Code para seu paciente.',
                   textAlign: TextAlign.center,
                   style: Theme.of(
                     context,
@@ -221,8 +222,11 @@ class _GenQRCodePageState extends State<GenQRCodePage> {
                     ),
                   ),
                   child: const Text(
-                    'Gerar Qr Code',
-                    style: TextStyle(color: Colors.white),
+                    'GERAR',
+                    style: TextStyle(
+                      fontWeight: FontWeight.w700,
+                      color: Colors.white,
+                      fontSize: 20,),
                   ),
                 ),
               ],

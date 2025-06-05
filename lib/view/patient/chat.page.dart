@@ -106,8 +106,6 @@ class _ChatPageState extends State<ChatPage> {
     return Scaffold(
       drawer: PatientMenu(),
       appBar: AppBar(
-        backgroundColor: Color(0xffFFFCF2),
-        centerTitle: true,
         title: Image(
           image: AssetImage('assets/images/socratize-logo.png'),
           width: MediaQuery.of(context).size.width * 0.1,
@@ -126,9 +124,9 @@ class _ChatPageState extends State<ChatPage> {
                     color:
                         message['isSender']
                             ? Color(0xff7CBEFF)
-                            : Color(0xffFFCF24),
+                            : Color.fromARGB(255, 255, 216, 73),
                     textStyle: TextStyle(
-                      fontSize: 10,
+                      fontSize: 16,
                       color: Color(0xff36454F),
                       fontWeight: FontWeight.w500,
                     ),
@@ -145,9 +143,9 @@ class _ChatPageState extends State<ChatPage> {
                       child: BubbleSpecialOne(
                         text: pergunta,
                         isSender: false,
-                        color: Color(0xffFFCF24),
+                        color: Color.fromARGB(255, 255, 216, 73),
                         textStyle: TextStyle(
-                          fontSize: 10,
+                          fontSize: 16,
                           color: Color(0xff36454F),
                           fontWeight: FontWeight.w600,
                         ),

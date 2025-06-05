@@ -18,7 +18,7 @@ class InsightCard extends StatelessWidget {
   };
 
   final String name;
-  final String cognitiveDisfunctionName; // campor idDisfuncaoCogntiva do Questionamento
+  final String cognitiveDisfunctionName; // campo idDisfuncaoCogntiva do Questionamento
 
   void showDisfunctionInfo(BuildContext context) {
     final CognitiveDisfunction cognitiveDisfunction = cognitiveDisfunctionMap[cognitiveDisfunctionName]!;
@@ -41,6 +41,23 @@ class InsightCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
+            TextButton(
+              onPressed: () => showDisfunctionInfo(context),
+              style: ButtonStyle(
+                backgroundColor: WidgetStateProperty.all(Color(0xffCDD3FF)),
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(Icons.bookmark, color: Color(0xff5975FF)),
+                  SizedBox(width: 5),
+                  Text(
+                    cognitiveDisfunctionMap[cognitiveDisfunctionName]!.title.toUpperCase(),
+                    style: TextStyle(color: Color(0xff5975FF)),
+                  ),
+                ],
+              ),
+            ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -65,23 +82,6 @@ class InsightCard extends StatelessWidget {
             ),
             const SizedBox(height: 8),
             // Rótulo com o tipo do pensamento
-            TextButton(
-              onPressed: () => showDisfunctionInfo(context),
-              style: ButtonStyle(
-                backgroundColor: WidgetStateProperty.all(Color(0xffCDD3FF)),
-              ),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Icon(Icons.bookmark, color: Color(0xff5975FF)),
-                  SizedBox(width: 5),
-                  Text(
-                    cognitiveDisfunctionMap[cognitiveDisfunctionName]!.title.toUpperCase(),
-                    style: TextStyle(color: Color(0xff5975FF)),
-                  ),
-                ],
-              ),
-            ),
           ],
         ),
       ),

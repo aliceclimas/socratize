@@ -28,6 +28,19 @@ class Questioning {
       answers: List<String>.from(map['answers'] ?? []),
     );
   }
+  Map<String, dynamic> toMap(){
+    return {
+      "id":id,
+      "idPacient": idPacient,
+      "titulo": titulo,
+      "pensamento": pensamento,
+      "idDisfuncaoCognitiva": idDisfuncaoCognitiva,
+      "data":data,
+      "answers":answers,
+    };
+  }
+
+
 }
 
 
