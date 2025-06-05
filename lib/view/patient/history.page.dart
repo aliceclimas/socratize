@@ -81,7 +81,13 @@ class _HistoryPageState extends State<HistoryPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        title: Image(
+          image: AssetImage('assets/images/socratize-logo.png'),
+          width: MediaQuery.of(context).size.width * 0.1,
+          height: MediaQuery.of(context).size.width * 0.1,
+        ),
+      ),
       drawer: PatientMenu(),
       body: Padding(
         padding: const EdgeInsets.all(10),
@@ -194,7 +200,6 @@ class _HistoryPageState extends State<HistoryPage> {
                           key: Key(questionamento.id),
                           direction: DismissDirection.startToEnd,
                           onDismissed: (direction) async {
-
                             print('ID para deletar: ${questionamento.id}');
 
                             try {
