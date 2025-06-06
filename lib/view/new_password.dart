@@ -1,6 +1,6 @@
-
 import 'package:flutter/material.dart';
-
+import 'package:socratize/view/login.page.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class NewPasswordScreen extends StatefulWidget {
   const NewPasswordScreen({super.key});
@@ -11,8 +11,7 @@ class NewPasswordScreen extends StatefulWidget {
 
 class _NewPasswordScreenState extends State<NewPasswordScreen> {
   final TextEditingController passwordController = TextEditingController();
-  final TextEditingController confirmNewPasswordController =
-      TextEditingController();
+  final TextEditingController confirmNewPasswordController = TextEditingController();
 
   bool passwordVisible = false;
   bool confirmNewPasswordVisible = false;
@@ -63,15 +62,44 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
                   ),
                   SizedBox(height: 32),
                   TextField(
-                    controller: passwordController,
+                    obscureText: passwordVisible,
                     decoration: InputDecoration(
-                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(5)),
                       hintText: "Insira uma senha",
+                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(5)),
+                      suffixIcon: IconButton(
+                        splashColor: Colors.transparent,
+                        splashRadius: 1,
+                        icon: Icon(
+                          passwordVisible
+                              ? Icons.visibility_outlined
+                              : Icons.visibility_off_outlined,
+                        ),
+                        onPressed: togglePassword,
+                      ),
                     ),
+                    controller: passwordController,
+                  ),
+                  SizedBox(height: 24),
+                  TextField(
+                    obscureText: confirmNewPasswordVisible,
+                    decoration: InputDecoration(
+                      hintText: "Confirme a nova senha",
+                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(5)),
+                      suffixIcon: IconButton(
+                        splashColor: Colors.transparent,
+                        splashRadius: 1,
+                        icon: Icon(
+                          confirmNewPasswordVisible
+                              ? Icons.visibility_outlined
+                              : Icons.visibility_off_outlined,
+                        ),
+                        onPressed: toggleConfirmPassword,
+                      ),
+                    ),
+                    controller: confirmNewPasswordController,
                   ),
                   SizedBox(height: 24),
                   ElevatedButton(
-                    onPressed: null,
                     style: ElevatedButton.styleFrom(
                       textStyle: TextStyle(fontSize: 16, color: Colors.white),
                       backgroundColor: Colors.blueAccent,
@@ -79,15 +107,60 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8),
                       ),
-
                     ),
-
-                    child: Text("Alterar senha",
-                        style: TextStyle(
+                    child: Text(
+                      "Alterar senha",
+                      style: TextStyle(
                         color: Colors.white,
                         fontSize: 17,
                       ),
                     ),
+                    onPressed: () async{
+                      final newPassword = passwordController.text.trim();
+                      final confirmNewPassword = confirmNewPasswordController.text.trim();
+
+                      if (newPassword != confirmNewPassword) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(
+                              "As senhas não coincidem!",
+                              style: TextStyle(color: Colors.white, fontSize: 18),
+                              textAlign: TextAlign.center,
+                            ),
+                            backgroundColor: Colors.lightBlue,
+                          ),
+                        );
+                        return;
+                      }
+                      try {
+                        await FirebaseAuth.instance.currentUser?.updatePassword(newPassword);
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(
+                              "Senha alterada com sucesso!",
+                              style: TextStyle(color: Colors.white, fontSize: 18),
+                              textAlign: TextAlign.center,
+                            ),
+                            backgroundColor: Colors.lightBlue,
+                          ),
+                        );
+                        Navigator.pushReplacement(
+                          context, 
+                          MaterialPageRoute(builder: (context) => LoginPage()),
+                        );
+                      } catch (e) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(
+                              "Erro ao alterar a senha. Tente novamente.",
+                              style: TextStyle(color: Colors.white, fontSize: 18),
+                              textAlign: TextAlign.center,
+                            ),
+                            backgroundColor: Colors.lightBlue,
+                          ),
+                        );
+                      }
+                    },
                   ),
                 ],
               ),
@@ -98,6 +171,3 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
     );
   }
 }
-
-// ver mais
-// https://github.com/bilal-azmat/AuthUIDesign/blob/master/lib/screens/new_password.dart

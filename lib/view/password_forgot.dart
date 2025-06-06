@@ -15,6 +15,14 @@ class _PasswordForgetScreenState extends State<PasswordForgetScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: Colors.lightBlue),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
+      ),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Center(
