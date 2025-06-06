@@ -13,13 +13,13 @@ class ReadQRCodePage extends StatefulWidget {
 }
 
 class _ReadQRCodePageState extends State<ReadQRCodePage> {
-  @override
+   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
         appBar: AppBar(),
-        backgroundColor: Color(0xfffff9e3),
+        backgroundColor: const Color(0xfffff9e3),
         body: Column(
           mainAxisSize: MainAxisSize.max,
           children: [

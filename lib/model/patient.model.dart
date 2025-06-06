@@ -24,4 +24,21 @@ class PatientModel extends UserModel {
       status: document.data()?['status'],
     );
   }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'name': fullname,
+      'email': email,
+      'role': role,
+      'idTherapist': idTherapist,
+      'status': status,
+    };
+  }
+
+  Future<String> salvarPaciente(PatientModel paciente) async {
+    final docRef = await FirebaseFirestore.instance
+        .collection('users')
+        .add(paciente.toMap());
+    return docRef.id;
+  }
 }

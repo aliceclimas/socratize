@@ -1,5 +1,8 @@
 import 'package:barcode_widget/barcode_widget.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:socratize/model/patient.model.dart';
 import 'package:socratize/view/components/therapist.menu.component.dart';
 
 class GenQRCodePage extends StatefulWidget {
@@ -12,6 +15,41 @@ class GenQRCodePage extends StatefulWidget {
 class _GenQRCodePageState extends State<GenQRCodePage> {
   bool showQrCode = false;
   bool passwordVisible = false;
+  String? pacienteId;
+
+  final txtName = TextEditingController();
+  final txtEmail = TextEditingController();
+  final txtPassword = TextEditingController();
+
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+
+  Future<void> criarPaciente() async {
+    final currentUser = FirebaseAuth.instance.currentUser;
+
+    if (currentUser == null) {
+      print('Usuário não está logado.');
+      return;
+    }
+
+    final idDoTerapeuta = currentUser.uid;
+
+    final paciente = PatientModel(
+      fullname: txtName.text,
+      email: txtEmail.text,
+      role: 'patient',
+      idTherapist: idDoTerapeuta,
+      status: 'deleted',
+    );
+
+    final docRef = await FirebaseFirestore.instance
+        .collection('users')
+        .add(paciente.toMap());
+
+    setState(() {
+      pacienteId = docRef.id;
+      showQrCode = true;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -34,8 +72,8 @@ class _GenQRCodePageState extends State<GenQRCodePage> {
                 ),
                 const SizedBox(height: 70),
                 TextField(
+                  controller: txtName,
                   decoration: InputDecoration(
-                    
                     isDense: true,
                     labelText: 'Nome completo',
                     labelStyle: TextStyle(
@@ -45,10 +83,7 @@ class _GenQRCodePageState extends State<GenQRCodePage> {
                       letterSpacing: 0.0,
                     ),
                     enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Colors.blue,
-                        width: 1.0,
-                      ),
+                      borderSide: BorderSide(color: Colors.blue, width: 1.0),
                       borderRadius: BorderRadius.circular(15),
                     ),
                     focusedBorder: OutlineInputBorder(
@@ -83,6 +118,7 @@ class _GenQRCodePageState extends State<GenQRCodePage> {
                 ),
                 const SizedBox(height: 20),
                 TextField(
+                  controller: txtEmail,
                   decoration: InputDecoration(
                     isDense: true,
                     labelText: 'Email',
@@ -93,10 +129,7 @@ class _GenQRCodePageState extends State<GenQRCodePage> {
                       letterSpacing: 0.0,
                     ),
                     enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Colors.blue,
-                        width: 1.0,
-                      ),
+                      borderSide: BorderSide(color: Colors.blue, width: 1.0),
                       borderRadius: BorderRadius.circular(15),
                     ),
                     focusedBorder: OutlineInputBorder(
@@ -131,6 +164,7 @@ class _GenQRCodePageState extends State<GenQRCodePage> {
                 ),
                 const SizedBox(height: 20),
                 TextField(
+                  controller: txtPassword,
                   obscureText: true,
                   decoration: InputDecoration(
                     isDense: true,
@@ -142,17 +176,12 @@ class _GenQRCodePageState extends State<GenQRCodePage> {
                       letterSpacing: 0.0,
                     ),
                     enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Colors.blue,
-                        width: 1.0,
-                      ),
+                      borderSide: BorderSide(color: Colors.blue, width: 1.0),
                       borderRadius: BorderRadius.circular(15),
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderSide: BorderSide(
-                        color: Color(
-                          0xff1977d2,
-                        ), // substituto do FlutterFlowTheme.iconeAzul
+                        color: Color(0xff1977d2),
                         width: 1.0,
                       ),
                       borderRadius: BorderRadius.circular(15),
@@ -186,9 +215,9 @@ class _GenQRCodePageState extends State<GenQRCodePage> {
                   cursorColor: Colors.black,
                 ),
                 const SizedBox(height: 20),
-                if (showQrCode)
+                if (showQrCode && pacienteId != null)
                   BarcodeWidget(
-                    data: 'https://github.com/aliceclimas/socratize/tree/main',
+                    data: pacienteId!,
                     barcode: Barcode.qrCode(),
                     width: 200,
                     height: 200,
@@ -206,11 +235,7 @@ class _GenQRCodePageState extends State<GenQRCodePage> {
                 ),
                 const SizedBox(height: 16),
                 ElevatedButton(
-                  onPressed: () {
-                    setState(() {
-                      showQrCode = true;
-                    });
-                  },
+                  onPressed: criarPaciente,
                   style: ElevatedButton.styleFrom(
                     padding: const EdgeInsets.symmetric(
                       horizontal: 32,
@@ -226,7 +251,8 @@ class _GenQRCodePageState extends State<GenQRCodePage> {
                     style: TextStyle(
                       fontWeight: FontWeight.w700,
                       color: Colors.white,
-                      fontSize: 20,),
+                      fontSize: 20,
+                    ),
                   ),
                 ),
               ],
