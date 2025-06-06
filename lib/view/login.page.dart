@@ -115,7 +115,7 @@ class _LoginPageState extends State<LoginPage> {
                           TextButton(
                             onPressed:
                             () => {
-                              Navigator.of(context).pushNamed('/new-password'),
+                              Navigator.of(context).pushNamed('/forgot-password'),
                             },
                             child: Text(
                               "Esqueci a senha",
