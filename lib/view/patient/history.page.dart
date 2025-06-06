@@ -61,7 +61,7 @@ class _HistoryPageState extends State<HistoryPage> {
     var querySnapshot =
         await FirebaseFirestore.instance
             .collection('questionamento')
-            .where('idPacient', isEqualTo: uid)
+            .where('idPaciente', isEqualTo: uid)
             .get();
 
     for (var doc in querySnapshot.docs) {
@@ -94,11 +94,6 @@ class _HistoryPageState extends State<HistoryPage> {
         child: Center(
           child: Column(
             children: [
-              Image(
-                image: AssetImage('assets/images/socratize-logo-nome.png'),
-                width: MediaQuery.of(context).size.width * 0.3,
-                height: MediaQuery.of(context).size.width * 0.3,
-              ),
               Text(
                 "Histórico de Pensamentos",
                 style: Theme.of(context).textTheme.headlineLarge,
@@ -197,7 +192,7 @@ class _HistoryPageState extends State<HistoryPage> {
                         final questionamento = listaQuestionamentos[index];
 
                         return Dismissible(
-                          key: Key(questionamento.id),
+                          key: Key(questionamento.id!),
                           direction: DismissDirection.startToEnd,
                           onDismissed: (direction) async {
                             print('ID para deletar: ${questionamento.id}');
@@ -219,15 +214,15 @@ class _HistoryPageState extends State<HistoryPage> {
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
                                 content: Text(
-                                  '${questionamento.pensamento} deletado',
+                                  '${questionamento.titulo} deletado',
                                 ),
                               ),
                             );
                           },
                           child: InsightCard(
-                            name: questionamento.pensamento,
+                            name: questionamento.titulo,
                             cognitiveDisfunctionName:
-                                questionamento.idDisfuncaoCognitiva,
+                                questionamento.disfuncaoCognitiva,
                           ),
                         );
                       },

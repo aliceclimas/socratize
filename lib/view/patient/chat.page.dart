@@ -201,7 +201,7 @@ class _ChatPageState extends State<ChatPage> {
       builder.idPaciente = FirebaseAuth.instance.currentUser!.uid;
       builder.titulo = onChatMessages[3].text;
       builder.mensagens = onChatMessages.map((message) => message.toJson()).toList();
-      builder.disfuncaoCognitiva = 'PERSONALIZAÇÃO';
+      builder.disfuncaoCognitiva = 'personalizacao';
       builder.data = DateTime.now();
 
       Questioning questionamento = builder.build();
