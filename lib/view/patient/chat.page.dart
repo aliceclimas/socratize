@@ -1,7 +1,10 @@
 import 'package:chat_bubbles/chat_bubbles.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:socratize/model/messages.model.dart';
 import 'package:socratize/model/questioning.builder.dart';
+import 'package:socratize/model/questioning.model.dart';
 import 'package:socratize/view/components/patient.menu.component.dart';
 
 class ChatPage extends StatefulWidget {
@@ -176,7 +179,7 @@ class _ChatPageState extends State<ChatPage> {
     MessageModel(text: 'Questionamento finalizado, parabéns confrontar seus pensamentos 🎊. Continue assim até que isso se torne um hábito.'),
   ];
 
-  void addMessage(MessageModel message) {
+  void addMessage(MessageModel message) async {
     setState(() {
       onChatMessages.add(message);
     });
@@ -193,6 +196,23 @@ class _ChatPageState extends State<ChatPage> {
       for (var question in currentQuestions) {
         onChatMessages.add(question);
       }
+    }
+    if (currentIndex == staticMessages.length - 1) {
+      builder.idPaciente = FirebaseAuth.instance.currentUser!.uid;
+      builder.titulo = onChatMessages[3].text;
+      builder.mensagens = onChatMessages.map((message) => message.toJson()).toList();
+      builder.disfuncaoCognitiva = 'PERSONALIZAÇÃO';
+      builder.data = DateTime.now();
+
+      Questioning questionamento = builder.build();
+
+      await FirebaseFirestore.instance.collection('questionamento').add({
+        'idPaciente': questionamento.idPaciente,
+        'titulo': questionamento.titulo,
+        'data': questionamento.data,
+        'disfuncaoCognitiva': questionamento.disfuncaoCognitiva,
+        'mensagens': questionamento.mensagens,
+      });
     }
   }
 

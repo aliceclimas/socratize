@@ -1,46 +1,42 @@
+
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class Questioning {
-  final String id;
-  final String idPacient;
+  final String? id;
+  final String idPaciente;
   final String titulo;
-  final String pensamento;
-  final String idDisfuncaoCognitiva;
+  final String disfuncaoCognitiva;
   final DateTime data;
-  final List<String> answers;
+  final List<Map<String, dynamic>> mensagens;
 
   Questioning({
-    required this.id,
-    required this.idPacient,
+    required this.idPaciente,
     required this.titulo,
-    required this.pensamento,
-    required this.idDisfuncaoCognitiva,
+    required this.disfuncaoCognitiva,
     required this.data,
-    required this.answers,
+    required this.mensagens,
+    this.id,
   });
 
-  factory Questioning.fromMap(Map<String, dynamic> map) {
+  factory Questioning.fromMap(Map<String, dynamic> dict) {
+
+     List<Map<String, dynamic>> mensagensList = [];
+  if (dict['mensagens'] != null && dict['mensagens'] is List) {
+    mensagensList = (dict['mensagens'] as List)
+        .map((item) => Map<String, dynamic>.from(item as Map))
+        .toList();
+  }
+
     return Questioning(
-      id: map['id'],
-      idPacient: map['idPaciente'],
-      titulo: map['titulo'],
-      pensamento: map['pensamento'],
-      idDisfuncaoCognitiva: map['idDisfuncaoCognitiva'],
-      data: DateTime.parse(map['data']), 
-      answers: List<String>.from(map['answers'] ?? []),
+      id: dict['id'],
+      idPaciente: dict['idPaciente'],
+      titulo: dict['titulo'],
+      disfuncaoCognitiva: dict['disfuncaoCognitiva'],
+      data: (dict['data'] as Timestamp).toDate(),
+      mensagens: mensagensList
     );
   }
-  Map<String, dynamic> toMap(){
-    return {
-      "id":id,
-      "idPacient": idPacient,
-      "titulo": titulo,
-      "pensamento": pensamento,
-      "idDisfuncaoCognitiva": idDisfuncaoCognitiva,
-      "data":data,
-      "answers":answers,
-    };
-  }
-
-
 }
 
 

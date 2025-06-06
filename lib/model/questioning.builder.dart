@@ -1,27 +1,23 @@
 import 'package:socratize/model/questioning.model.dart';
 
 class QuestioningBuilder {
-  String? id;
-  String? idPacient;
+  String? idPaciente;
   String? titulo;
-  String? pensamento;
-  String? idDisfuncaoCognitiva;
+  String? disfuncaoCognitiva;
   DateTime? data;
-  List<String> answers = [];
+  List<Map<String, dynamic>>? mensagens = [];
 
   Questioning build() {
-    if (id == null || idPacient == null || titulo == null || pensamento == null || idDisfuncaoCognitiva == null || data == null) {
+    if (idPaciente == null || titulo == null || titulo == null || disfuncaoCognitiva == null || data == null || mensagens == null) {
       throw Exception('Campos obrigatórios ausentes');
     }
 
     return Questioning(
-      id: id!,
-      idPacient: idPacient!,
+      idPaciente: idPaciente!,
       titulo: titulo!,
-      pensamento: pensamento!,
-      idDisfuncaoCognitiva: idDisfuncaoCognitiva!,
+      disfuncaoCognitiva: disfuncaoCognitiva!,
       data: data!,
-      answers: answers,
+      mensagens: mensagens!
     );
   }
 }

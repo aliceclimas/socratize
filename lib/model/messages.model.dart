@@ -7,9 +7,17 @@ class MessageModel {
   final bool isQuestion;
   final bool waitUser;
 
-  MessageModel({required this.text, this.isSender = false, this.value, this.isClickable = false , this.isChoice = false, this.isQuestion = false, this.waitUser = false});
+  MessageModel({
+    required this.text,
+    this.isSender = false,
+    this.value,
+    this.isClickable = false,
+    this.isChoice = false,
+    this.isQuestion = false,
+    this.waitUser = false,
+  });
 
-  factory MessageModel.fromMap (Map<String, dynamic> dictionary) {
+  factory MessageModel.fromMap(Map<String, dynamic> dictionary) {
     return MessageModel(
       text: dictionary['text'],
       value: dictionary['value'],
@@ -18,5 +26,12 @@ class MessageModel {
       isChoice: dictionary['isChoice'],
       isQuestion: dictionary['isQuestion'],
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'text': text,
+      'isSender': isSender,
+    };
   }
 }
