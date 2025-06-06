@@ -38,12 +38,30 @@ class _GenQRCodePageState extends State<GenQRCodePage> {
       email: txtEmail.text,
       role: 'patient',
       idTherapist: idDoTerapeuta,
-      status: 'deleted',
+      status: 'deactivated',
     );
+
+    print(idDoTerapeuta);
+
+    FirebaseAuth.instance.createUserWithEmailAndPassword(email: paciente.email, password: txtPassword.text);
 
     final docRef = await FirebaseFirestore.instance
         .collection('users')
         .add(paciente.toMap());
+
+    var therapist = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(idDoTerapeuta)
+        .get();
+
+    List<dynamic> currentPatientsId = therapist.data()!['patientsId'];
+    List<dynamic> newPatientsId = List.from(currentPatientsId);
+
+    newPatientsId.add(docRef.id);
+
+    FirebaseFirestore.instance.collection('users').doc(idDoTerapeuta).update({
+      'patientsId': newPatientsId
+    });
 
     setState(() {
       pacienteId = docRef.id;
@@ -235,7 +253,7 @@ class _GenQRCodePageState extends State<GenQRCodePage> {
                 ),
                 const SizedBox(height: 16),
                 ElevatedButton(
-                  onPressed: criarPaciente,
+                  onPressed: () => criarPaciente(),
                   style: ElevatedButton.styleFrom(
                     padding: const EdgeInsets.symmetric(
                       horizontal: 32,

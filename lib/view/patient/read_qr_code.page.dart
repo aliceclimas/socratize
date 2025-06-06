@@ -1,9 +1,8 @@
-import 'dart:convert';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
+import 'package:socratize/model/patient.model.dart';
 
 class ReadQRCodePage extends StatefulWidget {
   const ReadQRCodePage({super.key});
@@ -13,7 +12,7 @@ class ReadQRCodePage extends StatefulWidget {
 }
 
 class _ReadQRCodePageState extends State<ReadQRCodePage> {
-   @override
+  @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
@@ -56,32 +55,31 @@ class _ReadQRCodePageState extends State<ReadQRCodePage> {
                                 final String? rawValue =
                                     result.barcodes.first.rawValue;
                                 if (rawValue != null) {
-                                  final Map<String, dynamic> userData =
-                                      jsonDecode(
-                                        rawValue,
-                                      ); // paciente@gmail.com
-                                  final querySnapshot =
+                                  final String userId = rawValue;
+
+                                  await FirebaseFirestore.instance
+                                      .collection('users')
+                                      .doc(userId)
+                                      .update({'status': 'active'});
+
+                                  var patientDoc =
                                       await FirebaseFirestore.instance
                                           .collection('users')
-                                          .where(
-                                            'email',
-                                            isEqualTo: userData['email'],
-                                          )
-                                          .limit(1)
+                                          .doc(userId)
                                           .get();
 
-                                  if (querySnapshot.docs.isNotEmpty) {
-                                    await querySnapshot.docs.first.reference
-                                        .update({"status": 'active'});
+                                  var patient = PatientModel.fromDocument(
+                                    patientDoc,
+                                  );
 
-                                    await FirebaseAuth.instance
-                                        .signInWithEmailAndPassword(
-                                          email: userData['email'],
-                                          password: userData['password'],
-                                        );
+                                  await FirebaseAuth.instance
+                                      .signInWithEmailAndPassword(
+                                        email: patient.email,
+                                        password: '12345678',
+                                      );
 
-                                    if (!context.mounted) throw Exception('Erro interno');
-
+                                  // Verificar se o context ainda está montado antes de usar
+                                  if (context.mounted) {
                                     Navigator.of(
                                       context,
                                     ).pushReplacementNamed('/history');

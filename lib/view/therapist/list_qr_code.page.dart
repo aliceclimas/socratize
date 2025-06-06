@@ -20,11 +20,8 @@ class _ListQRCodesState extends State<ListQRCodes> {
     List<UserModel> usersData = [];
 
     String? uid = FirebaseAuth.instance.currentUser?.uid;
-    var therapistDoc =
-        (await FirebaseFirestore.instance.collection('users').doc(uid).get());
-    TherapistModel therapistModel = TherapistModel.fromMap(
-      therapistDoc.data()!,
-    );
+    var therapistDoc = (await FirebaseFirestore.instance.collection('users').doc(uid).get());
+    TherapistModel therapistModel = TherapistModel.fromMap(therapistDoc.data()!);
 
     for (var patientID in therapistModel.patientsId) {
       var userDoc =
