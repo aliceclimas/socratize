@@ -1,8 +1,8 @@
+import 'dart:convert';
+
 import 'package:barcode_widget/barcode_widget.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:socratize/model/patient.model.dart';
 import 'package:socratize/view/components/therapist.menu.component.dart';
 
 class GenQRCodePage extends StatefulWidget {
@@ -13,59 +13,26 @@ class GenQRCodePage extends StatefulWidget {
 }
 
 class _GenQRCodePageState extends State<GenQRCodePage> {
-  bool showQrCode = false;
-  bool passwordVisible = false;
-  String? pacienteId;
+  bool showCode = false;
+  bool showPassword = false;
+  String barcodeData = "Sem dados!";
+  var disabledButton = true;
 
-  final txtName = TextEditingController();
-  final txtEmail = TextEditingController();
-  final txtPassword = TextEditingController();
+  final nameInputController = TextEditingController();
+  final emailInputController = TextEditingController();
 
-  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final therapistId = FirebaseAuth.instance.currentUser?.uid;
 
-  Future<void> criarPaciente() async {
-    final currentUser = FirebaseAuth.instance.currentUser;
-
-    if (currentUser == null) {
-      print('Usuário não está logado.');
-      return;
-    }
-
-    final idDoTerapeuta = currentUser.uid;
-
-    final paciente = PatientModel(
-      fullname: txtName.text,
-      email: txtEmail.text,
-      role: 'patient',
-      idTherapist: idDoTerapeuta,
-      status: 'deactivated',
-    );
-
-    print(idDoTerapeuta);
-
-    FirebaseAuth.instance.createUserWithEmailAndPassword(email: paciente.email, password: txtPassword.text);
-
-    final docRef = await FirebaseFirestore.instance
-        .collection('users')
-        .add(paciente.toMap());
-
-    var therapist = await FirebaseFirestore.instance
-        .collection('users')
-        .doc(idDoTerapeuta)
-        .get();
-
-    List<dynamic> currentPatientsId = therapist.data()!['patientsId'];
-    List<dynamic> newPatientsId = List.from(currentPatientsId);
-
-    newPatientsId.add(docRef.id);
-
-    FirebaseFirestore.instance.collection('users').doc(idDoTerapeuta).update({
-      'patientsId': newPatientsId
-    });
-
+  void generateBarcode(String patientName, String patientEmail, String therapistId) {
     setState(() {
-      pacienteId = docRef.id;
-      showQrCode = true;
+      Map<String, String> barcodeDataMap = {
+        "patientName": patientName,
+        "patientEmail": patientEmail,
+        "therapistId": therapistId,
+      };
+
+      barcodeData = jsonEncode(barcodeDataMap);
+      showCode = true;
     });
   }
 
@@ -80,200 +47,108 @@ class _GenQRCodePageState extends State<GenQRCodePage> {
         body: SafeArea(
           child: SingleChildScrollView(
             padding: const EdgeInsets.all(16.0),
-            child: Column(
-              children: [
-                Image.asset(
-                  'assets/images/socratize-logo-nome.png',
-                  width: 150,
-                  height: 150,
-                  fit: BoxFit.cover,
-                ),
-                const SizedBox(height: 70),
-                TextField(
-                  controller: txtName,
-                  decoration: InputDecoration(
-                    isDense: true,
-                    labelText: 'Nome completo',
-                    labelStyle: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
-                      fontStyle: FontStyle.normal,
-                      letterSpacing: 0.0,
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.blue, width: 1.0),
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Color(0xff1977d2),
-                        width: 1.0,
+            child: Center(
+              child: Column(
+                children: [
+                  Image.asset(
+                    'assets/images/socratize-logo-nome.png',
+                    width: 150,
+                    height: 150,
+                  ),
+                  Text(
+                    "Gerar QR Code",
+                    style: Theme.of(context).textTheme.headlineLarge,
+                  ),
+                  Text(
+                    "Gere um QR Code único para um paciente. Ao escanear o código a conta será criada imediatamente e o mesmo poderá utilizar o aplicativo. ",
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 50),
+                  TextField(
+                    controller: nameInputController,
+                    decoration: InputDecoration(
+                      filled: true,
+                      fillColor: Colors.white,
+                      hintText: "Fulano Ciclano",
+                      prefixIcon: Icon(Icons.person),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(15),
                       ),
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                    errorBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.red, width: 1.0),
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                    focusedErrorBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.red, width: 1.0),
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                    filled: true,
-                    fillColor: Colors.white,
-                    contentPadding: EdgeInsets.symmetric(
-                      horizontal: 12.0,
-                      vertical: 16.0,
-                    ),
-                  ),
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w400,
-                    fontStyle: FontStyle.normal,
-                    letterSpacing: 0.0,
-                  ),
-                  cursorColor: Colors.black,
-                ),
-                const SizedBox(height: 20),
-                TextField(
-                  controller: txtEmail,
-                  decoration: InputDecoration(
-                    isDense: true,
-                    labelText: 'Email',
-                    labelStyle: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
-                      fontStyle: FontStyle.normal,
-                      letterSpacing: 0.0,
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.blue, width: 1.0),
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Color(0xff1977d2),
-                        width: 1.0,
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.blue, width: 1.0),
+                        borderRadius: BorderRadius.circular(15),
                       ),
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                    errorBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.red, width: 1.0),
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                    focusedErrorBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.red, width: 1.0),
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                    filled: true,
-                    fillColor: Colors.white,
-                    contentPadding: EdgeInsets.symmetric(
-                      horizontal: 12.0,
-                      vertical: 16.0,
-                    ),
-                  ),
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w400,
-                    fontStyle: FontStyle.normal,
-                    letterSpacing: 0.0,
-                  ),
-                  cursorColor: Colors.black,
-                ),
-                const SizedBox(height: 20),
-                TextField(
-                  controller: txtPassword,
-                  obscureText: true,
-                  decoration: InputDecoration(
-                    isDense: true,
-                    labelText: 'Senha',
-                    labelStyle: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
-                      fontStyle: FontStyle.normal,
-                      letterSpacing: 0.0,
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.blue, width: 1.0),
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Color(0xff1977d2),
-                        width: 1.0,
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(15),
+                        borderSide: BorderSide(
+                          color: Colors.yellow,
+                          width: 1.0,
+                        ),
                       ),
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                    errorBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.red, width: 1.0),
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                    focusedErrorBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.red, width: 1.0),
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                    filled: true,
-                    fillColor: Colors.white,
-                    contentPadding: EdgeInsets.symmetric(
-                      horizontal: 12.0,
-                      vertical: 16.0,
-                    ),
-                    suffixIcon: Icon(
-                      Icons.visibility_off_outlined,
-                      color: Colors.lightBlue,
-                      size: 20.0,
                     ),
                   ),
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w400,
-                    fontStyle: FontStyle.normal,
-                    letterSpacing: 0.0,
-                  ),
-                  cursorColor: Colors.black,
-                ),
-                const SizedBox(height: 20),
-                if (showQrCode && pacienteId != null)
-                  BarcodeWidget(
-                    data: pacienteId!,
-                    barcode: Barcode.qrCode(),
-                    width: 200,
-                    height: 200,
-                    errorBuilder:
-                        (context, error) =>
-                            const SizedBox(width: 200, height: 200),
-                  ),
-                const SizedBox(height: 20),
-                Text(
-                  'Clique no botão para gerar o QR Code para seu paciente.',
-                  textAlign: TextAlign.center,
-                  style: Theme.of(
-                    context,
-                  ).textTheme.bodyMedium?.copyWith(fontSize: 16),
-                ),
-                const SizedBox(height: 16),
-                ElevatedButton(
-                  onPressed: () => criarPaciente(),
-                  style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 32,
-                      vertical: 16,
-                    ),
-                    backgroundColor: Colors.blue,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
+                  const SizedBox(height: 20),
+                  TextField(
+                    controller: emailInputController,
+                    decoration: InputDecoration(
+                      filled: true,
+                      fillColor: Colors.white,
+                      hintText: "exemplo@provedor.com",
+                      prefixIcon: Icon(Icons.mail),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.blue, width: 1.0),
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(15),
+                        borderSide: BorderSide(
+                          color: Colors.yellow,
+                          width: 1.0,
+                        ),
+                      ),
                     ),
                   ),
-                  child: const Text(
-                    'GERAR',
-                    style: TextStyle(
-                      fontWeight: FontWeight.w700,
-                      color: Colors.white,
-                      fontSize: 20,
+                  const SizedBox(height: 20),
+                  const SizedBox(height: 20),
+                    BarcodeWidget(
+                      data: barcodeData,
+                      barcode: Barcode.qrCode(),
+                      width: 200,
+                      height: 200,
+                      errorBuilder:
+                          (context, error) =>
+                              const SizedBox(width: 200, height: 200),
+                    ),
+                  const SizedBox(height: 10),
+
+                  Text((barcodeData == 'Sem dados!') ? "QR sem dados!" : "QR Code preenchido com sucesso!"),
+                  const SizedBox(height: 20),
+                  ElevatedButton(
+                    onPressed: () => { generateBarcode(nameInputController.text, emailInputController.text, therapistId!) },
+                    style: ElevatedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 32,
+                        vertical: 16,
+                      ),
+                      backgroundColor: Colors.blue,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                    ),
+                    child: const Text(
+                      'GERAR',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w700,
+                        color: Colors.white,
+                        fontSize: 20,
+                      ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),
