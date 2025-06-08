@@ -1,6 +1,5 @@
-import 'package:flutter/material.dart';
-import 'package:socratize/view/login.page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 
 class NewPasswordScreen extends StatefulWidget {
   const NewPasswordScreen({super.key});
@@ -31,6 +30,7 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Center(
@@ -144,10 +144,7 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
                             backgroundColor: Colors.lightBlue,
                           ),
                         );
-                        Navigator.pushReplacement(
-                          context, 
-                          MaterialPageRoute(builder: (context) => LoginPage()),
-                        );
+                        Navigator.pushReplacementNamed(context, "/history");
                       } catch (e) {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(

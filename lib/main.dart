@@ -7,13 +7,13 @@ import 'package:flutter_gemini/flutter_gemini.dart';
 import 'package:socratize/firebase_options.dart';
 import 'package:socratize/theme.dart';
 import 'package:socratize/view/login.page.dart';
+import 'package:socratize/view/new_password.dart';
 import 'package:socratize/view/password_forgot.dart';
 import 'package:socratize/view/patient/chat.page.dart';
 import 'package:socratize/view/patient/history.page.dart';
 import 'package:socratize/view/patient/read_qr_code.page.dart';
 import 'package:socratize/view/therapist/gen_qr_code.page.dart';
 import 'package:socratize/view/therapist/list_qr_code.page.dart';
-import 'package:socratize/view/new_password.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -32,7 +32,7 @@ class SocratizeApp extends StatefulWidget {
 
 class _SocratizeAppState extends State<SocratizeApp> {
   late Future<String> _initialRouteFuture = initialRouteHandler();
-  final GlobalKey _appKey = GlobalKey(); 
+  final GlobalKey _appKey = GlobalKey();
   final GlobalKey _loadingKey = GlobalKey();
 
   Future<String> initialRouteHandler() async {
@@ -57,7 +57,6 @@ class _SocratizeAppState extends State<SocratizeApp> {
           return '/login';
       }
     } catch (e) {
-      print(e);
       return "/login";
     }
   }
@@ -95,7 +94,7 @@ class _SocratizeAppState extends State<SocratizeApp> {
             "/gen-qr-code": (context) => GenQRCodePage(),
             "/list-qr-codes": (context) => ListQRCodes(),
             "/forgot-password": (context) => PasswordForgetScreen(),
-            "/new-password": (context) => NewPasswordScreen(),
+            "/change-password": (context) => NewPasswordScreen(),
           },
         );
       },
