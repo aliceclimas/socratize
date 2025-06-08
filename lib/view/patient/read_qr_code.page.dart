@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -12,87 +14,165 @@ class ReadQRCodePage extends StatefulWidget {
 }
 
 class _ReadQRCodePageState extends State<ReadQRCodePage> {
+  bool _isProcessingScan = false;
+
+  Future<bool> checkPatientExists(String email) async {
+    final query = FirebaseFirestore.instance
+        .collection('users')
+        .where('email', isEqualTo: email);
+
+    final querySnapshot = await query.get();
+
+    if (querySnapshot.docs.isNotEmpty) {
+      return true; // Usuário existe
+    } else {
+      return false; // Usuário não existe
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () => FocusScope.of(context).unfocus(),
-      child: Scaffold(
-        appBar: AppBar(),
-        backgroundColor: const Color(0xfffff9e3),
-        body: Column(
-          mainAxisSize: MainAxisSize.max,
+    FirebaseAuth auth = FirebaseAuth.instance;
+    FirebaseFirestore firestore = FirebaseFirestore.instance;
+
+    return Scaffold(
+      appBar: AppBar(
+        title: Image(
+          image: AssetImage('assets/images/socratize-logo.png'),
+          width: MediaQuery.of(context).size.width * 0.1,
+          height: MediaQuery.of(context).size.width * 0.1,
+        ),
+      ),
+      backgroundColor: const Color(0xfffff9e3),
+      body: Center(
+        child: Column(
           children: [
-            Expanded(
-              child: Align(
-                alignment: Alignment.center,
-                child: Container(
-                  constraints: const BoxConstraints(maxWidth: 670),
-                  padding: const EdgeInsets.all(32),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      Column(
-                        children: [
-                          const Text(
-                            'Seja Bem Vindo',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              fontSize: 28,
-                              fontWeight: FontWeight.bold,
+            Text(
+              "Ler QR Code",
+              style: Theme.of(context).textTheme.headlineLarge,
+            ),
+            const SizedBox(height: 16),
+            const Text(
+              'Use sua camera para ler o QR Code que seu terapeuta te enviou, essa etapa é crucial para que sua conta seja ativada!',
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: 16),
+            ),
+            const SizedBox(height: 50),
+            SizedBox(
+              width: 300,
+              height: 300,
+              child: MobileScanner(
+                onDetect: (BarcodeCapture result) async {
+                  if (_isProcessingScan) {
+                    return;
+                  }
+
+                  setState(() {
+                    _isProcessingScan = true;
+                  });
+                  try {
+                    final String? barcodeData = result.barcodes.first.rawValue;
+
+                    if (barcodeData == null ||
+                        barcodeData.isEmpty ||
+                        barcodeData == "Sem dados!") {
+                      if (mounted) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('QR Code inválido ou sem dados.'),
+                          ),
+                        );
+                      }
+                      return;
+                    }
+
+                    Map<String, dynamic> patientData;
+                    try {
+                      patientData = jsonDecode(barcodeData);
+                    } catch (e) {
+                      if (mounted) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('QR Code com formato inválido.'),
+                          ),
+                        );
+                      }
+                      return;
+                    }
+
+                    final patient = PatientModel(
+                      fullname: patientData['patientName'],
+                      email: patientData['patientEmail'],
+                      role: 'patient',
+                      idTherapist: patientData['therapistId'],
+                      status: 'active',
+                    );
+
+                    bool patientAlreadyExists = await checkPatientExists(
+                      patient.email,
+                    );
+                    if (patientAlreadyExists) {
+                      if (mounted) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(
+                              'Paciente com email ${patient.email} já cadastrado.',
                             ),
                           ),
-                          const SizedBox(height: 16),
-                          const Text(
-                            'Clique no botão para abrir a câmera e ler seu QR Code!',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(fontSize: 16),
-                          ),
-                          SizedBox(
-                            width: 300,
-                            height: 300,
-                            child: MobileScanner(
-                              onDetect: (BarcodeCapture result) async {
-                                final String? rawValue =
-                                    result.barcodes.first.rawValue;
-                                if (rawValue != null) {
-                                  final String userId = rawValue;
+                        );
+                        Navigator.of(context).pushReplacementNamed('/login');
+                      }
+                      return;
+                    }
 
-                                  await FirebaseFirestore.instance
-                                      .collection('users')
-                                      .doc(userId)
-                                      .update({'status': 'active'});
+                    UserCredential userCredential = await auth
+                        .createUserWithEmailAndPassword(
+                          email: patient.email,
+                          password: '12345678',
+                        );
 
-                                  var patientDoc =
-                                      await FirebaseFirestore.instance
-                                          .collection('users')
-                                          .doc(userId)
-                                          .get();
+                    await firestore
+                        .collection('users')
+                        .doc(userCredential.user?.uid)
+                        .set(patient.toMap());
 
-                                  var patient = PatientModel.fromDocument(
-                                    patientDoc,
-                                  );
+                    var therapist =
+                        await firestore
+                            .collection('users')
+                            .doc(patient.idTherapist)
+                            .get();
 
-                                  await FirebaseAuth.instance
-                                      .signInWithEmailAndPassword(
-                                        email: patient.email,
-                                        password: '12345678',
-                                      );
+                    List<dynamic> currentPatientsId =
+                        therapist.data()!['patientsId'];
 
-                                  // Verificar se o context ainda está montado antes de usar
-                                  if (context.mounted) {
-                                    Navigator.of(
-                                      context,
-                                    ).pushReplacementNamed('/history');
-                                  }
-                                }
-                              },
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
+                    currentPatientsId.add(userCredential.user?.uid);
+
+                    firestore
+                        .collection('users')
+                        .doc(patient.idTherapist)
+                        .update({'patientsId': currentPatientsId});
+
+                    // Verificar se o context ainda está montado antes de usar
+                    if (context.mounted) {
+                      Navigator.of(context).pushReplacementNamed('/change-password');
+                      return;
+                    }
+                  } catch (e) {
+                    if (mounted) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('Erro ao processar QR Code: $e'),
+                        ),
+                      );
+                    }
+                  } finally {
+                    if (mounted) {
+                      setState(() {
+                        _isProcessingScan = false;
+                      });
+                    }
+                  }
+                },
               ),
             ),
           ],
