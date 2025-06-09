@@ -131,6 +131,10 @@ class _ReadQRCodePageState extends State<ReadQRCodePage> {
                           password: '12345678',
                         );
 
+                    await userCredential.user!.updateDisplayName(patient.fullname);
+
+                    await userCredential.user!.reload();
+
                     await firestore
                         .collection('users')
                         .doc(userCredential.user?.uid)
@@ -141,6 +145,7 @@ class _ReadQRCodePageState extends State<ReadQRCodePage> {
                             .collection('users')
                             .doc(patient.idTherapist)
                             .get();
+
 
                     List<dynamic> currentPatientsId =
                         therapist.data()!['patientsId'];
