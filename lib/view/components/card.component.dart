@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:quickalert/quickalert.dart';
 import 'package:socratize/model/cognitive_disfunction.model.dart';
 
+
 class InsightCard extends StatelessWidget {
-  InsightCard({super.key, required this.name, required this.cognitiveDisfunctionName});
+  InsightCard({super.key, required this.name, required this.cognitiveDisfunctionName, required this.date});
 
   final Map<String, CognitiveDisfunction> cognitiveDisfunctionMap = {
     "personalizacao": CognitiveDisfunction(title: "Personalização" , description: "Assumir responsabilidade por tudo que acontece, mesmo quando não é culpa sua."),
@@ -17,6 +18,7 @@ class InsightCard extends StatelessWidget {
     "uso-de-deveria": CognitiveDisfunction(title: "Uso de Deveria" , description: "Impor regras rígicas sobre como as coisas 'devem' ser, levando à frustação quando a realizada não se encaixa nesses padrões.")
   };
 
+  final String date;
   final String name;
   final String cognitiveDisfunctionName; // campo idDisfuncaoCogntiva do Questionamento
 
@@ -41,6 +43,11 @@ class InsightCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+
+              Text(date),
             TextButton(
               onPressed: () => showDisfunctionInfo(context),
               style: ButtonStyle(
@@ -58,6 +65,8 @@ class InsightCard extends StatelessWidget {
                 ],
               ),
             ),
+            ],),
+            SizedBox(height: 10),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
