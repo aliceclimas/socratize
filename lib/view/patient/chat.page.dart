@@ -22,7 +22,23 @@ class _ChatPageState extends State<ChatPage> {
   late List questionsList;
 
   bool activateInput = false;
-  TextEditingController inputController = TextEditingController();
+  bool isTyping = false; // Adicionar indicador de digitação
+
+  final TextEditingController inputController = TextEditingController();
+  final ScrollController _scrollController = ScrollController();
+
+
+  void _scrollToBottom() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (_scrollController.hasClients) {
+        _scrollController.animateTo(
+          _scrollController.position.maxScrollExtent,
+          duration: const Duration(milliseconds: 300),
+          curve: Curves.easeOut,
+        );
+      }
+    });
+  }
 
   @override
   void initState() {
@@ -184,10 +200,13 @@ class _ChatPageState extends State<ChatPage> {
       onChatMessages.add(message);
     });
 
+    _scrollToBottom();
+
     if (message.waitUser == true) {
       currentQuestionsIndex++;
       return;
     }
+
     currentIndex++;
     onChatMessages.add(staticMessages[currentIndex]);
 
@@ -220,12 +239,18 @@ class _ChatPageState extends State<ChatPage> {
     setState(() {
       onChatMessages.removeWhere((message) => message.isChoice == true);
     });
+
+    _scrollToBottom();
+
   }
 
   void removeQuestions() {
     setState(() {
       onChatMessages.removeWhere((message) => message.isQuestion == true);
     });
+
+    _scrollToBottom();
+
   }
 
   @override
@@ -243,6 +268,7 @@ class _ChatPageState extends State<ChatPage> {
         children: [
           Flexible(
             child: ListView(
+              controller: _scrollController,
               children: [
                 ...onChatMessages.map((message) {
                   return GestureDetector(
@@ -311,9 +337,10 @@ class _ChatPageState extends State<ChatPage> {
                 IconButton(
                   icon: Icon(Icons.send),
                   onPressed: () {
-                    addMessage(
-                      MessageModel(text: inputController.text, isSender: true),
-                    );
+                    if (inputController.text.trim().isNotEmpty) {
+                    addMessage(MessageModel(text: inputController.text, isSender: true));
+                    inputController.clear();
+                  }
                   },
 
                   color: Colors.blue,
