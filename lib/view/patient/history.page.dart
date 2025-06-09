@@ -13,6 +13,7 @@ class HistoryPage extends StatefulWidget {
 }
 
 class _HistoryPageState extends State<HistoryPage> {
+
   /*
   // Lista de 'Questionamentos'
   final List<Map<String, dynamic>> questionamentos = [
@@ -49,6 +50,12 @@ class _HistoryPageState extends State<HistoryPage> {
   ];
 
   */
+  String dateFormat(DateTime date) {
+    String dia = date.day.toString().padLeft(2, '0');
+    String mes = date.month.toString().padLeft(2, '0');
+    String ano = date.year.toString();
+    return '$dia/$mes/$ano';
+  }
 
   late final Future<List<Questioning>> _getQuestionings;
 
@@ -103,7 +110,7 @@ class _HistoryPageState extends State<HistoryPage> {
                 hintText: "Pesquisar pensamento...",
                 leading: Icon(Icons.search),
               ),
-              Row(
+              /*Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   Flexible(
@@ -161,9 +168,8 @@ class _HistoryPageState extends State<HistoryPage> {
                     ),
                   ),
                 ],
-              ),
+              ),*/
               SizedBox(height: 30),
-
               Expanded(
                 flex: 2,
                 child: FutureBuilder<List<Questioning>>(
@@ -221,6 +227,7 @@ class _HistoryPageState extends State<HistoryPage> {
                           },
                           child: InsightCard(
                             name: questionamento.titulo,
+                            date: dateFormat(questionamento.data),
                             cognitiveDisfunctionName:
                                 questionamento.disfuncaoCognitiva,
                           ),
