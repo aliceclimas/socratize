@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:socratize/model/messages.model.dart';
 import 'package:socratize/model/questioning.builder.dart';
 import 'package:socratize/model/questioning.model.dart';
+import 'package:socratize/view/components/animated_chat_bubble.component.dart';
 import 'package:socratize/view/components/patient.menu.component.dart';
 
 class ChatPage extends StatefulWidget {
@@ -15,18 +16,17 @@ class ChatPage extends StatefulWidget {
 }
 
 class _ChatPageState extends State<ChatPage> {
-  QuestioningBuilder builder = QuestioningBuilder();
-  late int currentIndex;
-  late int currentQuestionsIndex;
-  late List<dynamic> currentQuestions;
-  late List questionsList;
+  final String username = FirebaseAuth.instance.currentUser!.displayName!;
 
-  bool activateInput = false;
-  bool isTyping = false; // Adicionar indicador de digitação
+  QuestioningBuilder builder = QuestioningBuilder();
+
+  late int currentStep; // passo das mensagens fixas
+  List<MessageModel> fixedMessages = [];
+  List<MessageModel> onChatMessages = [];
 
   final TextEditingController inputController = TextEditingController();
   final ScrollController _scrollController = ScrollController();
-
+  final FocusNode _inputFocusNode = FocusNode();
 
   void _scrollToBottom() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -40,102 +40,55 @@ class _ChatPageState extends State<ChatPage> {
     });
   }
 
-  @override
-  void initState() {
-    super.initState();
-    currentIndex = -1;
-    currentQuestionsIndex = 0;
-    questionsList = [perguntasEsclarecimento, perguntasEvidencias, perguntasDesafiamSuposicoes, perguntasPontoDeVistaAlternativo];
-    currentQuestions = questionsList[currentQuestionsIndex];
-  }
-
   List<MessageModel> perguntasEsclarecimento = [
     MessageModel(
       text:
           "➡ Você poderia me dar um exemplo específico do que você está sentindo?",
-      isClickable: true,
-      isQuestion: true,
     ),
     MessageModel(
       text: "➡ Quando você diz 'X', o que exatamente isso significa para você?",
-      isClickable: true,
-      isQuestion: true,
     ),
     MessageModel(
       text:
           "➡ Você pode descrever com mais detalhes o que te leva a pensar dessa forma?",
-      isClickable: true,
-      isQuestion: true,
     ),
     MessageModel(
       text:
           "➡ Qual é a parte mais importante ou central desse pensamento para você?",
-      isClickable: true,
-      isQuestion: true,
     ),
     MessageModel(
       text:
           "➡ Como esse pensamento se manifesta em suas emoções ou comportamentos?",
-      isClickable: true,
-      isQuestion: true,
     ),
   ];
 
   List<MessageModel> perguntasDesafiamSuposicoes = [
-    MessageModel(
-      text: "➡ Que suposições estamos fazendo aqui sem perceber?",
-      isClickable: true,
-      isQuestion: true,
-    ),
+    MessageModel(text: "➡ Que suposições estamos fazendo aqui sem perceber?"),
     MessageModel(
       text: "➡ Existe alguma crença implícita por trás do que você disse?",
-      isClickable: true,
-      isQuestion: true,
     ),
-    MessageModel(
-      text: "➡ Isso é algo que você verificou ou apenas assumiu?",
-      isClickable: true,
-      isQuestion: true,
-    ),
+    MessageModel(text: "➡ Isso é algo que você verificou ou apenas assumiu?"),
     MessageModel(
       text: "➡ O que aconteceria se essa suposição estivesse errada?",
-      isClickable: true,
-      isQuestion: true,
     ),
     MessageModel(
       text: "➡ Essa suposição ainda faz sentido nesse contexto específico?",
-      isClickable: true,
-      isQuestion: true,
     ),
   ];
 
   List<MessageModel> perguntasEvidencias = [
-    MessageModel(
-      text: "➡ Que evidências você tem para apoiar essa afirmação?",
-      isClickable: true,
-      isQuestion: true,
-    ),
+    MessageModel(text: "➡ Que evidências você tem para apoiar essa afirmação?"),
     MessageModel(
       text: "➡ Há dados concretos que sustentam esse ponto de vista?",
-      isClickable: true,
-      isQuestion: true,
     ),
-    MessageModel(
-      text: "➡ Como você chegou a essa conclusão?",
-      isClickable: true,
-      isQuestion: true,
-    ),
+    MessageModel(text: "➡ Como você chegou a essa conclusão?"),
     MessageModel(
       text:
           "➡ Que tipo de prova seria suficiente para convencer alguém cético?",
-      isClickable: true,
-      isQuestion: true,
     ),
     MessageModel(
       text:
           "➡ O que pode estar faltando ou sendo ignorado na base dessa evidência?",
-      isClickable: true,
-      isQuestion: true,
     ),
   ];
 
@@ -143,82 +96,105 @@ class _ChatPageState extends State<ChatPage> {
     MessageModel(
       text:
           "➡ Como outra pessoa poderia enxergar essa situação de forma diferente?",
-      isClickable: true,
-      isQuestion: true,
     ),
     MessageModel(
       text: "➡ Você já considerou algum ponto de vista oposto ao seu?",
-      isClickable: true,
-      isQuestion: true,
     ),
     MessageModel(
       text:
           "➡ Existe alguma outra interpretação possível para o que aconteceu?",
-      isClickable: true,
-      isQuestion: true,
     ),
     MessageModel(
       text: "➡ O que alguém que discorda de você poderia dizer sobre isso?",
-      isClickable: true,
-      isQuestion: true,
     ),
     MessageModel(
       text: "➡ Se você tivesse que defender o lado contrário, como faria?",
-      isClickable: true,
-      isQuestion: true,
     ),
   ];
 
+  @override
+  void initState() {
+    super.initState();
+    currentStep = 0;
 
-  List<MessageModel> onChatMessages = [
-    MessageModel(text: 'Você quer inserir o pensamento?'),
-    MessageModel(
-      text: 'Clique nessa mensagem para SIM! ✅',
-      isClickable: true,
-      value: 'Sim, eu quero adicionar um pensamento!',
-      isChoice: true,
-    ),
-    MessageModel(
-      text: 'Clique nessa mensagem para NÃO! ❌',
-      isClickable: true,
-      value: 'Não, não quero adicionar um pensamento!',
-      isChoice: true,
-    ),
-  ];
+    fixedMessages = [
+      MessageModel(text: 'Olá $username, insira um pensamento para começarmos a questionar:', requireInput: true),
+      MessageModel(
+        text:
+            'Certo! $username, agora escolha uma das seguintes perguntas com o propósito de deixar mais claro o que você está pensando: ',
+        choices: perguntasEsclarecimento,
+      ),
+      MessageModel(
+        text:
+            'Selecione apenas uma pergunta sobre as evidências que sustentam seu pensamento: ',
+        choices: perguntasEvidencias,
+      ),
+      MessageModel(
+        text:
+            'Boa, $username. Responda uma dessas perguntas para desafiar suas suposições: ',
+        choices: perguntasDesafiamSuposicoes,
+      ),
+      MessageModel(
+        text:
+            'Por último, escolha uma pergunta que te ajude a ver as coisas de um ponto de vista alternativo: ',
+        choices: perguntasPontoDeVistaAlternativo,
+      ),
+      MessageModel(
+        text:
+            'Boa, $username! Parabéns por confrontar seus pensamentos🎉! Lembre-se de fazer isso constantemente para criar o hábito.',
+      ),
+    ];
 
-  List<MessageModel> staticMessages = [
-    MessageModel(text: 'Qual o seu pensamento?'),
-    MessageModel(text: 'Escolha uma pergunta com o propósito de deixar mais claro o que você quer dizer: ', isChoice: true),
-    MessageModel(text: 'Escolha uma pergunta a respeito das evidências que sustentam seu pensamento: ', isChoice: true),
-    MessageModel(text: 'Escolha uma pergunta que desafie suas suposições: ', isChoice: true),
-    MessageModel(text: 'Escolha uma pergunta que te ajude a pensar em uma ponto de vista alternativo: ', isChoice: true),
-    MessageModel(text: 'Questionamento finalizado, parabéns confrontar seus pensamentos 🎊. Continue assim até que isso se torne um hábito.'),
-  ];
+    startChat();
+  }
 
-  void addMessage(MessageModel message) async {
+  void startChat() async {
+    await Future.delayed(Duration(milliseconds: 500));
     setState(() {
-      onChatMessages.add(message);
+    onChatMessages.add(fixedMessages[currentStep]);
+    });
+   _inputFocusNode.requestFocus();
+  }
+
+
+  void handleUserInput() async {
+    await Future.delayed(Duration(seconds: 1));
+    setState(() {
+      onChatMessages.add(fixedMessages[currentStep]);
     });
 
-    _scrollToBottom();
+    if (fixedMessages[currentStep].choices != null) {
+      MessageModel message = fixedMessages[currentStep];
 
-    if (message.waitUser == true) {
-      currentQuestionsIndex++;
-      return;
-    }
+      final choiceMessages =
+          message.choices!
+              .map(
+                (choice) => MessageModel(
+                  sender: Sender.system,
+                  text: choice.text,
+                  isChoiceChild: true,
+                ),
+              )
+              .toList();
 
-    currentIndex++;
-    onChatMessages.add(staticMessages[currentIndex]);
-
-    if (staticMessages[currentIndex].isChoice) {
-      currentQuestions = questionsList[currentQuestionsIndex];
-      for (var question in currentQuestions) {
-        onChatMessages.add(question);
+      for (var choice in choiceMessages) {
+        await Future.delayed(Duration(seconds: 1));
+        setState(() {
+          onChatMessages.add(choice);
+        });
+        _scrollToBottom();
       }
     }
-    if (currentIndex == staticMessages.length - 1) {
+
+    if (currentStep == fixedMessages.length - 1) {
+      saveQuestioning();
+    }
+    _scrollToBottom();
+  }
+
+  void saveQuestioning() async {
       builder.idPaciente = FirebaseAuth.instance.currentUser!.uid;
-      builder.titulo = onChatMessages[3].text;
+      builder.titulo = onChatMessages[1].text;
       builder.mensagens = onChatMessages.map((message) => message.toJson()).toList();
       builder.disfuncaoCognitiva = 'personalizacao';
       builder.data = DateTime.now();
@@ -233,24 +209,13 @@ class _ChatPageState extends State<ChatPage> {
         'mensagens': questionamento.mensagens,
       });
     }
-  }
 
-  void removeChoices() {
+
+  void removeLast() {
     setState(() {
-      onChatMessages.removeWhere((message) => message.isChoice == true);
+      onChatMessages.removeLast();
     });
-
     _scrollToBottom();
-
-  }
-
-  void removeQuestions() {
-    setState(() {
-      onChatMessages.removeWhere((message) => message.isQuestion == true);
-    });
-
-    _scrollToBottom();
-
   }
 
   @override
@@ -273,41 +238,35 @@ class _ChatPageState extends State<ChatPage> {
                 ...onChatMessages.map((message) {
                   return GestureDetector(
                     onTap: () {
-                      if (message.isClickable) {
-                        if (message.isChoice) {
-                          message = MessageModel(
-                            text: message.value!,
-                            isSender: true,
-                          );
-                          removeChoices();
-                          addMessage(message);
-                        }
+                      if (message.isChoiceChild) {
 
-                        if (message.isQuestion) {
-                          print("Você acabou de clicar em ${message.text}");
-                          message = MessageModel(
-                            text: message.text,
-                            isSender: false,
-                            waitUser: true,
-                          );
-                          removeQuestions();
-                          addMessage(message);
-                        }
+                      setState(() {
+                        onChatMessages.add(MessageModel(text: message.text));
+                        onChatMessages.removeWhere(
+                          (message) => message.isChoiceChild == true,
+                        );
+                      });
                       }
+                      Future.delayed(Duration(milliseconds: 100), () {
+                        _inputFocusNode.requestFocus();
+                      });
                     },
                     child: Padding(
                       padding: const EdgeInsets.symmetric(vertical: 0.1),
-                      child: BubbleSpecialOne(
-                        text: message.text,
-                        isSender: message.isSender,
-                        color:
-                            message.isSender
-                                ? Color(0xff7CBEFF)
-                                : Color(0xffFFCF24),
-                        textStyle: TextStyle(
-                          fontSize: 16,
-                          color: Color(0xff36454F),
-                          fontWeight: FontWeight.w500,
+                      child: AnimatedChatBubble(
+                        child: BubbleSpecialOne(
+                          text: message.text,
+                          isSender:
+                              (message.sender == Sender.system) ? false : true,
+                          color:
+                              (message.sender == Sender.system)
+                                  ? Color(0xffFFCF24)
+                                  : Color(0xff7CBEFF),
+                          textStyle: TextStyle(
+                            fontSize: 16,
+                            color: Color(0xff36454F),
+                            fontWeight: FontWeight.w500,
+                          ),
                         ),
                       ),
                     ),
@@ -322,14 +281,17 @@ class _ChatPageState extends State<ChatPage> {
               children: [
                 Expanded(
                   child: TextField(
+                    keyboardType: TextInputType.multiline,
+                    maxLines: null,
+                    focusNode: _inputFocusNode,
                     controller: inputController,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(30),
+                        borderRadius: BorderRadius.circular(10),
                       ),
                       focusedBorder: OutlineInputBorder(
                         borderSide: BorderSide(color: Colors.blue),
-                        borderRadius: BorderRadius.circular(30),
+                        borderRadius: BorderRadius.circular(10),
                       ),
                     ),
                   ),
@@ -338,9 +300,21 @@ class _ChatPageState extends State<ChatPage> {
                   icon: Icon(Icons.send),
                   onPressed: () {
                     if (inputController.text.trim().isNotEmpty) {
-                    addMessage(MessageModel(text: inputController.text, isSender: true));
-                    inputController.clear();
-                  }
+                      setState(() {
+                        onChatMessages.add(
+                          MessageModel(
+                            text: inputController.text,
+                            sender: Sender.user,
+                          ),
+                        );
+                      });
+                      _scrollToBottom();
+
+                      inputController.clear();
+                      currentStep++;
+
+                      handleUserInput();
+                    }
                   },
 
                   color: Colors.blue,
