@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:socratize/model/messages.model.dart';
 import 'package:socratize/model/questioning.builder.dart';
 import 'package:socratize/model/questioning.model.dart';
+import 'package:socratize/utils/cognitive_disfunction_classification.dart';
 import 'package:socratize/view/components/animated_chat_bubble.component.dart';
 import 'package:socratize/view/components/patient.menu.component.dart';
 
@@ -196,10 +197,11 @@ class _ChatPageState extends State<ChatPage> {
       builder.idPaciente = FirebaseAuth.instance.currentUser!.uid;
       builder.titulo = onChatMessages[1].text;
       builder.mensagens = onChatMessages.map((message) => message.toJson()).toList();
-      builder.disfuncaoCognitiva = 'personalizacao';
+      builder.disfuncaoCognitiva = await classificateThought(builder.mensagens!);
       builder.data = DateTime.now();
 
       Questioning questionamento = builder.build();
+      print(questionamento.disfuncaoCognitiva);
 
       await FirebaseFirestore.instance.collection('questionamento').add({
         'idPaciente': questionamento.idPaciente,
