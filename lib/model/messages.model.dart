@@ -1,37 +1,38 @@
+enum Sender {user, system}
+
 class MessageModel {
+
   final String text; // id pode ser nulo se ele ainda não foi salvo no bd
   final String? value;
-  final bool isSender;
-  final bool isClickable;
-  final bool isChoice;
-  final bool isQuestion;
-  final bool waitUser;
+  final Sender sender;
+  final List<MessageModel>? choices;
+  final bool requireInput;
+  final bool isChoiceChild;
 
   MessageModel({
     required this.text,
-    this.isSender = false,
+    this.sender = Sender.system,
     this.value,
-    this.isClickable = false,
-    this.isChoice = false,
-    this.isQuestion = false,
-    this.waitUser = false,
+    this.choices,
+    this.requireInput = false,
+    this.isChoiceChild = false,
   });
 
   factory MessageModel.fromMap(Map<String, dynamic> dictionary) {
     return MessageModel(
       text: dictionary['text'],
       value: dictionary['value'],
-      isSender: dictionary['isSender'],
-      isClickable: dictionary['isClickable'],
-      isChoice: dictionary['isChoice'],
-      isQuestion: dictionary['isQuestion'],
+      sender: dictionary['sender'],
+      choices: dictionary['choices'],
+      requireInput: dictionary['requireInput'],
+      isChoiceChild: dictionary['isChoiceChild'],
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
       'text': text,
-      'isSender': isSender,
+      'sender': sender.name,
     };
   }
 }
