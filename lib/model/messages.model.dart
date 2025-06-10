@@ -22,10 +22,10 @@ class MessageModel {
     return MessageModel(
       text: dictionary['text'],
       value: dictionary['value'],
-      sender: dictionary['sender'],
+      sender: (dictionary['sender'] == "system") ? Sender.system : Sender.user,
       choices: dictionary['choices'],
-      requireInput: dictionary['requireInput'],
-      isChoiceChild: dictionary['isChoiceChild'],
+      requireInput: dictionary['requireInput'] ?? false,
+      isChoiceChild: dictionary['isChoiceChild'] ?? false,
     );
   }
 
