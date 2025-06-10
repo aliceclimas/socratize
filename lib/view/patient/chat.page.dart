@@ -43,72 +43,72 @@ class _ChatPageState extends State<ChatPage> {
   List<MessageModel> perguntasEsclarecimento = [
     MessageModel(
       text:
-          "➡ Você poderia me dar um exemplo específico do que você está sentindo?",
+          "❔ Você poderia me dar um exemplo específico do que você está sentindo?",
     ),
     MessageModel(
-      text: "➡ Quando você diz 'X', o que exatamente isso significa para você?",
-    ),
-    MessageModel(
-      text:
-          "➡ Você pode descrever com mais detalhes o que te leva a pensar dessa forma?",
+      text: "❔ Quando você diz 'X', o que exatamente isso significa para você?",
     ),
     MessageModel(
       text:
-          "➡ Qual é a parte mais importante ou central desse pensamento para você?",
+          "❔ Você pode descrever com mais detalhes o que te leva a pensar dessa forma?",
     ),
     MessageModel(
       text:
-          "➡ Como esse pensamento se manifesta em suas emoções ou comportamentos?",
+          "❔ Qual é a parte mais importante ou central desse pensamento para você?",
+    ),
+    MessageModel(
+      text:
+          "❔ Como esse pensamento se manifesta em suas emoções ou comportamentos?",
     ),
   ];
 
   List<MessageModel> perguntasDesafiamSuposicoes = [
-    MessageModel(text: "➡ Que suposições estamos fazendo aqui sem perceber?"),
+    MessageModel(text: "❔ Que suposições estamos fazendo aqui sem perceber?"),
     MessageModel(
-      text: "➡ Existe alguma crença implícita por trás do que você disse?",
+      text: "❔ Existe alguma crença implícita por trás do que você disse?",
     ),
-    MessageModel(text: "➡ Isso é algo que você verificou ou apenas assumiu?"),
+    MessageModel(text: "❔ Isso é algo que você verificou ou apenas assumiu?"),
     MessageModel(
-      text: "➡ O que aconteceria se essa suposição estivesse errada?",
+      text: "❔ O que aconteceria se essa suposição estivesse errada?",
     ),
     MessageModel(
-      text: "➡ Essa suposição ainda faz sentido nesse contexto específico?",
+      text: "❔ Essa suposição ainda faz sentido nesse contexto específico?",
     ),
   ];
 
   List<MessageModel> perguntasEvidencias = [
-    MessageModel(text: "➡ Que evidências você tem para apoiar essa afirmação?"),
+    MessageModel(text: "❔ Que evidências você tem para apoiar essa afirmação?"),
     MessageModel(
-      text: "➡ Há dados concretos que sustentam esse ponto de vista?",
+      text: "❔ Há dados concretos que sustentam esse ponto de vista?",
     ),
-    MessageModel(text: "➡ Como você chegou a essa conclusão?"),
+    MessageModel(text: "❔ Como você chegou a essa conclusão?"),
     MessageModel(
       text:
-          "➡ Que tipo de prova seria suficiente para convencer alguém cético?",
+          "❔ Que tipo de prova seria suficiente para convencer alguém cético?",
     ),
     MessageModel(
       text:
-          "➡ O que pode estar faltando ou sendo ignorado na base dessa evidência?",
+          "❔ O que pode estar faltando ou sendo ignorado na base dessa evidência?",
     ),
   ];
 
   List<MessageModel> perguntasPontoDeVistaAlternativo = [
     MessageModel(
       text:
-          "➡ Como outra pessoa poderia enxergar essa situação de forma diferente?",
+          "❔ Como outra pessoa poderia enxergar essa situação de forma diferente?",
     ),
     MessageModel(
-      text: "➡ Você já considerou algum ponto de vista oposto ao seu?",
+      text: "❔ Você já considerou algum ponto de vista oposto ao seu?",
     ),
     MessageModel(
       text:
-          "➡ Existe alguma outra interpretação possível para o que aconteceu?",
+          "❔ Existe alguma outra interpretação possível para o que aconteceu?",
     ),
     MessageModel(
-      text: "➡ O que alguém que discorda de você poderia dizer sobre isso?",
+      text: "❔ O que alguém que discorda de você poderia dizer sobre isso?",
     ),
     MessageModel(
-      text: "➡ Se você tivesse que defender o lado contrário, como faria?",
+      text: "❔ Se você tivesse que defender o lado contrário, como faria?",
     ),
   ];
 
