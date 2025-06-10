@@ -47,6 +47,8 @@ class _HistoryPageState extends State<HistoryPage> {
   void initState() {
     super.initState();
     _getQuestionings = getQuestionings();
+
+    print(FirebaseAuth.instance.currentUser?.displayName);
   }
 
   @override

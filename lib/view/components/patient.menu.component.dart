@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:socratize/model/user.model.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 Future<void> _launch(Uri url) async {
@@ -31,13 +32,8 @@ class _PatientMenuState extends State<PatientMenu> {
             children: [
               UserAccountsDrawerHeader(
                 decoration: BoxDecoration(color: Colors.blue[700]),
-                accountName: Text("Paula"),
-                accountEmail: Text("paula.silva@email.com"),
-                currentAccountPicture: CircleAvatar(
-                  radius: 30.0,
-                  backgroundImage: AssetImage("assets/images/paula.jpg"),
-                  backgroundColor: Colors.transparent,
-                ),
+                accountName: Text('${FirebaseAuth.instance.currentUser?.displayName}'),
+                accountEmail: Text('${FirebaseAuth.instance.currentUser?.email}'),
               ),
               ListTile(
                 leading: const Icon(Icons.psychology_alt_outlined),

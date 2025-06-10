@@ -17,13 +17,8 @@ class _TherapistMenuState extends State<TherapistMenu> {
           children: [
             UserAccountsDrawerHeader(
               decoration: BoxDecoration(color: Colors.blue[700]),
-              accountName: Text("Paula"),
-              accountEmail: Text("paula.silva@email.com"),
-              currentAccountPicture: CircleAvatar(
-                radius: 30.0,
-                backgroundImage: AssetImage("assets/images/paula.jpg"),
-                backgroundColor: Colors.transparent,
-              ),
+              accountName: Text('${FirebaseAuth.instance.currentUser?.displayName}'),
+                accountEmail: Text('${FirebaseAuth.instance.currentUser?.email}'),
             ),
             ListTile(
               leading:  const Icon(Icons.psychology_alt_outlined),
