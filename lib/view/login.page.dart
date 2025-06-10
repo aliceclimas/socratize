@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:socratize/model/user.model.dart';
-import 'package:socratize/authentication_service.dart';
 
 
 class LoginPage extends StatefulWidget {
@@ -78,7 +77,7 @@ class _LoginPageState extends State<LoginPage> {
                   style: Theme.of(context).textTheme.headlineLarge,
                 ),
                 Text(
-                  "Vamos pensar juntos sobre o que está te incomodando?",
+                  "Você tem certeza... ou só nunca questionou?",
                   textAlign: TextAlign.center,
                   style: TextStyle(fontSize: 20),
                 ),
@@ -185,7 +184,7 @@ class _LoginPageState extends State<LoginPage> {
                             () => {
                               Navigator.of(context).pushNamed('/read-qr-code'),
                             },
-                        child: Text("É seu primeiro acesso?", 
+                        child: Text("É seu primeiro acesso?",
                         style: TextStyle(color: Color.fromARGB(255, 90, 90, 90)),),
                       ),
                     ],
