@@ -260,8 +260,8 @@ class _ChatPageState extends State<ChatPage> {
                               (message.sender == Sender.system) ? false : true,
                           color:
                               (message.sender == Sender.system)
-                                  ? Color(0xffFFCF24)
-                                  : Color(0xff7CBEFF),
+                        ? Color(0xffFDEBAB)
+                        : Color(0xFFA2D1FF),
                           textStyle: TextStyle(
                             fontSize: 16,
                             color: Color(0xff36454F),
@@ -286,14 +286,17 @@ class _ChatPageState extends State<ChatPage> {
                     focusNode: _inputFocusNode,
                     controller: inputController,
                     decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
+                          filled: true,
+                          fillColor: Colors.white,
+                          prefixIcon: Icon(Icons.chat_bubble_outline),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.blue, width: 1.0),
+                            borderRadius: BorderRadius.circular(15)
+                          ),
                       ),
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.blue),
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                    ),
                   ),
                 ),
                 IconButton(

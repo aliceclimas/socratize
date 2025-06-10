@@ -81,8 +81,8 @@ class _PreviewPageState extends State<PreviewPage> {
                 isSender: (message.sender == Sender.system) ? false : true,
                 color:
                     (message.sender == Sender.system)
-                        ? Color(0xffFFCF24)
-                        : Color(0xff7CBEFF),
+                        ? Color(0xffFDEBAB)
+                        : Color(0xFFA2D1FF),
                 textStyle: TextStyle(
                   fontSize: 16,
                   color: Color(0xff36454F),
