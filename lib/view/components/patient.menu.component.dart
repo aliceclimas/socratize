@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:socratize/model/user.model.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 Future<void> _launch(Uri url) async {
@@ -31,9 +30,9 @@ class _PatientMenuState extends State<PatientMenu> {
           Column(
             children: [
               UserAccountsDrawerHeader(
-                decoration: BoxDecoration(color: Colors.blue[700]),
-                accountName: Text('${FirebaseAuth.instance.currentUser?.displayName}'),
-                accountEmail: Text('${FirebaseAuth.instance.currentUser?.email}'),
+                decoration: BoxDecoration(color: Colors.blue[700], gradient: LinearGradient(colors: [const Color.fromARGB(255, 246, 235, 140), const Color.fromARGB(255, 124, 195, 253), ])),
+                accountName: Text('${FirebaseAuth.instance.currentUser?.displayName}', style: TextStyle(fontSize: 50, color: Colors.black),),
+                accountEmail: Text('${FirebaseAuth.instance.currentUser?.email}', style: TextStyle(fontSize: 16, color: Colors.black),),
               ),
               ListTile(
                 leading: const Icon(Icons.psychology_alt_outlined),
@@ -75,8 +74,7 @@ class _PatientMenuState extends State<PatientMenu> {
                   .collection('users')
                   .doc(uid)
                   .update({"status": "deleted"});
-              if (context.mounted)
-                Navigator.of(context).pushReplacementNamed('/login');
+              if (context.mounted) Navigator.of(context).pushReplacementNamed('/login');
               await FirebaseAuth.instance.signOut();
             },
           ),

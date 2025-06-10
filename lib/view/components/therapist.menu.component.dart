@@ -16,10 +16,10 @@ class _TherapistMenuState extends State<TherapistMenu> {
         child: ListView(
           children: [
             UserAccountsDrawerHeader(
-              decoration: BoxDecoration(color: Colors.blue[700]),
-              accountName: Text('${FirebaseAuth.instance.currentUser?.displayName}'),
-                accountEmail: Text('${FirebaseAuth.instance.currentUser?.email}'),
-            ),
+                decoration: BoxDecoration(color: Colors.blue[700], gradient: LinearGradient(colors: [const Color.fromARGB(255, 246, 235, 140), const Color.fromARGB(255, 124, 195, 253), ])),
+                accountName: Text('${FirebaseAuth.instance.currentUser?.displayName}', style: TextStyle(fontSize: 50, color: Colors.black),),
+                accountEmail: Text('${FirebaseAuth.instance.currentUser?.email}', style: TextStyle(fontSize: 16, color: Colors.black),),
+              ),
             ListTile(
               leading:  const Icon(Icons.psychology_alt_outlined),
               title:  const Text("Listar QR Codes"),
