@@ -128,10 +128,10 @@ class _HistoryPageState extends State<HistoryPage> {
                             );
                           },
                           child: InsightCard(
-                            name: questionamento.titulo,
+                            thought: questionamento.titulo,
                             date: dateFormat(questionamento.data),
-                            cognitiveDisfunctionName:
-                                questionamento.disfuncaoCognitiva,
+                            cogDisName: questionamento.disfuncaoCognitiva,
+                            questioningId: questionamento.id!,
                           ),
                         );
                       },
