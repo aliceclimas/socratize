@@ -11,6 +11,7 @@ import 'package:socratize/view/new_password.dart';
 import 'package:socratize/view/password_forgot.dart';
 import 'package:socratize/view/patient/chat.page.dart';
 import 'package:socratize/view/patient/history.page.dart';
+import 'package:socratize/view/patient/preview.page.dart';
 import 'package:socratize/view/patient/read_qr_code.page.dart';
 import 'package:socratize/view/therapist/gen_qr_code.page.dart';
 import 'package:socratize/view/therapist/list_qr_code.page.dart';
@@ -95,6 +96,7 @@ class _SocratizeAppState extends State<SocratizeApp> {
             "/list-qr-codes": (context) => ListQRCodes(),
             "/forgot-password": (context) => PasswordForgetScreen(),
             "/change-password": (context) => NewPasswordScreen(),
+            "/preview": (context) => PreviewPage(),
           },
         );
       },
