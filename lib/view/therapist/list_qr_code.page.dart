@@ -31,6 +31,7 @@ class _ListQRCodesState extends State<ListQRCodes> {
             .collection('users')
             .where('status', whereIn: ['active', 'deactivated'])
             .where('role', isEqualTo: 'patient')
+            .where('idTherapist', isEqualTo: uid)
             .get();
 
     for (var userDoc in usersList.docs) {
