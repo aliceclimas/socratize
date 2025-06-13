@@ -17,7 +17,7 @@ class ChatPage extends StatefulWidget {
 }
 
 class _ChatPageState extends State<ChatPage> {
-  final String username = FirebaseAuth.instance.currentUser!.displayName!;
+  final String username = FirebaseAuth.instance.currentUser!.displayName ?? 'Paciente';
 
   QuestioningBuilder builder = QuestioningBuilder();
 
