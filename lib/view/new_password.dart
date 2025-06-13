@@ -12,18 +12,18 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController confirmNewPasswordController = TextEditingController();
 
-  bool passwordVisible = false;
-  bool confirmNewPasswordVisible = false;
+  bool hidePassword = true;
+  bool confirmNewhidePassword = true;
 
   void togglePassword() {
     setState(() {
-      passwordVisible = !passwordVisible;
+      hidePassword = !hidePassword;
     });
   }
 
   void toggleConfirmPassword() {
     setState(() {
-      confirmNewPasswordVisible = !confirmNewPasswordVisible;
+      confirmNewhidePassword = !confirmNewhidePassword;
     });
   }
 
@@ -62,15 +62,21 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
                   ),
                   SizedBox(height: 32),
                   TextField(
-                    obscureText: passwordVisible,
+                    obscureText: hidePassword,
                     decoration: InputDecoration(
+                      filled: true,
+                      fillColor: Colors.white,
                       hintText: "Insira uma senha",
-                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(5)),
+                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(15)),
+                      enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.blue, width: 1.0),
+                            borderRadius: BorderRadius.circular(15)
+                          ),
                       suffixIcon: IconButton(
                         splashColor: Colors.transparent,
                         splashRadius: 1,
                         icon: Icon(
-                          passwordVisible
+                          hidePassword
                               ? Icons.visibility_outlined
                               : Icons.visibility_off_outlined,
                         ),
@@ -81,15 +87,21 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
                   ),
                   SizedBox(height: 24),
                   TextField(
-                    obscureText: confirmNewPasswordVisible,
+                    obscureText: confirmNewhidePassword,
                     decoration: InputDecoration(
+                      filled: true,
+                      fillColor: Colors.white,
                       hintText: "Confirme a nova senha",
-                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(5)),
+                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(15)),
+                      enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.blue, width: 1.0),
+                            borderRadius: BorderRadius.circular(15)
+                          ),
                       suffixIcon: IconButton(
                         splashColor: Colors.transparent,
                         splashRadius: 1,
                         icon: Icon(
-                          confirmNewPasswordVisible
+                          confirmNewhidePassword
                               ? Icons.visibility_outlined
                               : Icons.visibility_off_outlined,
                         ),

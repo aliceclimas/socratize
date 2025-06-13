@@ -173,7 +173,6 @@ class _LoginPageState extends State<LoginPage> {
                           child: Text(
                             "ENTRAR",
                             style: TextStyle(
-                              fontWeight: FontWeight.w700,
                               color: Colors.white,
                               fontSize: 20,
                             ),

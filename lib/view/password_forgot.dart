@@ -10,7 +10,7 @@ class PasswordForgetScreen extends StatefulWidget {
 
 class _PasswordForgetScreenState extends State<PasswordForgetScreen> {
   TextEditingController email = TextEditingController();
-  FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +19,7 @@ class _PasswordForgetScreenState extends State<PasswordForgetScreen> {
         backgroundColor: Colors.transparent,
         elevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.lightBlue),
+          icon: Icon(Icons.arrow_back),
           onPressed: () => Navigator.of(context).pop(),
         ),
       ),
@@ -54,15 +54,23 @@ class _PasswordForgetScreenState extends State<PasswordForgetScreen> {
                   ),
                   SizedBox(height: 32),
                   TextField(
-                    controller: email,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(5)),
-                      hintText: "Insira um email",
-                    ),
-                  ),
+                        decoration: InputDecoration(
+                          filled: true,
+                          fillColor: Colors.white,
+                          hintText: "Insira um e-mail",
+                          prefixIcon: Icon(Icons.mail),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.blue, width: 1.0),
+                            borderRadius: BorderRadius.circular(15)
+                          ),
+                      ),
+                      ),
                   SizedBox(height: 24),
                   ElevatedButton(
-                    
+
                     style: ElevatedButton.styleFrom(
                       textStyle: TextStyle(fontSize: 16, color: Colors.white),
                       backgroundColor: Colors.blueAccent,
@@ -70,7 +78,7 @@ class _PasswordForgetScreenState extends State<PasswordForgetScreen> {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8),
                       ),
-                      
+
                     ),
                     onPressed: () async {
                       if (email.text.isEmpty) {
