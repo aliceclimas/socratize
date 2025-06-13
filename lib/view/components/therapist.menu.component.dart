@@ -9,6 +9,8 @@ class TherapistMenu extends StatefulWidget {
 }
 
 class _TherapistMenuState extends State<TherapistMenu> {
+  late String username = "Terapeuta";
+
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -17,7 +19,7 @@ class _TherapistMenuState extends State<TherapistMenu> {
           children: [
             UserAccountsDrawerHeader(
                 decoration: BoxDecoration(color: Colors.blue[700], gradient: LinearGradient(colors: [const Color.fromARGB(255, 246, 235, 140), const Color.fromARGB(255, 124, 195, 253), ])),
-                accountName: Text('${FirebaseAuth.instance.currentUser?.displayName}', style: TextStyle(fontSize: 50, color: Colors.black),),
+                accountName: Text(username, style: TextStyle(fontSize: 50, color: Colors.black, fontWeight: FontWeight.bold),),
                 accountEmail: Text('${FirebaseAuth.instance.currentUser?.email}', style: TextStyle(fontSize: 16, color: Colors.black),),
               ),
             ListTile(
