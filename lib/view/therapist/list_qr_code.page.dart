@@ -20,16 +20,21 @@ class _ListQRCodesState extends State<ListQRCodes> {
     List<UserModel> usersData = [];
 
     String? uid = FirebaseAuth.instance.currentUser?.uid;
-    var therapistDoc = (await FirebaseFirestore.instance.collection('users').doc(uid).get());
-    TherapistModel therapistModel = TherapistModel.fromMap(therapistDoc.data()!);
+    var therapistDoc =
+        (await FirebaseFirestore.instance.collection('users').doc(uid).get());
+    TherapistModel therapistModel = TherapistModel.fromMap(
+      therapistDoc.data()!,
+    );
 
-    for (var patientID in therapistModel.patientsId) {
-      var userDoc =
-          await FirebaseFirestore.instance
-              .collection('users')
-              .doc(patientID)
-              .get();
-      var user = UserModel.fromMap(userDoc.id, userDoc.data()!);
+    var usersList =
+        await FirebaseFirestore.instance
+            .collection('users')
+            .where('status', whereIn: ['active', 'deactivated'])
+            .where('role', isEqualTo: 'patient')
+            .get();
+
+    for (var userDoc in usersList.docs) {
+      var user = UserModel.fromMap(userDoc.id, userDoc.data());
       usersData.add(user);
     }
 
@@ -50,15 +55,17 @@ class _ListQRCodesState extends State<ListQRCodes> {
         return Scaffold(
           appBar: AppBar(
             title: Image(
-          image: AssetImage('assets/images/socratize-logo.png'),
-          width: MediaQuery.of(context).size.width * 0.1,
-          height: MediaQuery.of(context).size.width * 0.1,
-        ),
+              image: AssetImage('assets/images/socratize-logo.png'),
+              width: MediaQuery.of(context).size.width * 0.1,
+              height: MediaQuery.of(context).size.width * 0.1,
+            ),
           ),
           drawer: TherapistMenu(),
           body:
-              (!patients.hasData)
+              !patients.hasData
                   ? Center(child: CircularProgressIndicator())
+                  : patients.data!.isEmpty
+                  ? Center(child: Text("Não há pacientes."))
                   : ListView.builder(
                     itemCount: patients.data!.length,
                     itemBuilder: (context, index) {
@@ -79,10 +86,18 @@ class _ListQRCodesState extends State<ListQRCodes> {
                                   await FirebaseFirestore.instance
                                       .collection('users')
                                       .doc(patient.id)
-                                      .update({"status": (patient.status == 'active') ? 'deactivated' : 'active'});
+                                      .update({
+                                        "status":
+                                            (patient.status == 'active')
+                                                ? 'deactivated'
+                                                : 'active',
+                                      });
 
                                   setState(() {
-                                    patients.data![index].status = (patient.status == 'active') ? 'deactivated' : 'active';
+                                    patients.data![index].status =
+                                        (patient.status == 'active')
+                                            ? 'deactivated'
+                                            : 'active';
                                   });
                                 },
                               ),
