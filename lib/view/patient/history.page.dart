@@ -13,6 +13,8 @@ class HistoryPage extends StatefulWidget {
 }
 
 class _HistoryPageState extends State<HistoryPage> {
+  final TextEditingController _searchController = TextEditingController();
+  String _searchQuery = '';
 
   String dateFormat(DateTime date) {
     String dia = date.day.toString().padLeft(2, '0');
@@ -43,12 +45,28 @@ class _HistoryPageState extends State<HistoryPage> {
     return listaQuestionamentos;
   }
 
+  List<Questioning> _filterQuestionings(List<Questioning> questionings) {
+    if (_searchQuery.isEmpty) {
+      return questionings;
+    }
+
+    return questionings.where((questioning) {
+      return questioning.titulo.toLowerCase().contains(_searchQuery.toLowerCase());
+    }).toList();
+  }
+
   @override
   void initState() {
     super.initState();
     _getQuestionings = getQuestionings();
 
     print(FirebaseAuth.instance.currentUser?.displayName);
+  }
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
   }
 
   @override
@@ -73,8 +91,14 @@ class _HistoryPageState extends State<HistoryPage> {
               ),
               SizedBox(height: 30),
               SearchBar(
+                controller: _searchController,
                 hintText: "Pesquisar pensamento...",
                 leading: Icon(Icons.search),
+                onChanged: (value) {
+                  setState(() {
+                    _searchQuery = value;
+                  });
+                },
               ),
               SizedBox(height: 30),
               Expanded(
@@ -92,17 +116,20 @@ class _HistoryPageState extends State<HistoryPage> {
                     }
 
                     final listaQuestionamentos = snapshot.data ?? [];
+                    final filteredQuestionamentos = _filterQuestionings(listaQuestionamentos);
 
-                    if (listaQuestionamentos.isEmpty) {
+                    if (filteredQuestionamentos.isEmpty) {
                       return Center(
-                        child: Text('Nenhum pensamento encontrado.'),
+                        child: Text(_searchQuery.isEmpty
+                          ? 'Nenhum pensamento encontrado.'
+                          : 'Nenhum pensamento encontrado para "$_searchQuery".'),
                       );
                     }
 
                     return ListView.builder(
-                      itemCount: listaQuestionamentos.length,
+                      itemCount: filteredQuestionamentos.length,
                       itemBuilder: (context, index) {
-                        final questionamento = listaQuestionamentos[index];
+                        final questionamento = filteredQuestionamentos[index];
 
                         return Dismissible(
                           key: Key(questionamento.id!),
