@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:barcode_widget/barcode_widget.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:socratize/view/components/therapist.menu.component.dart';
@@ -23,12 +24,18 @@ class _GenQRCodePageState extends State<GenQRCodePage> {
 
   final therapistId = FirebaseAuth.instance.currentUser?.uid;
 
-  void generateBarcode(String patientName, String patientEmail, String therapistId) {
+
+  void generateBarcode(String patientName, String patientEmail, String therapistId) async {
+    final therapistPhoneNumber = (await FirebaseFirestore.instance
+                              .collection('users')
+                              .doc(therapistId)
+                              .get()).data()!['phoneNumber'];
     setState(() {
       Map<String, String> barcodeDataMap = {
         "patientName": patientName,
         "patientEmail": patientEmail,
         "therapistId": therapistId,
+        "therapistPhoneNumber": therapistPhoneNumber,
       };
 
       barcodeData = jsonEncode(barcodeDataMap);
@@ -42,19 +49,19 @@ class _GenQRCodePageState extends State<GenQRCodePage> {
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
         drawer: TherapistMenu(),
-        appBar: AppBar(),
-        backgroundColor: const Color(0xfffff9e3),
+        appBar: AppBar(
+            title: Image(
+              image: AssetImage('assets/images/socratize-logo.png'),
+              width: MediaQuery.of(context).size.width * 0.1,
+              height: MediaQuery.of(context).size.width * 0.1,
+            ),
+          ),
         body: SafeArea(
           child: SingleChildScrollView(
             padding: const EdgeInsets.all(16.0),
             child: Center(
               child: Column(
                 children: [
-                  Image.asset(
-                    'assets/images/socratize-logo-nome.png',
-                    width: 150,
-                    height: 150,
-                  ),
                   Text(
                     "Gerar QR Code",
                     style: Theme.of(context).textTheme.headlineLarge,
@@ -124,7 +131,7 @@ class _GenQRCodePageState extends State<GenQRCodePage> {
                     ),
                   const SizedBox(height: 10),
 
-                  Text((barcodeData == 'Sem dados!') ? "QR sem dados!" : "QR Code preenchido com sucesso!"),
+                  Text((barcodeData == 'Sem dados!') ? "QR Code sem dados!" : "QR Code preenchido com sucesso!"),
                   const SizedBox(height: 20),
                   ElevatedButton(
                     onPressed: () => { generateBarcode(nameInputController.text, emailInputController.text, therapistId!) },
