@@ -3,12 +3,14 @@ import 'package:socratize/model/user.model.dart';
 
 class PatientModel extends UserModel {
   final String idTherapist;
+  final String therapistPhoneNumber;
 
   PatientModel({
     required super.fullname,
     required super.email,
     required super.role,
     required this.idTherapist,
+    required this.therapistPhoneNumber,
     super.id,
     super.status,
   });
@@ -21,6 +23,7 @@ class PatientModel extends UserModel {
       email: document.data()?['email'],
       role: document.data()?['role'],
       idTherapist: document.data()?['idTherapist'],
+      therapistPhoneNumber: document.data()?['therapistPhoneNumber'],
       status: document.data()?['status'],
     );
   }
@@ -31,6 +34,7 @@ class PatientModel extends UserModel {
       'email': email,
       'role': role,
       'idTherapist': idTherapist,
+      'therapistPhoneNumber': therapistPhoneNumber,
       'status': status,
     };
   }
