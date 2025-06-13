@@ -1,17 +1,16 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:socratize/model/patient.model.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 Future<void> _launch(Uri url) async {
-
-    try {
-      await launchUrl(url);
-    } on Exception {
-      print("Não foi possível abrir o WhatsApp");
-    }
+  try {
+    await launchUrl(url);
+  } on Exception {
+    print("Não foi possível abrir o WhatsApp");
   }
-
+}
 
 class PatientMenu extends StatefulWidget {
   const PatientMenu({super.key});
@@ -21,6 +20,8 @@ class PatientMenu extends StatefulWidget {
 }
 
 class _PatientMenuState extends State<PatientMenu> {
+  late String username = "Paciente";
+
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -30,9 +31,27 @@ class _PatientMenuState extends State<PatientMenu> {
           Column(
             children: [
               UserAccountsDrawerHeader(
-                decoration: BoxDecoration(color: Colors.blue[700], gradient: LinearGradient(colors: [const Color.fromARGB(255, 246, 235, 140), const Color.fromARGB(255, 124, 195, 253), ])),
-                accountName: Text('${FirebaseAuth.instance.currentUser?.displayName}', style: TextStyle(fontSize: 50, color: Colors.black),),
-                accountEmail: Text('${FirebaseAuth.instance.currentUser?.email}', style: TextStyle(fontSize: 16, color: Colors.black),),
+                decoration: BoxDecoration(
+                  color: Colors.blue[700],
+                  gradient: LinearGradient(
+                    colors: [
+                      const Color.fromARGB(255, 246, 235, 140),
+                      const Color.fromARGB(255, 124, 195, 253),
+                    ],
+                  ),
+                ),
+                accountName: Text(
+                  username,
+                  style: TextStyle(
+                    fontSize: 50,
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                accountEmail: Text(
+                  '${FirebaseAuth.instance.currentUser?.email}',
+                  style: TextStyle(fontSize: 16, color: Colors.black),
+                ),
               ),
               ListTile(
                 leading: const Icon(Icons.psychology_alt_outlined),
@@ -51,9 +70,26 @@ class _PatientMenuState extends State<PatientMenu> {
                 leading: const Icon(Icons.call),
                 title: const Text("Contatar psicólogo"),
 
-                onTap: () => _launch(
-                      Uri.parse('https://api.whatsapp.com/send?phone=5517991282220&text=Ol%C3%A1%20Terapeuta!'),
-                ),
+                onTap: () async {
+                  String uid = FirebaseAuth.instance.currentUser!.uid;
+                  var patientDoc =
+                      await FirebaseFirestore.instance
+                          .collection('users')
+                          .doc(uid)
+                          .get();
+
+                  PatientModel patient = PatientModel.fromDocument(patientDoc);
+
+                  String therapistPhoneNumber = patient.therapistPhoneNumber;
+
+                  if (context.mounted) {
+                    _launch(
+                    Uri.parse(
+                      'https://api.whatsapp.com/send?phone=$therapistPhoneNumber&text=Ol%C3%A1%20Terapeuta!',
+                    ),
+                  );
+                  }
+                },
               ),
               ListTile(
                 leading: const Icon(Icons.exit_to_app_outlined),
@@ -74,7 +110,8 @@ class _PatientMenuState extends State<PatientMenu> {
                   .collection('users')
                   .doc(uid)
                   .update({"status": "deleted"});
-              if (context.mounted) Navigator.of(context).pushReplacementNamed('/login');
+              if (context.mounted)
+                Navigator.of(context).pushReplacementNamed('/login');
               await FirebaseAuth.instance.signOut();
             },
           ),
