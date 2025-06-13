@@ -26,6 +26,7 @@ class _ChatPageState extends State<ChatPage> {
   List<MessageModel> onChatMessages = [];
 
   final TextEditingController inputController = TextEditingController();
+  bool enableInput = true;
   final ScrollController _scrollController = ScrollController();
   final FocusNode _inputFocusNode = FocusNode();
 
@@ -165,6 +166,9 @@ class _ChatPageState extends State<ChatPage> {
     });
 
     if (fixedMessages[currentStep].choices != null) {
+      setState(() {
+      enableInput = false;
+      });
       MessageModel message = fixedMessages[currentStep];
 
       final choiceMessages =
@@ -184,10 +188,15 @@ class _ChatPageState extends State<ChatPage> {
           onChatMessages.add(choice);
         });
         _scrollToBottom();
+        setState(() {
+      });
       }
     }
 
     if (currentStep == fixedMessages.length - 1) {
+      setState(() {
+        enableInput = false;
+      });
       saveQuestioning();
     }
     _scrollToBottom();
@@ -250,6 +259,10 @@ class _ChatPageState extends State<ChatPage> {
                       });
                       }
                       Future.delayed(Duration(milliseconds: 100), () {
+                        setState(() {
+                        enableInput = true;
+                        });
+
                         _inputFocusNode.requestFocus();
                       });
                     },
@@ -287,6 +300,7 @@ class _ChatPageState extends State<ChatPage> {
                     maxLines: null,
                     focusNode: _inputFocusNode,
                     controller: inputController,
+                    enabled: enableInput,
                     decoration: InputDecoration(
                           filled: true,
                           fillColor: Colors.white,
