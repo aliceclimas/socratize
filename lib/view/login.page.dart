@@ -26,6 +26,7 @@ class _LoginPageState extends State<LoginPage> {
       // lógica para verificar se é terapeuta ou paciente
       String? id = FirebaseAuth.instance.currentUser?.uid;
       var userDoc = await FirebaseFirestore.instance.collection('users').doc(id).get();
+      print(userDoc);
 
       UserModel userModel = UserModel.fromMap(userDoc.id, userDoc.data()!);
       if (userModel.status == 'deleted') throw FirebaseAuthException(code: 'O usuário está deletado.', message: 'O usuário está deletado.');
@@ -73,11 +74,12 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 SizedBox(height: 80),
                 Text(
-                  "Bem-vindo(a)",
+                  "Bem-vindo(a)!",
                   style: Theme.of(context).textTheme.headlineLarge,
                 ),
+                SizedBox(height: 20,),
                 Text(
-                  "Você tem certeza... ou só nunca questionou?",
+                  "Você tem certeza... \n ou só nunca questionou?",
                   textAlign: TextAlign.center,
                   style: TextStyle(fontSize: 20),
                 ),
